@@ -56,7 +56,7 @@ namespace Enterprise.Core.Linq
 
             var moveNextTask = _yield.OnMoveNext(cancellationToken).ContinueWith(OnMoveNextComplete, _yield);
             if (_enumerationTask == null)
-                _enumerationTask = this.EnumerateAsync(_yield, cancellationToken).ContinueWith(OnEnumerationComplete, _yield);
+                _enumerationTask = this.WrapperEnumerateAsync(_yield, cancellationToken).ContinueWith(OnEnumerationComplete, _yield);
             return moveNextTask;
         }
 
@@ -75,10 +75,6 @@ namespace Enterprise.Core.Linq
             object state)
         {
             var yield = (Consumer)state;
-            if (yield.IsComplete)
-            {
-                return false;
-            }
 
             if (task.IsFaulted)
             {
@@ -86,6 +82,11 @@ namespace Enterprise.Core.Linq
                 _enumerationException.Rethrow();
             }
             else if (task.IsCanceled)
+            {
+                return false;
+            }
+
+            if (yield.IsComplete)
             {
                 return false;
             }
@@ -128,9 +129,7 @@ namespace Enterprise.Core.Linq
             }
             catch (Exception exception)
             {
-                _yield.Error = exception;
-
-                throw;
+                _yield.SetFailed(exception);
             }
         }
 
@@ -197,8 +196,6 @@ namespace Enterprise.Core.Linq
             }
 
             internal bool IsComplete { get; set; }
-
-            internal Exception Error { get; set; }
         }
     }
 }
