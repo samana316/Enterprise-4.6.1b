@@ -55,6 +55,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Linq\Create\CreateTest.cs" />
+    <Compile Include="Linq\Empty\EmptyTest.cs" />
     <Compile Include="Linq\Helpers\Data\DbStreamIterator.cs" />
     <Compile Include="Linq\Helpers\DummyAsyncEnumerable.cs" />
     <Compile Include="Linq\Helpers\RealAsyncEnumerable.cs" />

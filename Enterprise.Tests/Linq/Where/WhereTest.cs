@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using Enterprise.Core.Linq;
 using Enterprise.Tests.Linq.Helpers;
@@ -35,7 +34,6 @@ namespace Enterprise.Tests.Linq.Where
 
         [TestMethod]
         [TestCategory(CategoryLinqWhere)]
-        [Timeout(60000)]
         [ExpectedException(typeof(NotImplementedException))]
         public async Task ExecutionIsDeferred()
         {

@@ -58,8 +58,8 @@ namespace Enterprise.Tests.Linq.Create
         {
             var source = Create<int>(async (yield, cancellationToken) =>
             {
-                var task1 = yield.ReturnAsync(1, cancellationToken).ConfigureAwait(false);
-                var task2 = yield.ReturnAsync(2, cancellationToken).ConfigureAwait(false);
+                var task1 = yield.ReturnAsync(1, cancellationToken);
+                var task2 = yield.ReturnAsync(2, cancellationToken);
 
                 await task1;
                 await task2;
@@ -167,20 +167,19 @@ namespace Enterprise.Tests.Linq.Create
         [Timeout(DefaultTimeout)]
         public async Task InfiniteLoopWithBreak()
         {
-            var source = Create<int>(
-                async (yield, cancellationToken) =>
+            var source = Create<int>(async (yield, cancellationToken) =>
+            {
+                var i = 0;
+                while (true)
                 {
-                    var i = 0;
-                    while (true)
+                    i++;
+                    if (i > 3)
                     {
-                        i++;
-                        if (i > 3)
-                        {
-                            yield.Break();
-                        }
-                        await yield.ReturnAsync(i, cancellationToken);
+                        yield.Break();
                     }
-                });
+                    await yield.ReturnAsync(i, cancellationToken);
+                }
+            });
             
             Assert.IsTrue(await source.SequenceEqualAsync(new[] { 1, 2, 3 }));
         }
@@ -188,7 +187,7 @@ namespace Enterprise.Tests.Linq.Create
         [TestMethod]
         [TestCategory(CategoryLinqCreate)]
         [Timeout(DefaultTimeout)]
-        [ExpectedException(typeof(AggregateException))]
+        [ExpectedException(typeof(DivideByZeroException))]
         public async Task InfiniteLoopWithThrow()
         {
             var source = Create<int>(async (yield, cancellationToken) =>
@@ -197,9 +196,9 @@ namespace Enterprise.Tests.Linq.Create
                 while (true)
                 {
                     i--;
-                    var x = 10 / i;
+                    var x = i + 10 / i;
 
-                    await yield.ReturnAsync(i, cancellationToken);
+                    await yield.ReturnAsync(x, cancellationToken);
                 }
             });
 
@@ -210,13 +209,12 @@ namespace Enterprise.Tests.Linq.Create
                     Trace.WriteLine(enumerator.Current);
                 }
             }
-
-            Assert.Fail("This should throw.");
         }
 
         [TestMethod]
         [TestCategory(CategoryLinqCreate)]
         [Timeout(DefaultTimeout)]
+        [ExpectedException(typeof(OperationCanceledException))]
         public async Task ParallelTasks()
         {
             var source = Create<int>((yield, cancellationToken) =>
@@ -230,11 +228,14 @@ namespace Enterprise.Tests.Linq.Create
                 return Task.WhenAll(tasks);
             });
 
-            using (var enumerator = source.GetAsyncEnumerator())
+            using (var cancellationTokenSource = new CancellationTokenSource(DefaultTimeout / 2))
             {
-                while (await enumerator.MoveNextAsync())
+                using (var enumerator = source.GetAsyncEnumerator())
                 {
-                    Trace.WriteLine(enumerator.Current);
+                    while (await enumerator.MoveNextAsync(cancellationTokenSource.Token))
+                    {
+                        Trace.WriteLine(enumerator.Current);
+                    }
                 }
             }
         }

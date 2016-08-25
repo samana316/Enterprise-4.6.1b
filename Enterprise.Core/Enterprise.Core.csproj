@@ -46,9 +46,11 @@
     <Compile Include="Linq\AsyncEnumerableBase.cs" />
     <Compile Include="Linq\AsyncEnumerator.cs" />
     <Compile Include="Linq\AsyncIterator.cs" />
+    <Compile Include="Linq\Extensions\Empty.cs" />
     <Compile Include="Linq\Extensions\ForEachAsync.cs" />
     <Compile Include="Linq\Extensions\Generated.cs" />
     <Compile Include="Linq\Extensions\Implementations\Anonymous.cs" />
+    <Compile Include="Linq\Extensions\Implementations\Empty.cs" />
     <Compile Include="Linq\Extensions\Implementations\Where.cs" />
     <Compile Include="Linq\Extensions\SequenceEqualAsync.cs" />
     <Compile Include="Linq\Extensions\Where.cs" />

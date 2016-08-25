@@ -39,8 +39,6 @@ namespace Enterprise.Tests.Linq.Helpers
             IAsyncYield<T> yield,
             CancellationToken cancellationToken)
         {
-            //await Task.Yield();
-
             throw new NotImplementedException();
         }
     }
