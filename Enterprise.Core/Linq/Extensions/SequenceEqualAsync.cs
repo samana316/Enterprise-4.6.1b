@@ -53,14 +53,14 @@ namespace Enterprise.Core.Linq
                 {
                     while (await enumerator.MoveNextAsync(cancellationToken).ConfigureAwait(false))
                     {
-                        if (!enumerator2.MoveNext() ||
+                        if (!await enumerator2.MoveNextAsync(cancellationToken).ConfigureAwait(false) ||
                             !comparer.Equals(enumerator.Current, enumerator2.Current))
                         {
                             return false;
                         }
                     }
 
-                    if (enumerator2.MoveNext())
+                    if (await enumerator2.MoveNextAsync(cancellationToken).ConfigureAwait(false))
                     {
                         return false;
                     }

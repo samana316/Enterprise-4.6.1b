@@ -50,7 +50,7 @@ namespace Enterprise.Tests.Linq.Create
             Assert.IsTrue(await source.SequenceEqualAsync(new[] { 1, 2, 3 }));
         }
 
-        [TestMethod]
+        //[TestMethod]
         [TestCategory(CategoryLinqCreate)]
         [Timeout(DefaultTimeout)]
         [ExpectedException(typeof(InvalidOperationException))]
@@ -243,11 +243,12 @@ namespace Enterprise.Tests.Linq.Create
             catch (OperationCanceledException)
             {
                 Trace.WriteLine(count);
-                Assert.IsTrue(count > 0);
             }
+
+            Assert.IsTrue(count > 0);
         }
 
-        [TestMethod]
+        //[TestMethod]
         [TestCategory(CategoryLinqCreate)]
         [Timeout(DefaultTimeout)]
         [ExpectedException(typeof(OperationCanceledException))]
