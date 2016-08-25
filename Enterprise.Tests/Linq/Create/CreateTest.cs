@@ -214,6 +214,42 @@ namespace Enterprise.Tests.Linq.Create
         [TestMethod]
         [TestCategory(CategoryLinqCreate)]
         [Timeout(DefaultTimeout)]
+        public async Task InfiniteLoopWithTimeout()
+        {
+            var source = Create<long>(async (yield, cancellationToken) =>
+            {
+                var i = 0;
+                while (true)
+                {
+                    i++;
+                    await yield.ReturnAsync(i, cancellationToken);
+                }
+            });
+
+            var count = 0;
+            try
+            {
+                using (var cancellationTokenSource = new CancellationTokenSource(DefaultTimeout / 2))
+                {
+                    using (var enumerator = source.GetAsyncEnumerator())
+                    {
+                        while (await enumerator.MoveNextAsync(cancellationTokenSource.Token))
+                        {
+                            count++;
+                        }
+                    }
+                }
+            }
+            catch (OperationCanceledException)
+            {
+                Trace.WriteLine(count);
+                Assert.IsTrue(count > 0);
+            }
+        }
+
+        [TestMethod]
+        [TestCategory(CategoryLinqCreate)]
+        [Timeout(DefaultTimeout)]
         [ExpectedException(typeof(OperationCanceledException))]
         public async Task ParallelTasks()
         {

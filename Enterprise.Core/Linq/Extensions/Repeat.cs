@@ -4,18 +4,16 @@ namespace Enterprise.Core.Linq
 {
     partial class AsyncEnumerable
     {
-        public static IAsyncEnumerable<int> Range(
-            int start,
+        public static IAsyncEnumerable<TResult> Repeat<TResult>(
+            TResult element,
             int count)
         {
-            var num = (long)start + count - 1L;
-
-            if (count < 0 || num > int.MaxValue)
+            if (count < 0)
             {
                 throw Error.ArgumentOutOfRange(nameof(count));
             }
 
-            return new Range(start, count);
+            return new Repeat<TResult>(element, count);
         }
     }
 }
