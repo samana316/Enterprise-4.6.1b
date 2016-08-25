@@ -126,6 +126,8 @@ namespace Enterprise.Core.Linq
             try
             {
                 await this.EnumerateAsync(yield, cancellationToken);
+
+                yield.Break();
             }
             catch (Exception exception)
             {

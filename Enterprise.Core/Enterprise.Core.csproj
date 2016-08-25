@@ -51,7 +51,9 @@
     <Compile Include="Linq\Extensions\Generated.cs" />
     <Compile Include="Linq\Extensions\Implementations\Anonymous.cs" />
     <Compile Include="Linq\Extensions\Implementations\Empty.cs" />
+    <Compile Include="Linq\Extensions\Implementations\Select.cs" />
     <Compile Include="Linq\Extensions\Implementations\Where.cs" />
+    <Compile Include="Linq\Extensions\Select.cs" />
     <Compile Include="Linq\Extensions\SequenceEqualAsync.cs" />
     <Compile Include="Linq\Extensions\Where.cs" />
     <Compile Include="Linq\Interfaces\IAsyncYield.cs" />

@@ -60,6 +60,7 @@
     <Compile Include="Linq\Helpers\DummyAsyncEnumerable.cs" />
     <Compile Include="Linq\Helpers\RealAsyncEnumerable.cs" />
     <Compile Include="Linq\Helpers\ThrowAsyncEnumerable.cs" />
+    <Compile Include="Linq\Select\SelectTest.cs" />
     <Compile Include="Linq\Where\WhereTest.cs" />
     <Compile Include="Poc\AsyncTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
