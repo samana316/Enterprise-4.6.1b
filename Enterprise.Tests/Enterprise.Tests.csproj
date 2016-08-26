@@ -57,6 +57,7 @@
     <Compile Include="Linq\AsAsyncEnumerable\AsAsyncEnumerableTest.cs" />
     <Compile Include="Linq\Concat\ConcatTest.cs" />
     <Compile Include="Linq\Create\CreateTest.cs" />
+    <Compile Include="Linq\DefaultIfEmpty\DefaultIfEmptyTest.cs" />
     <Compile Include="Linq\Empty\EmptyTest.cs" />
     <Compile Include="Linq\Helpers\Data\DbStreamIterator.cs" />
     <Compile Include="Linq\Helpers\DummyAsyncEnumerable.cs" />

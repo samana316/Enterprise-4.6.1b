@@ -49,12 +49,14 @@
     <Compile Include="Linq\AsyncYield.cs" />
     <Compile Include="Linq\Extensions\AsAsyncEnumerable.cs" />
     <Compile Include="Linq\Extensions\Concat.cs" />
+    <Compile Include="Linq\Extensions\DefaultIfEmpty.cs" />
     <Compile Include="Linq\Extensions\Empty.cs" />
     <Compile Include="Linq\Extensions\ForEachAsync.cs" />
     <Compile Include="Linq\Extensions\Generated.cs" />
     <Compile Include="Linq\Extensions\Implementations\Anonymous.cs" />
     <Compile Include="Linq\Extensions\Implementations\AsAsyncEnumerable.cs" />
     <Compile Include="Linq\Extensions\Implementations\Concat.cs" />
+    <Compile Include="Linq\Extensions\Implementations\DefaultIfEmpty.cs" />
     <Compile Include="Linq\Extensions\Implementations\Empty.cs" />
     <Compile Include="Linq\Extensions\Implementations\Range.cs" />
     <Compile Include="Linq\Extensions\Implementations\Repeat.cs" />
