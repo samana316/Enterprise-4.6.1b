@@ -53,6 +53,7 @@
     <Compile Include="Linq\Extensions\DefaultIfEmpty.cs" />
     <Compile Include="Linq\Extensions\Distinct.cs" />
     <Compile Include="Linq\Extensions\Empty.cs" />
+    <Compile Include="Linq\Extensions\Except.cs" />
     <Compile Include="Linq\Extensions\ForEachAsync.cs" />
     <Compile Include="Linq\Extensions\Generated.cs" />
     <Compile Include="Linq\Extensions\Implementations\Anonymous.cs" />
@@ -61,6 +62,7 @@
     <Compile Include="Linq\Extensions\Implementations\DefaultIfEmpty.cs" />
     <Compile Include="Linq\Extensions\Implementations\Distinct.cs" />
     <Compile Include="Linq\Extensions\Implementations\Empty.cs" />
+    <Compile Include="Linq\Extensions\Implementations\Except.cs" />
     <Compile Include="Linq\Extensions\Implementations\Intersect.cs" />
     <Compile Include="Linq\Extensions\Implementations\Range.cs" />
     <Compile Include="Linq\Extensions\Implementations\Repeat.cs" />
