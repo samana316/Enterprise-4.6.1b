@@ -19,17 +19,9 @@ namespace Enterprise.Core.Linq
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                if (await enumerator.MoveNextAsync(cancellationToken).WithCurrentCulture())
+                while (await enumerator.MoveNextAsync(cancellationToken).WithCurrentCulture())
                 {
-                    Task<bool> moveNextTask;
-                    do
-                    {
-                        cancellationToken.ThrowIfCancellationRequested();
-                        var current = enumerator.Current;
-                        moveNextTask = enumerator.MoveNextAsync(cancellationToken);
-                        await function(current, cancellationToken);
-                    }
-                    while (await moveNextTask.WithCurrentCulture());
+                    await function(enumerator.Current, cancellationToken);
                 }
             }
         }
@@ -46,17 +38,9 @@ namespace Enterprise.Core.Linq
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                if (await enumerator.MoveNextAsync(cancellationToken).WithCurrentCulture())
+                while (await enumerator.MoveNextAsync(cancellationToken).WithCurrentCulture())
                 {
-                    Task<bool> moveNextTask;
-                    do
-                    {
-                        cancellationToken.ThrowIfCancellationRequested();
-                        var current = enumerator.Current;
-                        moveNextTask = enumerator.MoveNextAsync(cancellationToken);
-                        await function(current, cancellationToken);
-                    }
-                    while (await moveNextTask.WithCurrentCulture());
+                    await function(enumerator.Current, cancellationToken);
                 }
             }
         }

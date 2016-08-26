@@ -1818,7 +1818,13 @@ namespace Enterprise.Core.Linq
         {
             public static Func<TElement, TElement> Instance
             {
-                get { return x => x; }
+                get { return IdentityFunctionImpl; }
+            }
+
+            private static TElement IdentityFunctionImpl(
+                TElement x)
+            {
+                return x;
             }
         }
 

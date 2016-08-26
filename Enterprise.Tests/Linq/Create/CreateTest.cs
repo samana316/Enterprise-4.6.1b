@@ -276,5 +276,85 @@ namespace Enterprise.Tests.Linq.Create
                 }
             }
         }
+
+        [TestMethod]
+        [TestCategory(CategoryLinqCreate)]
+        public async Task ExecutionIsDeferred()
+        {
+            var spy = new List<int>();
+            var source = Create<int>(async (yield, cancellationToken) => 
+            {
+                spy.Clear();
+                for (var i = 1; i < 10; i++)
+                {
+                    spy.Add(i);
+
+                    await yield.ReturnAsync(i, cancellationToken);
+                }
+            });
+
+            using (var enumerator = source.GetAsyncEnumerator())
+            {
+                await enumerator.MoveNextAsync();
+                Trace.WriteLine(enumerator.Current);
+
+                await enumerator.MoveNextAsync();
+                Trace.WriteLine(enumerator.Current);
+            }
+
+            Assert.AreEqual(2, spy.Count);
+
+            using (var enumerator = source.GetAsyncEnumerator())
+            {
+                await enumerator.MoveNextAsync();
+                Trace.WriteLine(enumerator.Current);
+
+                await enumerator.MoveNextAsync();
+                Trace.WriteLine(enumerator.Current);
+            }
+
+            Assert.AreEqual(2, spy.Count);
+        }
+
+
+        [TestMethod]
+        [TestCategory(CategoryLinqCreate)]
+        public async Task ExecutionIsDeferredNested()
+        {
+            var spy = new List<int>();
+
+            var source = Create<IAsyncEnumerable<int>>(async (y1, ct1) =>
+            {
+                spy.Clear();
+                for (var i = 1; i < 10; i++)
+                {
+                    spy.Add(i);
+                    var child = Create<int>(async (y2, ct2) =>
+                    {
+                        for (var j = 11; j < 20; j++)
+                        {
+                            spy.Add(j);
+                            await y2.ReturnAsync(j, ct2);
+                        }
+                    });
+
+                    await y1.ReturnAsync(child, ct1);
+                }
+            });
+
+            using (var outer = source.GetAsyncEnumerator())
+            {
+                await outer.MoveNextAsync();
+                Trace.WriteLine(outer.Current);
+
+                using (var inner = outer.Current.GetAsyncEnumerator())
+                {
+                    await inner.MoveNextAsync();
+                    Trace.WriteLine(inner.Current);
+                }
+            }
+
+            Assert.AreEqual(2, spy.Count);
+        }
     }
 }
