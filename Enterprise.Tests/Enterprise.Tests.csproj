@@ -54,6 +54,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Linq\AggregateAsync\AggregateAsyncTest.cs" />
     <Compile Include="Linq\AsAsyncEnumerable\AsAsyncEnumerableTest.cs" />
     <Compile Include="Linq\Concat\ConcatTest.cs" />
     <Compile Include="Linq\Create\CreateTest.cs" />

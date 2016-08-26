@@ -47,6 +47,7 @@
     <Compile Include="Linq\AsyncEnumerator.cs" />
     <Compile Include="Linq\AsyncIterator.cs" />
     <Compile Include="Linq\AsyncYield.cs" />
+    <Compile Include="Linq\Extensions\AggregateAsync.cs" />
     <Compile Include="Linq\Extensions\AsAsyncEnumerable.cs" />
     <Compile Include="Linq\Extensions\Concat.cs" />
     <Compile Include="Linq\Extensions\DefaultIfEmpty.cs" />
