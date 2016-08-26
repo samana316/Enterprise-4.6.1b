@@ -44,15 +44,22 @@ namespace Enterprise.Tests.Linq.Helpers.Data
                                 command.CommandText += " UNION ALL ";
                             }
 
+                            object value = buffer[i];
+                            if (ReferenceEquals(value, null))
+                            {
+                                value = DBNull.Value;
+                            }
+
                             command.CommandText += " SELECT @p" + i;
-                            command.Parameters.AddWithValue("@p" + i, buffer[i]);
+                            command.Parameters.AddWithValue("@p" + i, value);
                         }
 
                         using (var reader = await command.ExecuteReaderAsync(cancellationToken))
                         {
                             while (await reader.ReadAsync(cancellationToken))
                             {
-                                var value = (T)reader[0];
+                                var rawValue = reader[0];
+                                var value = Convert.IsDBNull(rawValue) ? default(T) : (T)rawValue;
 
                                 await yield.ReturnAsync(value, cancellationToken);
                             }

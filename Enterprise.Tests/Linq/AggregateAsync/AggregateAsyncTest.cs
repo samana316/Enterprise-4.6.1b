@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Globalization;
 using System.Threading.Tasks;
 using Enterprise.Core.Linq;
@@ -59,6 +60,7 @@ namespace Enterprise.Tests.Linq.AggregateAsync
             }
             catch (Exception exception)
             {
+                Trace.WriteLine(exception);
                 Assert.IsTrue(exception is InvalidOperationException);
             }
 
@@ -70,6 +72,7 @@ namespace Enterprise.Tests.Linq.AggregateAsync
             }
             catch (Exception exception)
             {
+                Trace.WriteLine(exception);
                 Assert.IsTrue(exception is ArgumentNullException);
             }
         }

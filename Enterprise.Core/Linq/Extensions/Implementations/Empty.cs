@@ -20,6 +20,7 @@ namespace Enterprise.Core.Linq
             IAsyncYield<TResult> yield, 
             CancellationToken cancellationToken)
         {
+            cancellationToken.ThrowIfCancellationRequested();
             await Task.Yield();
 
             yield.Break();

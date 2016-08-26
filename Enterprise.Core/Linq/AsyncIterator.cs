@@ -35,7 +35,7 @@ namespace Enterprise.Core.Linq
 
         public bool MoveNext()
         {
-            return this.MoveNextAsync(CancellationToken.None).Result;
+            return this.MoveNextAsync(CancellationToken.None).GetAwaiter().GetResult();
         }
 
         public async Task<bool> MoveNextAsync(
@@ -54,7 +54,7 @@ namespace Enterprise.Core.Linq
                     return false;
             }
 
-            return await this.DoMoveNextAsync(cancellationToken);
+            return await this.DoMoveNextAsync(cancellationToken).ConfigureAwait(false);
         }
 
         public virtual void Reset()
