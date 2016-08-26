@@ -146,8 +146,11 @@ namespace Enterprise.Core.Linq
 
             public void Break()
             {
-                SetCanceled();
-                throw new AsyncEnumerationCanceledException();
+                if (!IsComplete)
+                {
+                    SetCanceled();
+                    //throw new AsyncEnumerationCanceledException();
+                }
             }
 
             public Task ReturnAsync(

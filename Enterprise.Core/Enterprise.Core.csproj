@@ -65,12 +65,14 @@
     <Compile Include="Linq\Extensions\Implementations\Repeat.cs" />
     <Compile Include="Linq\Extensions\Implementations\Select.cs" />
     <Compile Include="Linq\Extensions\Implementations\SelectMany.cs" />
+    <Compile Include="Linq\Extensions\Implementations\Union.cs" />
     <Compile Include="Linq\Extensions\Implementations\Where.cs" />
     <Compile Include="Linq\Extensions\Range.cs" />
     <Compile Include="Linq\Extensions\Repeat.cs" />
     <Compile Include="Linq\Extensions\Select.cs" />
     <Compile Include="Linq\Extensions\SelectMany.cs" />
     <Compile Include="Linq\Extensions\SequenceEqualAsync.cs" />
+    <Compile Include="Linq\Extensions\Union.cs" />
     <Compile Include="Linq\Extensions\Where.cs" />
     <Compile Include="Linq\Interfaces\IAsyncYield.cs" />
     <Compile Include="Linq\Interfaces\IAsyncEnumerable.cs" />

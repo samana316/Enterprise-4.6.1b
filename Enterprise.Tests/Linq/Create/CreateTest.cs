@@ -336,10 +336,12 @@ namespace Enterprise.Tests.Linq.Create
                             spy.Add(j);
                             await y2.ReturnAsync(j, ct2);
                         }
+                        y2.Break();
                     });
 
                     await y1.ReturnAsync(child, ct1);
                 }
+                y1.Break();
             });
 
             using (var outer = source.GetAsyncEnumerator())

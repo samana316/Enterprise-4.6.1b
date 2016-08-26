@@ -69,6 +69,7 @@
     <Compile Include="Linq\SelectMany\SelectManyTest.cs" />
     <Compile Include="Linq\Select\SelectTest.cs" />
     <Compile Include="Linq\SetOperations\DistinctTest.cs" />
+    <Compile Include="Linq\SetOperations\UnionTest.cs" />
     <Compile Include="Linq\Where\WhereTest.cs" />
     <Compile Include="Poc\AsyncTest.cs" />
     <Compile Include="Poc\DebuggerTest.cs" />
