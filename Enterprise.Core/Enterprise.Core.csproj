@@ -61,12 +61,14 @@
     <Compile Include="Linq\Extensions\Implementations\DefaultIfEmpty.cs" />
     <Compile Include="Linq\Extensions\Implementations\Distinct.cs" />
     <Compile Include="Linq\Extensions\Implementations\Empty.cs" />
+    <Compile Include="Linq\Extensions\Implementations\Intersect.cs" />
     <Compile Include="Linq\Extensions\Implementations\Range.cs" />
     <Compile Include="Linq\Extensions\Implementations\Repeat.cs" />
     <Compile Include="Linq\Extensions\Implementations\Select.cs" />
     <Compile Include="Linq\Extensions\Implementations\SelectMany.cs" />
     <Compile Include="Linq\Extensions\Implementations\Union.cs" />
     <Compile Include="Linq\Extensions\Implementations\Where.cs" />
+    <Compile Include="Linq\Extensions\Intersect.cs" />
     <Compile Include="Linq\Extensions\Range.cs" />
     <Compile Include="Linq\Extensions\Repeat.cs" />
     <Compile Include="Linq\Extensions\Select.cs" />

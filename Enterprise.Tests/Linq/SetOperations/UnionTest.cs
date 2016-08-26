@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Enterprise.Core.Linq;
@@ -10,7 +9,7 @@ using static Enterprise.Core.Linq.AsyncEnumerable;
 namespace Enterprise.Tests.Linq.SetOperations
 {
     [TestClass]
-    public class UnionTest
+    public sealed class UnionTest
     {
         private const string CategoryLinqUnion = "Linq.Union";
 

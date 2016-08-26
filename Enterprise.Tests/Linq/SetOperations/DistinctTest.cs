@@ -9,7 +9,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Enterprise.Tests.Linq.SetOperations
 {
     [TestClass]
-    public class DistinctTest
+    public sealed class DistinctTest
     {
         private const string CategoryLinqDistinct = "Linq.Distinct";
 
