@@ -10,7 +10,7 @@ using static Enterprise.Core.Linq.AsyncEnumerable;
 namespace Enterprise.Tests.Linq.SelectMany
 {
     [TestClass]
-    public class SelectManyTest
+    public sealed class SelectManyTest
     {
         private const string CategoryLinqSelectMany = "Linq.SelectMany";
 
