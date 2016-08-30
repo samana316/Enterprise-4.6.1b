@@ -80,6 +80,7 @@
     <Compile Include="Linq\SortingOperations\ReverseTest.cs" />
     <Compile Include="Linq\SortingOperations\SortingTest.cs" />
     <Compile Include="Linq\Where\WhereTest.cs" />
+    <Compile Include="Linq\Zip\ZipTest.cs" />
     <Compile Include="Poc\AsyncTest.cs" />
     <Compile Include="Poc\DebuggerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

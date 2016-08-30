@@ -50,7 +50,8 @@ namespace Enterprise.Core.Linq
             }
         }
 
-        public bool Contains(TKey key)
+        public bool Contains(
+            TKey key)
         {
             return map.ContainsKey(key);
         }
