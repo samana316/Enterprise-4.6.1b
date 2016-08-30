@@ -14,5 +14,14 @@ namespace Enterprise.Core.Linq
 
             return new Anonymous<T>(yieldBuilder);
         }
+
+        internal static Task<Buffer<TSource>> ToBufferAsync<TSource>(
+            this IAsyncEnumerable<TSource> source, 
+            CancellationToken cancellationToken)
+        {
+            Check.NotNull(source, nameof(source));
+
+            return Buffer<TSource>.CreateAsync(source, cancellationToken);
+        }
     }
 }

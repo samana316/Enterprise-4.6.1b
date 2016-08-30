@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Enterprise.Core.Utilities;
@@ -39,8 +38,8 @@ namespace Enterprise.Core.Linq
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            Check.NotNull(first, "first");
-            Check.NotNull(second, "second");
+            Check.NotNull(first, nameof(first));
+            Check.NotNull(second, nameof(second));
 
             if (ReferenceEquals(comparer, null))
             {
