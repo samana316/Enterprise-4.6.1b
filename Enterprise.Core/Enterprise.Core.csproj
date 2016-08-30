@@ -43,6 +43,11 @@
     <Compile Include="Common\DisposableBase.cs" />
     <Compile Include="Common\Runtime\ExceptionServices\ExceptionExtensions.cs" />
     <Compile Include="Linq\AsyncEnumerable.cs" />
+    <Compile Include="Linq\Extensions\Implementations\Skip.cs" />
+    <Compile Include="Linq\Extensions\Implementations\SkipWhile.cs" />
+    <Compile Include="Linq\Extensions\Implementations\Take.cs" />
+    <Compile Include="Linq\Extensions\Implementations\TakeWhile.cs" />
+    <Compile Include="Linq\Extensions\PagingOperations.cs" />
     <Compile Include="Linq\Implementations\AsyncEnumerableBase.cs" />
     <Compile Include="Linq\AsyncEnumerator.cs" />
     <Compile Include="Linq\Implementations\AsyncIterator.cs" />

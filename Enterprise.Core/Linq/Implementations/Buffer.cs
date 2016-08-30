@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Enterprise.Core.Linq
 {
-    internal sealed class Buffer<TSource>
+    internal struct Buffer<TSource>
     {
         public TSource[] Array { get; private set; }
 

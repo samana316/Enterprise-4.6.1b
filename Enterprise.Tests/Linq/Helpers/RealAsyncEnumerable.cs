@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Enterprise.Core.Linq;
 using Enterprise.Tests.Linq.Helpers.Data;
@@ -61,13 +62,16 @@ namespace Enterprise.Tests.Linq.Helpers
 
             return Create<T>(async (yield, cancellationToken) =>
             {
+                Trace.WriteLine("GetAsyncEnumerator");
                 cancellationToken.ThrowIfCancellationRequested();
                 foreach (var item in this.source)
                 {
                     cancellationToken.ThrowIfCancellationRequested();
                     await Task.Delay(1, cancellationToken);
+                    Trace.WriteLine(item, "MoveNextAsync");
                     await yield.ReturnAsync(item, cancellationToken);
                 }
+                Trace.WriteLine("Dispose");
             }).GetAsyncEnumerator();
         }
     }
