@@ -44,6 +44,8 @@
     <Compile Include="Common\Runtime\ExceptionServices\ExceptionExtensions.cs" />
     <Compile Include="Linq\AsyncEnumerable.cs" />
     <Compile Include="Linq\Extensions\Cast.cs" />
+    <Compile Include="Linq\Extensions\CountAsync.cs" />
+    <Compile Include="Linq\Extensions\ForEachAsync.cs" />
     <Compile Include="Linq\Extensions\Implementations\Cast.cs" />
     <Compile Include="Linq\Extensions\Implementations\OfType.cs" />
     <Compile Include="Linq\Extensions\Implementations\Skip.cs" />
@@ -51,8 +53,12 @@
     <Compile Include="Linq\Extensions\Implementations\Take.cs" />
     <Compile Include="Linq\Extensions\Implementations\TakeWhile.cs" />
     <Compile Include="Linq\Extensions\Implementations\Zip.cs" />
+    <Compile Include="Linq\Extensions\LongCountAsync.cs" />
     <Compile Include="Linq\Extensions\OfType.cs" />
     <Compile Include="Linq\Extensions\PagingOperations.cs" />
+    <Compile Include="Linq\Extensions\SeekingOperations.cs" />
+    <Compile Include="Linq\Extensions\ToArrayAsync.cs" />
+    <Compile Include="Linq\Extensions\ToListAsync.cs" />
     <Compile Include="Linq\Extensions\Zip.cs" />
     <Compile Include="Linq\Implementations\AsyncEnumerableBase.cs" />
     <Compile Include="Linq\AsyncEnumerator.cs" />
@@ -67,7 +73,6 @@
     <Compile Include="Linq\Extensions\Distinct.cs" />
     <Compile Include="Linq\Extensions\Empty.cs" />
     <Compile Include="Linq\Extensions\Except.cs" />
-    <Compile Include="Linq\Extensions\ForEachAsync.cs" />
     <Compile Include="Linq\Extensions\Generated.cs" />
     <Compile Include="Linq\Extensions\GroupBy.cs" />
     <Compile Include="Linq\Extensions\GroupJoin.cs" />
@@ -102,6 +107,12 @@
     <Compile Include="Linq\Extensions\Union.cs" />
     <Compile Include="Linq\Extensions\Where.cs" />
     <Compile Include="Linq\Implementations\Grouping.cs" />
+    <Compile Include="Linq\Implementations\Optimizations\AsyncCollection.cs" />
+    <Compile Include="Linq\Implementations\Optimizations\AsyncEnumerableAdapterBase.cs" />
+    <Compile Include="Linq\Implementations\Optimizations\AsyncList.cs" />
+    <Compile Include="Linq\Implementations\Optimizations\AsyncReadOnlyCollection.cs" />
+    <Compile Include="Linq\Implementations\Optimizations\AsyncReadOnlyList.cs" />
+    <Compile Include="Linq\Implementations\Optimizations\TryFastCount.cs" />
     <Compile Include="Linq\Interfaces\IAsyncOrderedEnumerable.cs" />
     <Compile Include="Linq\Interfaces\IAsyncYield.cs" />
     <Compile Include="Linq\Interfaces\IAsyncEnumerable.cs" />

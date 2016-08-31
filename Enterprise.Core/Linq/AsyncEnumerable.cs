@@ -23,5 +23,19 @@ namespace Enterprise.Core.Linq
 
             return Buffer<TSource>.CreateAsync(source, cancellationToken);
         }
+
+        private static class IdentityFunction<TElement>
+        {
+            public static Func<TElement, TElement> Instance
+            {
+                get { return IdentityFunctionImpl; }
+            }
+
+            private static TElement IdentityFunctionImpl(
+                TElement x)
+            {
+                return x;
+            }
+        }
     }
 }

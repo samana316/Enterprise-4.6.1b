@@ -63,7 +63,7 @@ namespace Enterprise.Core.Linq
                 element => new CompositeKey<TCompositeKey, TKey>(primarySelector(element), keySelector(element));
 
             var newKeyComparer =
-                new CompositeKey<TCompositeKey, TKey>.Comparer(compositeComparer, comparer);
+                new CompositeComparer<TCompositeKey, TKey>(compositeComparer, comparer);
 
             return new AsyncOrderedEnumerable<TElement, CompositeKey<TCompositeKey, TKey>>
                 (source, newKeySelector, newKeyComparer);
@@ -86,13 +86,13 @@ namespace Enterprise.Core.Linq
             var count = buffer.Count;
 
             var indexes = new int[count];
-            for (int i = 0; i < indexes.Length; i++)
+            for (var i = 0; i < indexes.Length; i++)
             {
                 indexes[i] = i;
             }
 
             var keys = new TCompositeKey[count];
-            for (int i = 0; i < keys.Length; i++)
+            for (var i = 0; i < keys.Length; i++)
             {
                 keys[i] = compositeSelector(data[i]);
             }
@@ -103,13 +103,13 @@ namespace Enterprise.Core.Linq
             stack.Push(new LeftRight(0, count - 1));
             while (stack.Count > 0)
             {
-                LeftRight leftRight = stack.Pop();
-                int left = leftRight.left;
-                int right = leftRight.right;
+                var leftRight = stack.Pop();
+                var left = leftRight.left;
+                var right = leftRight.right;
                 if (right > left)
                 {
-                    int pivot = left + (right - left) / 2;
-                    int pivotPosition = Partition(indexes, keys, left, right, pivot);
+                    var pivot = left + (right - left) / 2;
+                    var pivotPosition = Partition(indexes, keys, left, right, pivot);
                     // Push the right sublist first, so that we *pop* the
                     // left sublist first
                     stack.Push(new LeftRight(pivotPosition + 1, right));
@@ -135,18 +135,18 @@ namespace Enterprise.Core.Linq
             int pivot)
         {
             // Remember the current index (into the keys/elements arrays) of the pivot location
-            int pivotIndex = indexes[pivot];
-            TCompositeKey pivotKey = keys[pivotIndex];
+            var pivotIndex = indexes[pivot];
+            var pivotKey = keys[pivotIndex];
 
             // Swap the pivot value to the end
             indexes[pivot] = indexes[right];
             indexes[right] = pivotIndex;
-            int storeIndex = left;
-            for (int i = left; i < right; i++)
+            var storeIndex = left;
+            for (var i = left; i < right; i++)
             {
-                int candidateIndex = indexes[i];
-                TCompositeKey candidateKey = keys[candidateIndex];
-                int comparison = compositeComparer.Compare(candidateKey, pivotKey);
+                var candidateIndex = indexes[i];
+                var candidateKey = keys[candidateIndex];
+                var comparison = compositeComparer.Compare(candidateKey, pivotKey);
                 if (comparison < 0 || (comparison == 0 && candidateIndex < pivotIndex))
                 {
                     // Swap storeIndex with the current location
@@ -156,61 +156,72 @@ namespace Enterprise.Core.Linq
                 }
             }
             // Move the pivot to its final place
-            int tmp = indexes[storeIndex];
+            var tmp = indexes[storeIndex];
             indexes[storeIndex] = indexes[right];
             indexes[right] = tmp;
             return storeIndex;
         }
 
-        internal struct CompositeKey<TPrimary, TSecondary>
+        private struct CompositeKey<TPrimary, TSecondary>
         {
             private readonly TPrimary primary;
+
             private readonly TSecondary secondary;
 
-            internal TPrimary Primary { get { return primary; } }
-            internal TSecondary Secondary { get { return secondary; } }
-
-            internal CompositeKey(TPrimary primary, TSecondary secondary)
+            public CompositeKey(
+                TPrimary primary, 
+                TSecondary secondary)
             {
                 this.primary = primary;
                 this.secondary = secondary;
             }
 
-            internal sealed class Comparer : IComparer<CompositeKey<TPrimary, TSecondary>>
+            public TPrimary Primary { get { return this.primary; } }
+
+            public TSecondary Secondary { get { return this.secondary; } }
+        }
+
+        private sealed class CompositeComparer<TPrimary, TSecondary> : 
+            IComparer<CompositeKey<TPrimary, TSecondary>>
+        {
+            private readonly IComparer<TPrimary> primaryComparer;
+
+            private readonly IComparer<TSecondary> secondaryComparer;
+
+            public CompositeComparer(
+                IComparer<TPrimary> primaryComparer,
+                IComparer<TSecondary> secondaryComparer)
             {
-                private readonly IComparer<TPrimary> primaryComparer;
-                private readonly IComparer<TSecondary> secondaryComparer;
+                this.primaryComparer = primaryComparer;
+                this.secondaryComparer = secondaryComparer;
+            }
 
-                internal Comparer(IComparer<TPrimary> primaryComparer,
-                                  IComparer<TSecondary> secondaryComparer)
+            public int Compare(
+                CompositeKey<TPrimary, TSecondary> x,
+                CompositeKey<TPrimary, TSecondary> y)
+            {
+                int primaryResult = primaryComparer.Compare(x.Primary, y.Primary);
+                if (primaryResult != 0)
                 {
-                    this.primaryComparer = primaryComparer;
-                    this.secondaryComparer = secondaryComparer;
+                    return primaryResult;
                 }
-
-                public int Compare(CompositeKey<TPrimary, TSecondary> x,
-                                   CompositeKey<TPrimary, TSecondary> y)
-                {
-                    int primaryResult = primaryComparer.Compare(x.Primary, y.Primary);
-                    if (primaryResult != 0)
-                    {
-                        return primaryResult;
-                    }
-                    return secondaryComparer.Compare(x.Secondary, y.Secondary);
-                }
+                return secondaryComparer.Compare(x.Secondary, y.Secondary);
             }
         }
 
-        internal class ReverseComparer<T> : IComparer<T>
+        private sealed class ReverseComparer<T> : IComparer<T>
         {
             private readonly IComparer<T> forwardComparer;
 
-            internal ReverseComparer(IComparer<T> forwardComparer)
+            internal ReverseComparer(
+                IComparer<T> forwardComparer)
             {
                 this.forwardComparer = forwardComparer;
             }
 
-            public int Compare(T x, T y)
+            public int Compare(
+                T x, 
+                T y)
             {
                 return forwardComparer.Compare(y, x);
             }
@@ -219,7 +230,10 @@ namespace Enterprise.Core.Linq
         private struct LeftRight
         {
             internal int left, right;
-            internal LeftRight(int left, int right)
+
+            public LeftRight(
+                int left, 
+                int right)
             {
                 this.left = left;
                 this.right = right;

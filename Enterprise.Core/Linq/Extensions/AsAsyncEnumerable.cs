@@ -24,6 +24,30 @@ namespace Enterprise.Core.Linq
                 return asyncEnumerable;
             }
 
+            var list = source as IList<TSource>;
+            if (list != null)
+            {
+                return new AsyncList<TSource>(list);
+            }
+
+            var collection = source as ICollection<TSource>;
+            if (collection != null)
+            {
+                return new AsyncCollection<TSource>(collection);
+            }
+
+            var readOnlyList = source as IReadOnlyList<TSource>;
+            if (readOnlyList != null)
+            {
+                return new AsyncReadOnlyList<TSource>(readOnlyList);
+            }
+
+            var readOnlyCollection = source as IReadOnlyCollection<TSource>;
+            if (readOnlyCollection != null)
+            {
+                return new AsyncReadOnlyCollection<TSource>(readOnlyCollection);
+            }
+
             return new AsAsyncEnumerable<TSource>(source);
         }
     }

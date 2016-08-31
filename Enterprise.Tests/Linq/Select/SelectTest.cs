@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Enterprise.Core.Linq;
 using Enterprise.Tests.Linq.Helpers;
@@ -42,6 +43,31 @@ namespace Enterprise.Tests.Linq.Select
                          where x < 4
                          select x * 2;
             Assert.IsTrue(await result.SequenceEqualAsync(new[] { 2, 6, 4, 2 }));
+        }
+
+        [TestMethod]
+        [TestCategory(CategoryLinqSelect)]
+        public async Task AsyncProjection()
+        {
+            Func<int, Task<int>> selectorAsync = async item =>
+            {
+                await Task.Delay(1);
+
+                return item * 2;
+            };
+
+            var source = new RealAsyncEnumerable<int>(1, 2, 3);
+            var query = from item in source select selectorAsync(item);
+
+            var result = AsyncEnumerable.Create<int>((y, cancellationToken) =>
+            {
+                return query.ForEachAsync(async (item, cancellationToken2) => 
+                {
+                    await y.ReturnAsync(await item, cancellationToken2);
+                }, cancellationToken);
+            });
+
+            Assert.IsTrue(await result.SequenceEqualAsync(new[] { 2, 4, 6 }));
         }
     }
 }
