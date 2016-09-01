@@ -43,6 +43,8 @@
     <Compile Include="Common\DisposableBase.cs" />
     <Compile Include="Common\Runtime\ExceptionServices\ExceptionExtensions.cs" />
     <Compile Include="Linq\AsyncEnumerable.cs" />
+    <Compile Include="Linq\Extensions\AllAsync.cs" />
+    <Compile Include="Linq\Extensions\AnyAsync.cs" />
     <Compile Include="Linq\Extensions\Cast.cs" />
     <Compile Include="Linq\Extensions\CountAsync.cs" />
     <Compile Include="Linq\Extensions\ForEachAsync.cs" />

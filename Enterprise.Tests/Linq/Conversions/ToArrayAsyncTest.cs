@@ -68,5 +68,16 @@ namespace Enterprise.Tests.Linq.ToArrayAsync
             result[1] = "yyy";
             Assert.AreEqual("abc", source[1]);
         }
+
+        [TestMethod]
+        [TestCategory(CategoryLinqToArrayAsync)]
+        [Timeout(5000)]
+        public async Task LargeCollection()
+        {
+            var source = new ListAsyncEnumerable<int>(Enumerable.Range(1, 10000000));
+            var result = await source.ToArrayAsync();
+
+            Assert.AreEqual(source.Count, result.Length);
+        }
     }
 }

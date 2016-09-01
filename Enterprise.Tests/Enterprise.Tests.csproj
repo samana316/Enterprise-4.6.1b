@@ -78,6 +78,7 @@
     <Compile Include="Linq\PagingOperations\PagingTest.cs" />
     <Compile Include="Linq\Range\RangeTest.cs" />
     <Compile Include="Linq\Repeat\RepeatTest.cs" />
+    <Compile Include="Linq\SeekingOperations\AnyAndAllAsyncTest.cs" />
     <Compile Include="Linq\SeekingOperations\ElementAtAsyncTest.cs" />
     <Compile Include="Linq\SelectMany\SelectManyTest.cs" />
     <Compile Include="Linq\Select\SelectTest.cs" />

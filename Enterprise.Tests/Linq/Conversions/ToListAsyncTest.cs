@@ -51,5 +51,16 @@ namespace Enterprise.Tests.Linq.ToListAsync
 
             Assert.IsTrue(await source.SequenceEqualAsync(list));
         }
+
+        [TestMethod]
+        [TestCategory(CategoryLinqToListAsync)]
+        [Timeout(5000)]
+        public async Task LargeCollection()
+        {
+            var source = new ListAsyncEnumerable<int>(Enumerable.Range(1, 10000000));
+            var result = await source.ToListAsync();
+
+            Assert.AreEqual(source.Count, result.Count);
+        }
     }
 }
