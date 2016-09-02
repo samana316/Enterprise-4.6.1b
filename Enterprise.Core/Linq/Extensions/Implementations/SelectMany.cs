@@ -103,7 +103,7 @@ namespace Enterprise.Core.Linq
         {
             var index = 0;
 
-            return this.source.ForEachAsync((item, ct2) => 
+            return this.source.ForEachAsync((item, cancellationToken2) => 
             {
                 var collection = this.collectionSelectorI == null ? 
                     this.collectionSelector(item) : this.collectionSelectorI(item, index++);
@@ -112,7 +112,7 @@ namespace Enterprise.Core.Linq
                     from collectionItem in collection.AsAsyncEnumerable()
                     select this.resultSelector(item, collectionItem);
 
-                return yield.ReturnAllAsync(results, ct2);
+                return yield.ReturnAllAsync(results, cancellationToken2);
             }, cancellationToken);
         }
     }
