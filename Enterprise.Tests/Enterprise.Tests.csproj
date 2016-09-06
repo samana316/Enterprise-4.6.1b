@@ -55,6 +55,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Linq\AggregateAsync\AggregateAsyncTest.cs" />
+    <Compile Include="Linq\AggregateAsync\SumAsyncTest.cs" />
     <Compile Include="Linq\AsAsyncEnumerable\AsAsyncEnumerableTest.cs" />
     <Compile Include="Linq\Cast\CastTest.cs" />
     <Compile Include="Linq\CompareLinqMethods.cs" />

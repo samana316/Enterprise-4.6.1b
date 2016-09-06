@@ -57,6 +57,7 @@
     <Compile Include="Linq\Extensions\Implementations\SingleAsync.cs" />
     <Compile Include="Linq\Extensions\Implementations\Skip.cs" />
     <Compile Include="Linq\Extensions\Implementations\SkipWhile.cs" />
+    <Compile Include="Linq\Extensions\Implementations\SumAsync.cs" />
     <Compile Include="Linq\Extensions\Implementations\Take.cs" />
     <Compile Include="Linq\Extensions\Implementations\TakeWhile.cs" />
     <Compile Include="Linq\Extensions\Implementations\Zip.cs" />
@@ -68,6 +69,7 @@
     <Compile Include="Linq\Extensions\SeekingOperations.cs" />
     <Compile Include="Linq\Extensions\SingleAsync.cs" />
     <Compile Include="Linq\Extensions\SingleOrDefault.cs" />
+    <Compile Include="Linq\Extensions\SumAsync.cs" />
     <Compile Include="Linq\Extensions\ToArrayAsync.cs" />
     <Compile Include="Linq\Extensions\ToDictionaryAsync.cs" />
     <Compile Include="Linq\Extensions\ToListAsync.cs" />

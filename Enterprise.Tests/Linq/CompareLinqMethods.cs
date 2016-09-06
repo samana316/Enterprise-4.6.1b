@@ -37,6 +37,25 @@ namespace Enterprise.Tests.Linq
             }
         }
 
+        [TestMethod]
+        [TestCategory("Linq.Temp")]
+        [Timeout(30000)]
+        public void TempLinqTest()
+        {
+            try
+            {
+                var source = new int?[] { null };
+                Trace.WriteLine(source.Sum(), "Sum");
+                Trace.WriteLine(source.Average());
+            }
+            catch (Exception exception)
+            {
+                Trace.WriteLine(exception);
+
+                Assert.Fail(exception.Message);
+            }
+        }
+
         private IEnumerable<string> GetLinqMethods(
                     Type type)
         {
