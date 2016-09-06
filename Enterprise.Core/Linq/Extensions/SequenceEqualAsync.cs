@@ -46,27 +46,39 @@ namespace Enterprise.Core.Linq
                 comparer = EqualityComparer<TSource>.Default;
             }
 
-            using (var enumerator = first.GetAsyncEnumerator())
+            int count1, count2;
+            if (first.TryFastCount(out count1) &&
+                second.TryFastCount(out count2) &&
+                count1 != count2)
             {
-                using (var enumerator2 = second.GetEnumerator())
+                return false;
+            }
+
+            using (IAsyncEnumerator<TSource> 
+                iterator1 = first.GetAsyncEnumerator(),
+                iterator2 = second.AsAsyncEnumerable().GetAsyncEnumerator())
+            {
+                while (true)
                 {
-                    while (await enumerator.MoveNextAsync(cancellationToken).ConfigureAwait(false))
+                    var next1 = await iterator1.MoveNextAsync(cancellationToken);
+                    var next2 = await iterator2.MoveNextAsync(cancellationToken);
+
+                    if (next1 != next2)
                     {
-                        if (!await enumerator2.MoveNextAsync(cancellationToken).ConfigureAwait(false) ||
-                            !comparer.Equals(enumerator.Current, enumerator2.Current))
-                        {
-                            return false;
-                        }
+                        return false;
                     }
 
-                    if (await enumerator2.MoveNextAsync(cancellationToken).ConfigureAwait(false))
+                    if (!next1)
+                    {
+                        return true;
+                    }
+
+                    if (!comparer.Equals(iterator1.Current, iterator2.Current))
                     {
                         return false;
                     }
                 }
             }
-
-            return true;
         }
     }
 }

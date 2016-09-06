@@ -84,6 +84,7 @@
     <Compile Include="Linq\SeekingOperations\SeekingTest.cs" />
     <Compile Include="Linq\SelectMany\SelectManyTest.cs" />
     <Compile Include="Linq\Select\SelectTest.cs" />
+    <Compile Include="Linq\SequenceEqualAsync\SequenceEqualAsyncTest.cs" />
     <Compile Include="Linq\SetOperations\DistinctTest.cs" />
     <Compile Include="Linq\SetOperations\ExceptTest.cs" />
     <Compile Include="Linq\SetOperations\IntersectTest.cs" />
