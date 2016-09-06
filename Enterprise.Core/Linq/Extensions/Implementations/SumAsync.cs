@@ -63,35 +63,35 @@ namespace Enterprise.Core.Linq
                 int x,
                 int y)
             {
-                return x + y;
+                checked { return x + y; }
             }
 
             public static long Int64(
                 long x,
                 long y)
             {
-                return x + y;
+                checked { return x + y; }
             }
 
             public static float Single(
                 float x,
                 float y)
             {
-                return x + y;
+                checked { return x + y; }
             }
 
             public static double Double(
                 double x,
                 double y)
             {
-                return x + y;
+                checked { return x + y; }
             }
 
             public static decimal Decimal(
                 decimal x,
                 decimal y)
             {
-                return x + y;
+                checked { return x + y; }
             }
         }
     }

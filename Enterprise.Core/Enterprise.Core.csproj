@@ -45,11 +45,13 @@
     <Compile Include="Linq\AsyncEnumerable.cs" />
     <Compile Include="Linq\Extensions\AllAsync.cs" />
     <Compile Include="Linq\Extensions\AnyAsync.cs" />
+    <Compile Include="Linq\Extensions\AverageAsync.cs" />
     <Compile Include="Linq\Extensions\Cast.cs" />
     <Compile Include="Linq\Extensions\ContainsAsync.cs" />
     <Compile Include="Linq\Extensions\CountAsync.cs" />
     <Compile Include="Linq\Extensions\FirstAsync.cs" />
     <Compile Include="Linq\Extensions\ForEachAsync.cs" />
+    <Compile Include="Linq\Extensions\Implementations\AverageAsync.cs" />
     <Compile Include="Linq\Extensions\Implementations\Cast.cs" />
     <Compile Include="Linq\Extensions\Implementations\FirstAsync.cs" />
     <Compile Include="Linq\Extensions\Implementations\LastAsync.cs" />

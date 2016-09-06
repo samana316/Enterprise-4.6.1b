@@ -55,12 +55,10 @@ namespace Enterprise.Tests.Linq.SumAsync
         [TestMethod]
         [TestCategory(CategoryLinqSumAsync)]
         [ExpectedException(typeof(OverflowException))]
-        public async Task PossitiveOverflow()
+        public async Task PositiveOverflow()
         {
-            var expected = new decimal[] { decimal.MaxValue, decimal.MaxValue };
-            var source = new RealAsyncEnumerable<decimal>(expected);
-
-            Assert.AreEqual(expected.Sum(), await source.SumAsync());
+            var source = new RealAsyncEnumerable<decimal>(decimal.MaxValue, decimal.MaxValue);
+            await source.SumAsync();
         }
 
         [TestMethod]
@@ -68,10 +66,8 @@ namespace Enterprise.Tests.Linq.SumAsync
         [ExpectedException(typeof(OverflowException))]
         public async Task NegativeOverflow()
         {
-            var expected = new decimal?[] { -decimal.MaxValue, -decimal.MaxValue };
-            var source = new RealAsyncEnumerable<decimal?>(expected);
-
-            Assert.AreEqual(expected.Sum(), await source.SumAsync());
+            var source = new RealAsyncEnumerable<decimal?>(-decimal.MaxValue, -decimal.MaxValue);
+            await source.SumAsync();
         }
 
         [TestMethod]
