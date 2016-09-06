@@ -60,6 +60,7 @@
     <Compile Include="Linq\CompareLinqMethods.cs" />
     <Compile Include="Linq\Concat\ConcatTest.cs" />
     <Compile Include="Linq\Conversions\ToArrayAsyncTest.cs" />
+    <Compile Include="Linq\Conversions\ToDictionaryAsyncTest.cs" />
     <Compile Include="Linq\Conversions\ToListAsyncTest.cs" />
     <Compile Include="Linq\Conversions\ToLookupAsyncTest.cs" />
     <Compile Include="Linq\CountAsync\CountAsyncTest.cs" />

@@ -68,6 +68,7 @@
     <Compile Include="Linq\Extensions\SingleAsync.cs" />
     <Compile Include="Linq\Extensions\SingleOrDefault.cs" />
     <Compile Include="Linq\Extensions\ToArrayAsync.cs" />
+    <Compile Include="Linq\Extensions\ToDictionaryAsync.cs" />
     <Compile Include="Linq\Extensions\ToListAsync.cs" />
     <Compile Include="Linq\Extensions\Zip.cs" />
     <Compile Include="Linq\Extensions\FirstOrDefaultAsync.cs" />
