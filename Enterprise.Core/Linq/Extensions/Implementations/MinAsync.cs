@@ -9,7 +9,7 @@ namespace Enterprise.Core.Linq
 {
     partial class AsyncEnumerable
     {
-        private static async Task<T> PrimitiveMaxAsync<T>(
+        private static async Task<T> PrimitiveMinAsync<T>(
             this IAsyncEnumerable<T> source,
             CancellationToken cancellationToken)
             where T : struct, IComparable<T>, IComparable
@@ -27,7 +27,7 @@ namespace Enterprise.Core.Linq
                 while (await iterator.MoveNextAsync(cancellationToken))
                 {
                     var item = iterator.Current;
-                    if (max.CompareTo(item) < 0)
+                    if (max.CompareTo(item) > 0)
                     {
                         max = item;
                     }
@@ -37,7 +37,7 @@ namespace Enterprise.Core.Linq
             }
         }
 
-        private static async Task<T?> NullablePrimitiveMaxAsync<T>(
+        private static async Task<T?> NullablePrimitiveMinAsync<T>(
             this IAsyncEnumerable<T?> source,
             CancellationToken cancellationToken)
             where T : struct, IComparable<T>, IComparable
@@ -47,7 +47,7 @@ namespace Enterprise.Core.Linq
             var max = default(T?);
             await source.ForEachAsync(item =>
             {
-                if (item != null && (max == null || max.Value.CompareTo(item.Value) < 0))
+                if (item != null && (max == null || max.Value.CompareTo(item.Value) > 0))
                 {
                     max = item;
                 }
@@ -56,7 +56,7 @@ namespace Enterprise.Core.Linq
             return max;
         }
 
-        private static async Task<T> GenericMaxAsync<T>(
+        private static async Task<T> GenericMinAsync<T>(
             this IAsyncEnumerable<T> source,
             CancellationToken cancellationToken)
         {
@@ -73,7 +73,7 @@ namespace Enterprise.Core.Linq
                 while (await iterator.MoveNextAsync(cancellationToken))
                 {
                     var item = iterator.Current;
-                    if (comparer.Compare(max, item) < 0)
+                    if (comparer.Compare(max, item) > 0)
                     {
                         max = item;
                     }
@@ -82,7 +82,7 @@ namespace Enterprise.Core.Linq
             }
         }
 
-        private static async Task<T> NullableGenericMaxAsync<T>(
+        private static async Task<T> NullableGenericMinAsync<T>(
             this IAsyncEnumerable<T> source,
             CancellationToken cancellationToken)
         {
@@ -91,7 +91,7 @@ namespace Enterprise.Core.Linq
             var max = default(T);
             await source.ForEachAsync(item =>
             {
-                if (item != null && (max == null || comparer.Compare(max, item) < 0))
+                if (item != null && (max == null || comparer.Compare(max, item) > 0))
                 {
                     max = item;
                 }
