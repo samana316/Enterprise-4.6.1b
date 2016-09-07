@@ -55,6 +55,7 @@
     <Compile Include="Linq\Extensions\Implementations\Cast.cs" />
     <Compile Include="Linq\Extensions\Implementations\FirstAsync.cs" />
     <Compile Include="Linq\Extensions\Implementations\LastAsync.cs" />
+    <Compile Include="Linq\Extensions\Implementations\MaxAsync.cs" />
     <Compile Include="Linq\Extensions\Implementations\OfType.cs" />
     <Compile Include="Linq\Extensions\Implementations\SingleAsync.cs" />
     <Compile Include="Linq\Extensions\Implementations\Skip.cs" />
@@ -66,6 +67,7 @@
     <Compile Include="Linq\Extensions\LastAsync.cs" />
     <Compile Include="Linq\Extensions\LastOrDefaultAsync.cs" />
     <Compile Include="Linq\Extensions\LongCountAsync.cs" />
+    <Compile Include="Linq\Extensions\MaxAsync.cs" />
     <Compile Include="Linq\Extensions\OfType.cs" />
     <Compile Include="Linq\Extensions\PagingOperations.cs" />
     <Compile Include="Linq\Extensions\SeekingOperations.cs" />

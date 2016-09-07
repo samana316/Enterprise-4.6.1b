@@ -56,6 +56,7 @@
   <ItemGroup>
     <Compile Include="Linq\AggregateAsync\AggregateAsyncTest.cs" />
     <Compile Include="Linq\AggregateAsync\AverageAsyncTest.cs" />
+    <Compile Include="Linq\AggregateAsync\MinAndMaxAsyncTest.cs" />
     <Compile Include="Linq\AggregateAsync\SumAsyncTest.cs" />
     <Compile Include="Linq\AsAsyncEnumerable\AsAsyncEnumerableTest.cs" />
     <Compile Include="Linq\Cast\CastTest.cs" />
