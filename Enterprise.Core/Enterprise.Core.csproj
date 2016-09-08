@@ -49,10 +49,13 @@
     <Compile Include="Linq\Extensions\Cast.cs" />
     <Compile Include="Linq\Extensions\ContainsAsync.cs" />
     <Compile Include="Linq\Extensions\CountAsync.cs" />
+    <Compile Include="Linq\Extensions\ElementAtOrDefaultAsync.cs" />
+    <Compile Include="Linq\Extensions\ElementAtAsync.cs" />
     <Compile Include="Linq\Extensions\FirstAsync.cs" />
     <Compile Include="Linq\Extensions\ForEachAsync.cs" />
     <Compile Include="Linq\Extensions\Implementations\AverageAsync.cs" />
     <Compile Include="Linq\Extensions\Implementations\Cast.cs" />
+    <Compile Include="Linq\Extensions\Implementations\ElementAtAsync.cs" />
     <Compile Include="Linq\Extensions\Implementations\FirstAsync.cs" />
     <Compile Include="Linq\Extensions\Implementations\LastAsync.cs" />
     <Compile Include="Linq\Extensions\Implementations\MaxAsync.cs" />
@@ -72,7 +75,6 @@
     <Compile Include="Linq\Extensions\MaxAsync.cs" />
     <Compile Include="Linq\Extensions\OfType.cs" />
     <Compile Include="Linq\Extensions\PagingOperations.cs" />
-    <Compile Include="Linq\Extensions\SeekingOperations.cs" />
     <Compile Include="Linq\Extensions\SingleAsync.cs" />
     <Compile Include="Linq\Extensions\SingleOrDefault.cs" />
     <Compile Include="Linq\Extensions\SumAsync.cs" />
@@ -94,7 +96,6 @@
     <Compile Include="Linq\Extensions\Distinct.cs" />
     <Compile Include="Linq\Extensions\Empty.cs" />
     <Compile Include="Linq\Extensions\Except.cs" />
-    <Compile Include="Linq\Extensions\Generated.cs" />
     <Compile Include="Linq\Extensions\GroupBy.cs" />
     <Compile Include="Linq\Extensions\GroupJoin.cs" />
     <Compile Include="Linq\Extensions\Implementations\Anonymous.cs" />
@@ -128,11 +129,15 @@
     <Compile Include="Linq\Extensions\Union.cs" />
     <Compile Include="Linq\Extensions\Where.cs" />
     <Compile Include="Linq\Implementations\Grouping.cs" />
+    <Compile Include="Linq\Implementations\Optimizations\AsyncCastCollection.cs" />
+    <Compile Include="Linq\Implementations\Optimizations\AsyncCastList.cs" />
     <Compile Include="Linq\Implementations\Optimizations\AsyncCollection.cs" />
     <Compile Include="Linq\Implementations\Optimizations\AsyncEnumerableAdapterBase.cs" />
     <Compile Include="Linq\Implementations\Optimizations\AsyncList.cs" />
     <Compile Include="Linq\Implementations\Optimizations\AsyncReadOnlyCollection.cs" />
     <Compile Include="Linq\Implementations\Optimizations\AsyncReadOnlyList.cs" />
+    <Compile Include="Linq\Implementations\Optimizations\TryAsAsyncEnumerable.cs" />
+    <Compile Include="Linq\Implementations\Optimizations\TryCast.cs" />
     <Compile Include="Linq\Implementations\Optimizations\TryFastCount.cs" />
     <Compile Include="Linq\Implementations\Optimizations\TryFastIndexer.cs" />
     <Compile Include="Linq\Interfaces\IAsyncOrderedEnumerable.cs" />

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -31,6 +32,40 @@ namespace Enterprise.Tests.Linq.AsAsyncEnumerable
                 select item.FirstName;
 
             Assert.IsTrue(await query.SequenceEqualAsync(new[] { "Clark", "Bruce" }));
+        }
+
+        [TestMethod]
+        [TestCategory(CategoryLinqAsAsyncEnumerable)]
+        public async Task CollectionType()
+        {
+            var source = new List<int>(new[] { 1, 2, 3 });
+            var result = source.AsAsyncEnumerable();
+
+            Assert.IsTrue(await result.SequenceEqualAsync(source));
+            Assert.IsTrue(result is IList<int>);
+            Assert.IsTrue(result is IReadOnlyList<int>);
+            Assert.IsTrue(result is ICollection<int>);
+            Assert.IsTrue(result is IReadOnlyCollection<int>);
+
+            var result2 = (source as IList).AsAsyncEnumerable();
+            Assert.IsTrue(result2 is IList);
+            Assert.IsTrue(result2 is ICollection);
+
+            source.Add(4);
+            Assert.IsTrue(await result.SequenceEqualAsync(source));
+        }
+
+        [TestMethod]
+        [TestCategory(CategoryLinqAsAsyncEnumerable)]
+        public async Task CollectionTypeUnsafe()
+        {
+            var source = Array.CreateInstance(typeof(int), new[] { 5 }, new[] { -5 });
+            var result = source.AsAsyncEnumerable();
+
+            Assert.IsTrue(result is IList);
+            Assert.IsTrue(result is ICollection);
+
+            await result.ForEachAsync(x => Trace.WriteLine(x, "MoveNextAsync"));
         }
 
         [TestMethod]

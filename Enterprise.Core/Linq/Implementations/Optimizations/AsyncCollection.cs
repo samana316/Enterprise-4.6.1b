@@ -1,7 +1,64 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace Enterprise.Core.Linq
 {
+    internal sealed class AsyncCollection : AsyncEnumerableAdapterBase, ICollection
+    {
+        private readonly ICollection source;
+
+        public AsyncCollection(
+            ICollection source)
+        {
+            this.source = source;
+        }
+
+        public int Count
+        {
+            get
+            {
+                return this.source.Count;
+            }
+        }
+
+        public bool IsSynchronized
+        {
+            get
+            {
+                return this.source.IsSynchronized;
+            }
+        }
+
+        public object SyncRoot
+        {
+            get
+            {
+                return this.source.SyncRoot;
+            }
+        }
+
+        protected override IEnumerable Source
+        {
+            get
+            {
+                return this.source;
+            }
+        }
+
+        public override AsyncIterator<object> Clone()
+        {
+            return new AsyncCollection(this.source);
+        }
+
+        public void CopyTo(
+            Array array, 
+            int index)
+        {
+            this.source.CopyTo(array, index);
+        }
+    }
+
     internal sealed class AsyncCollection<T> : 
         AsyncEnumerableAdapterBase<T>,
         ICollection<T>,

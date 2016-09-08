@@ -17,8 +17,12 @@ namespace Enterprise.Tests.Poc
         public async Task SubscribeAsync()
         {
             var source = AsyncEnumerable.Range(1, 5);
+            var query =
+                from item in source
+                where item % 2 != 0
+                select item;
 
-            await source.SubscribeAsync(new TestObserver<int>(), CancellationToken.None);
+            await query.SubscribeAsync(new TestObserver<int>(), CancellationToken.None);
         }
 
         private sealed class TestObserver<T> : IObserver<T>

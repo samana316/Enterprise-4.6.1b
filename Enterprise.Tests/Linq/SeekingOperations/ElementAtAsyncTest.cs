@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Enterprise.Core.Linq;
 using Enterprise.Tests.Linq.Helpers;
@@ -87,6 +90,18 @@ namespace Enterprise.Tests.Linq.ElementAt
 
             var result2 = await source.ElementAtAsync(1);
             Assert.AreEqual(2, result2);
+        }
+
+        [TestMethod]
+        [TestCategory(CategoryLinqElementAt)]
+        public async Task UnsafeCollection()
+        {
+            var source = Array.CreateInstance(typeof(int), new int[] { 5 }, new int[] { -5 }) as IList;
+
+            var result = source.AsAsyncEnumerable().Cast<int>();
+            source[-3] = 1;
+
+            Assert.AreEqual(1, await result.ElementAtOrDefaultAsync(-3));
         }
     }
 }

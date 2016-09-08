@@ -25,6 +25,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -35,6 +36,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
@@ -97,6 +99,7 @@
     <Compile Include="Linq\SortingOperations\SortingTest.cs" />
     <Compile Include="Linq\Where\WhereTest.cs" />
     <Compile Include="Linq\Zip\ZipTest.cs" />
+    <Compile Include="Poc\ArrayTest.cs" />
     <Compile Include="Poc\AsyncTest.cs" />
     <Compile Include="Poc\DebuggerTest.cs" />
     <Compile Include="Poc\IteratorObserverDualityTest.cs" />

@@ -9,10 +9,10 @@ namespace Enterprise.Core.Linq
         {
             Check.NotNull(source, nameof(source));
 
-            var existing = source as IAsyncEnumerable<TResult>;
-            if (existing != null)
+            IAsyncEnumerable<TResult> asyncEnumerable;
+            if (source.TryAsAsyncEnumerable(out asyncEnumerable))
             {
-                return existing;
+                return asyncEnumerable;
             }
 
             return new OfType<TResult>(source);
