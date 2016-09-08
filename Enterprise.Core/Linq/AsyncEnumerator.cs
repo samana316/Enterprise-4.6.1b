@@ -8,6 +8,14 @@ namespace Enterprise.Core.Linq
 {
     public static class AsyncEnumerator
     {
+        public static IAsyncEnumerator<T> Create<T>(
+            Func<IAsyncYield<T>, CancellationToken, Task> producer)
+        {
+            Check.NotNull(producer, nameof(producer));
+
+            return new Anonymous<T>(producer).GetAsyncEnumerator();
+        }
+
         public static Task<bool> MoveNextAsync(
            this IAsyncEnumerator enumerator)
         {

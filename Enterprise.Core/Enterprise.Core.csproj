@@ -49,8 +49,8 @@
     <Compile Include="Linq\Extensions\Cast.cs" />
     <Compile Include="Linq\Extensions\ContainsAsync.cs" />
     <Compile Include="Linq\Extensions\CountAsync.cs" />
-    <Compile Include="Linq\Extensions\ElementAtOrDefaultAsync.cs" />
     <Compile Include="Linq\Extensions\ElementAtAsync.cs" />
+    <Compile Include="Linq\Extensions\ElementAtOrDefaultAsync.cs" />
     <Compile Include="Linq\Extensions\FirstAsync.cs" />
     <Compile Include="Linq\Extensions\ForEachAsync.cs" />
     <Compile Include="Linq\Extensions\Implementations\AverageAsync.cs" />

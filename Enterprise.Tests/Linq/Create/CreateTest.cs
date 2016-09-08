@@ -316,7 +316,6 @@ namespace Enterprise.Tests.Linq.Create
             Assert.AreEqual(2, spy.Count);
         }
 
-
         [TestMethod]
         [TestCategory(CategoryLinqCreate)]
         public async Task ExecutionIsDeferredNested()
@@ -357,6 +356,19 @@ namespace Enterprise.Tests.Linq.Create
             }
 
             Assert.AreEqual(2, spy.Count);
+        }
+
+        [TestMethod]
+        [TestCategory(CategoryLinqCreate)]
+        public async Task CreateAsIterator()
+        {
+            using (var iterator = AsyncEnumerator.Create<int>((y, ct) => y.ReturnAsync(1, ct)))
+            {
+                Assert.IsTrue(await iterator.MoveNextAsync());
+                Assert.AreEqual(1, iterator.Current);
+
+                Assert.IsFalse(await iterator.MoveNextAsync());
+            }
         }
     }
 }

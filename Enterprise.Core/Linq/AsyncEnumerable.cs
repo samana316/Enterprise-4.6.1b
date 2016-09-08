@@ -8,11 +8,11 @@ namespace Enterprise.Core.Linq
     public static partial class AsyncEnumerable
     {
         public static IAsyncEnumerable<T> Create<T>(
-            Func<IAsyncYield<T>, CancellationToken, Task> yieldBuilder)
+            Func<IAsyncYield<T>, CancellationToken, Task> producer)
         {
-            Check.NotNull(yieldBuilder, nameof(yieldBuilder));
+            Check.NotNull(producer, nameof(producer));
 
-            return new Anonymous<T>(yieldBuilder);
+            return new Anonymous<T>(producer);
         }
 
         internal static Task<Buffer<TSource>> ToBufferAsync<TSource>(
