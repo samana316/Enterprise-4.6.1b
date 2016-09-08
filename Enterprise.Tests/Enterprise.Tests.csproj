@@ -69,6 +69,7 @@
     <Compile Include="Linq\Conversions\ToListAsyncTest.cs" />
     <Compile Include="Linq\Conversions\ToLookupAsyncTest.cs" />
     <Compile Include="Linq\CountAsync\CountAsyncTest.cs" />
+    <Compile Include="Linq\Create\CancellationTest.cs" />
     <Compile Include="Linq\Create\CreateTest.cs" />
     <Compile Include="Linq\DefaultIfEmpty\DefaultIfEmptyTest.cs" />
     <Compile Include="Linq\Empty\EmptyTest.cs" />

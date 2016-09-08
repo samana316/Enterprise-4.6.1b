@@ -1,6 +1,6 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
+using static System.Array;
 
 namespace Enterprise.Core.Linq
 {
@@ -21,7 +21,7 @@ namespace Enterprise.Core.Linq
             {
                 if (tmpCount == ret.Length)
                 {
-                    System.Array.Resize(ref ret, ret.Length * 2);
+                    Resize(ref ret, ret.Length * 2);
                 }
                 ret[tmpCount++] = item;
             }, cancellationToken);

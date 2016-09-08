@@ -157,7 +157,7 @@ namespace Enterprise.Core.Linq
                 TSource value,
                 CancellationToken cancellationToken)
             {
-                cancellationToken.ThrowIfCancellationRequested();
+                CancellationToken.ThrowIfCancellationRequested();
 
                 _resumeTCS = new TaskCompletionSource<bool>();
                 _yieldTCS.TrySetResult(value);

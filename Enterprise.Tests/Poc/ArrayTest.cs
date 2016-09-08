@@ -3,8 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Enterprise.Core.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -29,6 +27,7 @@ namespace Enterprise.Tests.Poc
 
         [TestMethod]
         [TestCategory(CategoryPocArray)]
+        [ExpectedException(typeof(NotSupportedException))]
         public unsafe void UnsafeArrayTest()
         {
             var source = Array.CreateInstance(typeof(int), new int[] { 5 }, new int[] { -5 });
@@ -42,8 +41,6 @@ namespace Enterprise.Tests.Poc
 
             list[index] = -5;
             list.Add(1);
-
-            source.AsAsyncEnumerable().Cast<int>();
         }
 
         private void IsOfType<T>(
@@ -57,7 +54,7 @@ namespace Enterprise.Tests.Poc
             this.IsOfCollectionType<IReadOnlyCollection<T>>(source);
             this.IsOfCollectionType<IList>(source);
             this.IsOfCollectionType<IList<T>>(source);
-            this.IsOfCollectionType<IList<T>>(source);
+            this.IsOfCollectionType<IReadOnlyList<T>>(source);
         }
 
         private void IsOfCollectionType<T>(

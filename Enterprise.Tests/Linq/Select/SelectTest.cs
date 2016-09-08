@@ -69,5 +69,18 @@ namespace Enterprise.Tests.Linq.Select
 
             Assert.IsTrue(await result.SequenceEqualAsync(new[] { 2, 4, 6 }));
         }
+
+        [TestMethod]
+        [TestCategory(CategoryLinqSelect)]
+        public async Task AsyncProjectionParallel()
+        {
+            var source = new RealAsyncEnumerable<string>("A", "B", "C");
+            Func<string, Task> selectorAsync = Console.Out.WriteLineAsync;
+
+            var query =  await (from item in source select selectorAsync(item)).ToArrayAsync();
+            await Task.WhenAll(query);
+
+            Assert.IsTrue(query.All(t => t.IsCompleted));
+        }
     }
 }
