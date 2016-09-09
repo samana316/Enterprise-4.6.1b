@@ -110,6 +110,7 @@
     <Compile Include="Reactive\Create\CompatibilityTest.cs" />
     <Compile Include="Reactive\Create\CreateTest.cs" />
     <Compile Include="Reactive\Helpers\SpyAsyncObserver.cs" />
+    <Compile Include="Reactive\Select\SelectTest.cs" />
     <Compile Include="Reactive\Where\WhereTest.cs" />
   </ItemGroup>
   <ItemGroup>

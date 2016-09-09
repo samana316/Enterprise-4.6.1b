@@ -46,7 +46,13 @@ namespace Enterprise.Tests.Reactive.Where
         [TestCategory(CategoryReactiveWhere)]
         public async Task QueryExpressionSimpleFiltering()
         {
-            var source = new[] { 1, 3, 4, 2, 8, 1 }.ToAsyncObservable();
+            var iteration = 0;
+            var source = Create<int>((yield, cancellationToken) => 
+            {
+                iteration++;
+
+                return yield.ReturnAllAsync(new[] { 1, 3, 4, 2, 8, 1 }, cancellationToken);
+            });
 
             var result =
                 from x in source
@@ -54,6 +60,10 @@ namespace Enterprise.Tests.Reactive.Where
                 select x;
 
             Assert.IsTrue(await result.SequenceEqual(new[] { 1, 3, 2, 1 }));
+            Assert.AreEqual(1, iteration);
+
+            await result;
+            Assert.AreEqual(2, iteration);
         }
     }
 }
