@@ -5,9 +5,9 @@ namespace Enterprise.Core.Linq
 {
     partial class AsyncEnumerable
     {
-        private static bool TryAsAsyncEnumerable(
-             this IEnumerable source,
-             out IAsyncEnumerable result)
+        internal static bool TryAsAsyncEnumerable(
+            this IEnumerable source,
+            out IAsyncEnumerable result)
         {
             result = null;
 
@@ -35,7 +35,7 @@ namespace Enterprise.Core.Linq
             return false;
         }
 
-        private static bool TryAsAsyncEnumerable<TSource>(
+        internal static bool TryAsAsyncEnumerable<TSource>(
             this IEnumerable source,
             out IAsyncEnumerable<TSource> result)
         {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
+using Enterprise.Core.Common.Runtime.CompilerServices;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Enterprise.Tests.Poc
@@ -87,6 +88,14 @@ namespace Enterprise.Tests.Poc
             Trace.WriteLine(current - long.MinValue, "Progress");
         }
 
+        [TestMethod]
+        [TestCategory(CategoryPocAsync)]
+        [ExpectedException(typeof(NotImplementedException))]
+        public async Task CustomAwaitable()
+        {
+            await new TestAwaitable();
+        }
+
         private Task InfiniteMethodWrapperAsync(
             Action action,
             CancellationToken cancellationToken)
@@ -124,6 +133,14 @@ namespace Enterprise.Tests.Poc
                 }
 
                 current = i;
+            }
+        }
+
+        private sealed class TestAwaitable : IAwaitable
+        {
+            public IAwaiter GetAwaiter()
+            {
+                throw new NotImplementedException();
             }
         }
     }

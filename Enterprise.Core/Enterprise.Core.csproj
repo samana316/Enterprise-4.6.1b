@@ -41,6 +41,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\DisposableBase.cs" />
+    <Compile Include="Common\Runtime\CompilerServices\IAwaitable.cs" />
+    <Compile Include="Common\Runtime\CompilerServices\IAwaiter.cs" />
     <Compile Include="Common\Runtime\ExceptionServices\ExceptionExtensions.cs" />
     <Compile Include="Linq\AsyncEnumerable.cs" />
     <Compile Include="Linq\Extensions\AllAsync.cs" />
@@ -147,6 +149,24 @@
     <Compile Include="Linq\Implementations\LookUp.cs" />
     <Compile Include="Linq\Implementations\Map.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reactive\AsyncObservable.cs" />
+    <Compile Include="Reactive\Implementations\AsyncObservableBase.cs" />
+    <Compile Include="Reactive\Implementations\AsyncSubscription.cs" />
+    <Compile Include="Reactive\Interfaces\IAsyncObservable.cs" />
+    <Compile Include="Reactive\Interfaces\IAsyncObserver.cs" />
+    <Compile Include="Reactive\Interfaces\IAsyncSubscription.cs" />
+    <Compile Include="Reactive\Linq\AsAsyncEnumerable.cs" />
+    <Compile Include="Reactive\Linq\ForEachAsync.cs" />
+    <Compile Include="Reactive\Linq\GetAwaiter.cs" />
+    <Compile Include="Reactive\Linq\Implementations\Anonymous.cs" />
+    <Compile Include="Reactive\Linq\Implementations\AsAsyncEnumerable.cs" />
+    <Compile Include="Reactive\Linq\Implementations\ForEachAsync.cs" />
+    <Compile Include="Reactive\Linq\Implementations\SequenceEqual.cs" />
+    <Compile Include="Reactive\Linq\Implementations\Where.cs" />
+    <Compile Include="Reactive\Linq\SequenceEqual.cs" />
+    <Compile Include="Reactive\Linq\SubscribeAsync.cs" />
+    <Compile Include="Reactive\Linq\SubscribeRawAsync.cs" />
+    <Compile Include="Reactive\Linq\Where.cs" />
     <Compile Include="Resources\Error.cs" />
     <Compile Include="Utilities\Check.cs" />
     <Compile Include="Utilities\DebugCheck.cs" />
