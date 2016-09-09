@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Enterprise.Core.Linq;
 using Enterprise.Core.Utilities;
+using Enterprise.Core.Reactive.Linq;
 
 namespace Enterprise.Core.Reactive
 {
@@ -11,7 +12,10 @@ namespace Enterprise.Core.Reactive
         public IDisposable Subscribe(
             IObserver<T> observer)
         {
-            throw new NotImplementedException();
+            Check.NotNull(observer, nameof(observer));
+            var adapter = observer.AsAsyncObserver();
+
+            return this.SubscribeAsync(adapter);
         }
 
         public IAsyncSubscription SubscribeAsync(

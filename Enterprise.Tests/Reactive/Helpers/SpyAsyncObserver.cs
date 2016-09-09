@@ -39,17 +39,20 @@ namespace Enterprise.Tests.Reactive.Helpers
         public void OnNext(
             T value)
         {
-            throw new NotSupportedException();
+            this.items.Add(value);
+            Console.WriteLine("OnNext: " + value);
         }
 
-        public Task OnNextAsync(
+        public async Task OnNextAsync(
             T value,
             CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
+            await Task.Delay(5, cancellationToken);
+
             this.items.Add(value);
-            return Console.Out.WriteLineAsync("OnNextAsync: " + value);
+            await Console.Out.WriteLineAsync("OnNextAsync: " + value);
         }
 
         public void Reset()

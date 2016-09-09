@@ -2,7 +2,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Enterprise.Core.Common.Runtime.CompilerServices;
-using Enterprise.Core.Common.Runtime.ExceptionServices;
 
 namespace Enterprise.Core.Reactive.Linq.Implementations
 {
@@ -26,39 +25,23 @@ namespace Enterprise.Core.Reactive.Linq.Implementations
 
         public IAwaiter GetAwaiter()
         {
-            var impl = new Impl(this);
+            var impl = new ForEachAsyncObserver(this);
             var subscription = this.source.SubscribeRawAsync(impl, this.cancellationToken);
 
             return subscription.GetAwaiter();
         }
 
-        private sealed class Impl : IAsyncObserver<TSource>
+        private sealed class ForEachAsyncObserver : AsyncObserverBase<TSource>
         {
             private readonly ForEachAsync<TSource> parent;
 
-            public Impl(
+            public ForEachAsyncObserver(
                 ForEachAsync<TSource> parent)
             {
                 this.parent = parent;
             }
 
-            public void OnCompleted()
-            {
-            }
-
-            public void OnError(
-                Exception error)
-            {
-                error.Rethrow();
-            }
-
-            public void OnNext(
-                TSource value)
-            {
-                throw new NotImplementedException();
-            }
-
-            public Task OnNextAsync(
+            public override Task OnNextAsync(
                 TSource value, 
                 CancellationToken cancellationToken)
             {

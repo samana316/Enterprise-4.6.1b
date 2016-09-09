@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using Enterprise.Core.Utilities;
 
 namespace Enterprise.Core.Reactive.Linq
@@ -23,6 +24,27 @@ namespace Enterprise.Core.Reactive.Linq
             }
 
             return source.SubscribeAsync(observer, cancellationToken);
+        }
+
+        public static IAsyncSubscription SubscribeAsync<TSource>(
+            this IObservable<TSource> source,
+            IAsyncObserver<TSource> observer,
+            CancellationToken cancellationToken)
+        {
+            Check.NotNull(source, nameof(source));
+            Check.NotNull(observer, nameof(observer));
+
+            return source.AsAsyncObservable().SubscribeAsync(observer, cancellationToken);
+        }
+
+        public static IAsyncSubscription SubscribeAsync<TSource>(
+            this IObservable<TSource> source,
+            IAsyncObserver<TSource> observer)
+        {
+            Check.NotNull(source, nameof(source));
+            Check.NotNull(observer, nameof(observer));
+
+            return source.AsAsyncObservable().SubscribeAsync(observer);
         }
     }
 }
