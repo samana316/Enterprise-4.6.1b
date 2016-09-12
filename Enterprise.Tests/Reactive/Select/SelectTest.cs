@@ -69,15 +69,9 @@ namespace Enterprise.Tests.Reactive.Select
             };
 
             var source = new[] { 1, 2, 3 }.ToAsyncObservable();
-            var query = from item in source select selectorAsync(item);
+            var query = from item in source where item > 0 select selectorAsync(item);
 
-            var result = Create<int>((y, cancellationToken) =>
-            {
-                return query.ForEachAsync(async (item, cancellationToken2) =>
-                {
-                    await y.ReturnAsync(await item, cancellationToken2);
-                }, cancellationToken);
-            });
+            var result = query.Concat();
 
             Assert.IsTrue(await result.SequenceEqual(new[] { 2, 4, 6 }));
         }
@@ -91,6 +85,7 @@ namespace Enterprise.Tests.Reactive.Select
 
             var query = await (
                 from item in source
+                where item.Length > 0
                 select selectorAsync(item))
                 .AsAsyncEnumerable().ToArrayAsync();
 

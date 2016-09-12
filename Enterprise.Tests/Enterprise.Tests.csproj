@@ -107,6 +107,7 @@
     <Compile Include="Poc\IteratorObserverDualityTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reactive\AsyncSubject\AsyncSubjectTest.cs" />
+    <Compile Include="Reactive\Concat\ConcatTest.cs" />
     <Compile Include="Reactive\Create\CancellationTest.cs" />
     <Compile Include="Reactive\Create\CompatibilityTest.cs" />
     <Compile Include="Reactive\Create\CreateTest.cs" />

@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Threading;
 using System.Threading.Tasks;
 using Enterprise.Core.Linq;
 using Enterprise.Tests.Linq.Helpers;
@@ -13,6 +10,7 @@ namespace Enterprise.Tests.Linq.Concat
     public class ConcatTest
     {
         private const int DefaultTimeout = 1000;
+
         private const string CategoryLinqConcat = "Linq.Concat";
 
         [TestMethod]
