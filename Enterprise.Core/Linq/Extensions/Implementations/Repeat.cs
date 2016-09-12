@@ -26,9 +26,9 @@ namespace Enterprise.Core.Linq
             IAsyncYield<TResult> yield, 
             CancellationToken cancellationToken)
         {
-            for (int i = 0; i < count; i++)
+            for (int i = 0; i < this.count; i++)
             {
-                await yield.ReturnAsync(element, cancellationToken);
+                await yield.ReturnAsync(this.element, cancellationToken);
             }
         }
     }

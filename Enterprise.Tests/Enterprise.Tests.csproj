@@ -112,6 +112,7 @@
     <Compile Include="Reactive\Create\CreateTest.cs" />
     <Compile Include="Reactive\Helpers\SpyAsyncObserver.cs" />
     <Compile Include="Reactive\Range\RangeTest.cs" />
+    <Compile Include="Reactive\Repeat\RepeatTest.cs" />
     <Compile Include="Reactive\Select\SelectTest.cs" />
     <Compile Include="Reactive\Where\WhereTest.cs" />
     <Compile Include="Reactive\While\WhileTest.cs" />
