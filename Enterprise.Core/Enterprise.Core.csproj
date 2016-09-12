@@ -168,6 +168,8 @@
     <Compile Include="Reactive\Linq\AsAsyncEnumerable.cs" />
     <Compile Include="Reactive\Linq\AsAsyncObservable.cs" />
     <Compile Include="Reactive\Linq\Concat.cs" />
+    <Compile Include="Reactive\Linq\Do.cs" />
+    <Compile Include="Reactive\Linq\DoWhile.cs" />
     <Compile Include="Reactive\Linq\Empty.cs" />
     <Compile Include="Reactive\Linq\ForEachAsync.cs" />
     <Compile Include="Reactive\Linq\GetAwaiter.cs" />
@@ -175,6 +177,8 @@
     <Compile Include="Reactive\Linq\Implementations\AsAsyncEnumerable.cs" />
     <Compile Include="Reactive\Linq\Implementations\AsAsyncObservable.cs" />
     <Compile Include="Reactive\Linq\Implementations\Concat.cs" />
+    <Compile Include="Reactive\Linq\Implementations\Do.cs" />
+    <Compile Include="Reactive\Linq\Implementations\DoWhile.cs" />
     <Compile Include="Reactive\Linq\Implementations\Empty.cs" />
     <Compile Include="Reactive\Linq\Implementations\ForEachAsync.cs" />
     <Compile Include="Reactive\Linq\Implementations\Range.cs" />

@@ -5,14 +5,14 @@ using Enterprise.Core.Linq;
 
 namespace Enterprise.Core.Reactive.Linq.Implementations
 {
-    internal sealed class While<TSource> : AsyncObservableBase<TSource>
+    internal sealed class DoWhile<TSource> : AsyncObservableBase<TSource>
     {
         private readonly IAsyncObservable<TSource> source;
 
         private readonly Func<bool> condition;
 
-        public While(
-            IAsyncObservable<TSource> source, 
+        public DoWhile(
+            IAsyncObservable<TSource> source,
             Func<bool> condition)
         {
             this.source = source;
@@ -21,20 +21,22 @@ namespace Enterprise.Core.Reactive.Linq.Implementations
 
         public override AsyncIterator<TSource> Clone()
         {
-            return new While<TSource>(this.source, this.condition);
+            return new DoWhile<TSource>(this.source, this.condition);
         }
 
         protected override Task ProduceAsync(
-            IAsyncYield<TSource> yield, 
+            IAsyncYield<TSource> yield,
             CancellationToken cancellationToken)
         {
-            return this.source.ForEachAsync(async (item, cancellationToken2) => 
+            var first = true;
+            return this.source.ForEachAsync(async (item, cancellationToken2) =>
             {
-                if (!this.condition())
+                if (!this.condition() && !first)
                 {
                     yield.Break();
                 }
 
+                first = false;
                 await yield.ReturnAsync(item, cancellationToken2);
             }, cancellationToken);
         }

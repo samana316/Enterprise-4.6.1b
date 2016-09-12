@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Reflection;
 using System.Threading;
 using Enterprise.Core.Linq;
+using Enterprise.Core.Reactive.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Enterprise.Tests.Linq
@@ -21,6 +23,56 @@ namespace Enterprise.Tests.Linq
             {
                 var linqMethods = this.GetLinqMethods(typeof(Enumerable));
                 var asyncLinqMethods = this.GetLinqMethods(typeof(AsyncEnumerable));
+
+                var query = linqMethods.Except(asyncLinqMethods);
+
+                foreach (var item in query)
+                {
+                    Trace.WriteLine(item);
+                }
+            }
+            catch (Exception exception)
+            {
+                Trace.WriteLine(exception);
+
+                Assert.Fail(exception.Message);
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("Linq.Temp")]
+        [Timeout(30000)]
+        public void CompareObservableLinqMethods()
+        {
+            try
+            {
+                var linqMethods = this.GetLinqMethods(typeof(Enumerable));
+                var asyncLinqMethods = this.GetLinqMethods(typeof(AsyncObservable));
+
+                var query = linqMethods.Except(asyncLinqMethods);
+
+                foreach (var item in query)
+                {
+                    Trace.WriteLine(item);
+                }
+            }
+            catch (Exception exception)
+            {
+                Trace.WriteLine(exception);
+
+                Assert.Fail(exception.Message);
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("Linq.Temp")]
+        [Timeout(30000)]
+        public void CompareReactiveLinqMethods()
+        {
+            try
+            {
+                var linqMethods = this.GetLinqMethods(typeof(Observable));
+                var asyncLinqMethods = this.GetLinqMethods(typeof(AsyncObservable));
 
                 var query = linqMethods.Except(asyncLinqMethods);
 

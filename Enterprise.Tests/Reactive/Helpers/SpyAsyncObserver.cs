@@ -24,8 +24,11 @@ namespace Enterprise.Tests.Reactive.Helpers
             get { return new AggregateException(this.errors); }
         }
 
+        public bool IsCompleted { get; private set; }
+
         public void OnCompleted()
         {
+            this.IsCompleted = true;
             Trace.WriteLine("OnCompleted");
         }
 
@@ -58,6 +61,8 @@ namespace Enterprise.Tests.Reactive.Helpers
         public void Reset()
         {
             this.items.Clear();
+            this.errors.Clear();
+            this.IsCompleted = false;
         }
     }
 }
