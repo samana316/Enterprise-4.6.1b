@@ -175,6 +175,7 @@
     <Compile Include="Reactive\Linq\Implementations\AsAsyncObservable.cs" />
     <Compile Include="Reactive\Linq\Implementations\Empty.cs" />
     <Compile Include="Reactive\Linq\Implementations\ForEachAsync.cs" />
+    <Compile Include="Reactive\Linq\Implementations\Range.cs" />
     <Compile Include="Reactive\Linq\Implementations\Return.cs" />
     <Compile Include="Reactive\Linq\Implementations\Select.cs" />
     <Compile Include="Reactive\Linq\Implementations\SequenceEqual.cs" />
@@ -182,6 +183,7 @@
     <Compile Include="Reactive\Linq\Implementations\ToAsyncObservable.cs" />
     <Compile Include="Reactive\Linq\Implementations\Where.cs" />
     <Compile Include="Reactive\Linq\Implementations\While.cs" />
+    <Compile Include="Reactive\Linq\Range.cs" />
     <Compile Include="Reactive\Linq\Return.cs" />
     <Compile Include="Reactive\Linq\Select.cs" />
     <Compile Include="Reactive\Linq\SequenceEqual.cs" />
