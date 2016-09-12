@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Enterprise.Core.Common;
 using Enterprise.Core.Common.Runtime.ExceptionServices;
 
 namespace Enterprise.Core.Reactive
 {
-    internal abstract class AsyncObserverBase<T> : IAsyncObserver<T>
+    internal abstract class AsyncObserverBase<T> : DisposableBase, IAsyncObserver<T>
     {
         public virtual void OnCompleted()
         {

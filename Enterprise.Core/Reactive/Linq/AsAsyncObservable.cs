@@ -19,5 +19,11 @@ namespace Enterprise.Core.Reactive.Linq
 
             return new AsAsyncObservable<TSource>(source);
         }
+
+        public static IObservable<TSource> AsObservable<TSource>(
+           this IAsyncObservable<TSource> source)
+        {
+            return source;
+        }
     }
 }

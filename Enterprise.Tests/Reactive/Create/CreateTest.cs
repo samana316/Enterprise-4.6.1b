@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using Enterprise.Core.Linq;
+using Enterprise.Core.Reactive;
 using Enterprise.Tests.Reactive.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using static Enterprise.Core.Reactive.Linq.AsyncObservable;
@@ -238,6 +239,42 @@ namespace Enterprise.Tests.Reactive.Create
             });
 
             Assert.IsTrue(await source.SequenceEqual(new[] { 1, 2, 3 }));
+        }
+
+        [TestMethod]
+        [TestCategory(CategoryReactiveCreate)]
+        [Timeout(DefaultTimeout)]
+        public async Task Nested()
+        {
+            var source = Create<IAsyncObservable<int>>(async (yield, cancellationToken) =>
+            {
+                var arrays = new[]
+                {
+                    new[] {1,2,3},
+                    new[] {4,5,6},
+                    new[] {7,8,9},
+                };
+
+                foreach (var array in arrays)
+                {
+                    await Task.Delay(1, cancellationToken);
+                    await yield.ReturnAsync(array.ToAsyncObservable(), cancellationToken);
+                }
+            });
+
+            var results = new List<int>();
+
+            await source.ForEachAsync((child, ct) => 
+            {
+                return child.ForEachAsync(async (item, ct2) => 
+                {
+                    await Task.Yield();
+
+                    results.Add(item);
+                }, CancellationToken.None);
+            }, CancellationToken.None);
+
+            Assert.IsTrue(await AsyncEnumerable.Range(1, 9).SequenceEqualAsync(results));
         }
     }
 }

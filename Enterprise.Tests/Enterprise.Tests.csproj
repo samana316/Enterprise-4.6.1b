@@ -112,6 +112,7 @@
     <Compile Include="Reactive\Helpers\SpyAsyncObserver.cs" />
     <Compile Include="Reactive\Select\SelectTest.cs" />
     <Compile Include="Reactive\Where\WhereTest.cs" />
+    <Compile Include="Reactive\While\WhileTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Enterprise.Core\Enterprise.Core.csproj">

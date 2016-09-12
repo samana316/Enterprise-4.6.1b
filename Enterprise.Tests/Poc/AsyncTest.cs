@@ -90,6 +90,23 @@ namespace Enterprise.Tests.Poc
 
         [TestMethod]
         [TestCategory(CategoryPocAsync)]
+        public async Task MultipleAwaits()
+        {
+            var closure = 0;
+            var methodAsync = new Func<Task>(async () => 
+            {
+                closure++;
+
+                await Console.Out.WriteLineAsync("WriteLineAsync: " + closure);
+            });
+
+            var task = methodAsync();
+            await task;
+            await task;
+        }
+
+        [TestMethod]
+        [TestCategory(CategoryPocAsync)]
         [ExpectedException(typeof(NotImplementedException))]
         public async Task CustomAwaitable()
         {

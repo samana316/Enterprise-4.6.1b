@@ -175,6 +175,8 @@
     <Compile Include="Reactive\Linq\Implementations\Throw.cs" />
     <Compile Include="Reactive\Linq\Implementations\ToAsyncObservable.cs" />
     <Compile Include="Reactive\Linq\Implementations\Where.cs" />
+    <Compile Include="Reactive\Linq\Implementations\While.cs" />
+    <Compile Include="Reactive\Linq\Return.cs" />
     <Compile Include="Reactive\Linq\Select.cs" />
     <Compile Include="Reactive\Linq\SequenceEqual.cs" />
     <Compile Include="Reactive\Linq\SubscribeAsync.cs" />
@@ -182,6 +184,7 @@
     <Compile Include="Reactive\Linq\Throw.cs" />
     <Compile Include="Reactive\Linq\ToAsyncObservable.cs" />
     <Compile Include="Reactive\Linq\Where.cs" />
+    <Compile Include="Reactive\Linq\While.cs" />
     <Compile Include="Resources\Error.cs" />
     <Compile Include="Utilities\Check.cs" />
     <Compile Include="Utilities\DebugCheck.cs" />
