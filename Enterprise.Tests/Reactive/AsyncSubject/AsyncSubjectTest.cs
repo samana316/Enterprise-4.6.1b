@@ -1,28 +1,29 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Enterprise.Core.Linq;
+using Enterprise.Core.Reactive;
+using Enterprise.Core.Reactive.Linq;
 using Enterprise.Tests.Reactive.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using static Enterprise.Core.Reactive.Linq.AsyncObservable;
 
-namespace Enterprise.Tests.Reactive.Compatibility
+namespace Enterprise.Tests.Reactive.Subject
 {
     [TestClass]
-    public sealed class CompatibilityTest
+    public sealed class AsyncSubjectTest
     {
         private const int DefaultTimeout = 1000;
 
-        private const string CategoryReactiveCompatibility = "Reactive.Compatibility";
+        private const string CategoryReactiveAsyncSubject = "Reactive.AsyncSubject";
 
         [TestMethod]
-        [TestCategory(CategoryReactiveCompatibility)]
+        [TestCategory(CategoryReactiveAsyncSubject)]
         [Timeout(DefaultTimeout)]
         public async Task Subscribe()
         {
-            var source = Create<int>(async (yield, cancellationToken) =>
+            var cancellationTokenSource = new CancellationTokenSource();
+            var source =  AsyncSubject.Create<int>(async (yield, cancellationToken) =>
             {
                 var i = 0;
                 while (true)
@@ -33,15 +34,11 @@ namespace Enterprise.Tests.Reactive.Compatibility
                 }
             });
 
-            source =
-                from item in source
-                where item % 2 != 0
-                select item;
-
             var observer1 = new SpyAsyncObserver<int>();
             var observer2 = new SpyAsyncObserver<int>();
 
             var subscription1 = source.Subscribe(observer1);
+            var task = source.RunAsync(cancellationTokenSource.Token);
             await Task.Delay(25);
 
             var subscription2 = source.Subscribe(observer2);
@@ -62,22 +59,48 @@ namespace Enterprise.Tests.Reactive.Compatibility
 
             Assert.IsTrue(count2 > count1);
             Assert.IsFalse(observer2.Error.InnerExceptions.Any());
+
+            try
+            {
+                cancellationTokenSource.Cancel();
+            }
+            finally
+            {
+                cancellationTokenSource.Dispose();
+            }
         }
 
         [TestMethod]
-        [TestCategory(CategoryReactiveCompatibility)]
+        [TestCategory(CategoryReactiveAsyncSubject)]
         [Timeout(DefaultTimeout)]
         public async Task SubscribeAsync()
         {
-            var source = new TestObservable();
+            var cancellationTokenSource = new CancellationTokenSource();
+
+            var source = AsyncSubject.Create<int>(async (yield, cancellationToken) =>
+            {
+                var i = 0;
+                while (true)
+                {
+                    i++;
+                    await yield.ReturnAsync(i, cancellationToken);
+                    await Task.Delay(10);
+                }
+            });
+
+            var subject =
+                (from item in source
+                 where item % 2 != 0
+                 select item).AsAsyncSubject();
 
             var observer1 = new SpyAsyncObserver<int>();
             var observer2 = new SpyAsyncObserver<int>();
 
-            var subscription1 = source.SubscribeAsync(observer1);
+            var subscription1 = subject.SubscribeAsync(observer1);
+            var task = subject.RunAsync(cancellationTokenSource.Token);
             await Task.Delay(25);
 
-            var subscription2 = source.SubscribeAsync(observer2);
+            var subscription2 = subject.SubscribeAsync(observer2);
             await Task.Delay(50);
 
             subscription1.Dispose();
@@ -95,26 +118,14 @@ namespace Enterprise.Tests.Reactive.Compatibility
 
             Assert.IsTrue(count2 > count1);
             Assert.IsFalse(observer2.Error.InnerExceptions.Any());
-        }
 
-        private sealed class TestObservable : IObservable<int>
-        {
-            public IDisposable Subscribe(
-                IObserver<int> observer)
+            try
             {
-                return this.SubscribeAsync(observer);
+                cancellationTokenSource.Cancel();
             }
-
-            private async Task SubscribeAsync(
-                IObserver<int> observer)
+            finally
             {
-                var i = 0;
-                while (true)
-                {
-                    i++;
-                    observer.OnNext(i);
-                    await Task.Delay(10);
-                }
+                cancellationTokenSource.Dispose();
             }
         }
     }
