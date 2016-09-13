@@ -1,7 +1,4 @@
 ﻿using System.Runtime.CompilerServices;
-using System.Threading;
-using System.Threading.Tasks;
-using Enterprise.Core.Resources;
 using Enterprise.Core.Utilities;
 
 namespace Enterprise.Core.Reactive.Linq
@@ -13,31 +10,9 @@ namespace Enterprise.Core.Reactive.Linq
         {
             Check.NotNull(source, nameof(source));
 
-            var task = source.GetAwaiterImpl();
+            var task = source.ToTask();
 
             return task.GetAwaiter();
-        }
-
-        private static async Task<TSource> GetAwaiterImpl<TSource>(
-            this IAsyncObservable<TSource> source)
-        {
-            var flag = false;
-            var final = default(TSource);
-
-            await source.ForEachAsync(async (item, cancellationToken) => 
-            {
-                await Task.Yield();
-
-                final = item;
-                flag = true;
-            }, CancellationToken.None);
-
-            if (flag)
-            {
-                return final;
-            }
-
-            throw Error.EmptySequence();
         }
     }
 }

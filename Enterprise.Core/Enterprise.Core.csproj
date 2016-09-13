@@ -166,6 +166,7 @@
     <Compile Include="Reactive\Interfaces\IAsyncObserver.cs" />
     <Compile Include="Reactive\Interfaces\IAsyncSubject.cs" />
     <Compile Include="Reactive\Interfaces\IAsyncSubscription.cs" />
+    <Compile Include="Reactive\Linq\Amb.cs" />
     <Compile Include="Reactive\Linq\AsAsyncEnumerable.cs" />
     <Compile Include="Reactive\Linq\AsAsyncObservable.cs" />
     <Compile Include="Reactive\Linq\Concat.cs" />
@@ -175,9 +176,11 @@
     <Compile Include="Reactive\Linq\Empty.cs" />
     <Compile Include="Reactive\Linq\ForEachAsync.cs" />
     <Compile Include="Reactive\Linq\GetAwaiter.cs" />
+    <Compile Include="Reactive\Linq\Implementations\Amb.cs" />
     <Compile Include="Reactive\Linq\Implementations\Anonymous.cs" />
     <Compile Include="Reactive\Linq\Implementations\AsAsyncEnumerable.cs" />
     <Compile Include="Reactive\Linq\Implementations\AsAsyncObservable.cs" />
+    <Compile Include="Reactive\Linq\Implementations\Catch.cs" />
     <Compile Include="Reactive\Linq\Implementations\Concat.cs" />
     <Compile Include="Reactive\Linq\Implementations\Delay.cs" />
     <Compile Include="Reactive\Linq\Implementations\Do.cs" />
@@ -207,6 +210,7 @@
     <Compile Include="Reactive\Linq\SubscribeRawAsync.cs" />
     <Compile Include="Reactive\Linq\Throw.cs" />
     <Compile Include="Reactive\Linq\ToAsyncObservable.cs" />
+    <Compile Include="Reactive\Linq\ToTask.cs" />
     <Compile Include="Reactive\Linq\Where.cs" />
     <Compile Include="Reactive\Linq\While.cs" />
     <Compile Include="Resources\Error.cs" />

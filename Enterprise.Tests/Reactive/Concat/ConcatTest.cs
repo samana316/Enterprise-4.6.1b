@@ -118,6 +118,30 @@ namespace Enterprise.Tests.Reactive.Concat
             Assert.IsTrue(await query.SequenceEqual(expected));
         }
 
+        [TestMethod]
+        [TestCategory(CategoryReactiveConcat)]
+        public async Task Chained()
+        {
+            var source = Return(1).Concat(Return(2)).Concat(Return(3));
+            Assert.IsTrue(await source.SequenceEqual(new[] { 1, 2, 3 }));
+        }
+
+        [TestMethod]
+        [TestCategory(CategoryReactiveConcat)]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public async Task NullSourceError()
+        {
+            var sources = new IAsyncObservable<int>[]
+            {
+                Return(1),
+                Return(2),
+                null
+            };
+
+            var query = sources.Concat();
+            Assert.IsTrue(await query.SequenceEqual(new[] { 1, 2, 3 }));
+        }
+
         private sealed class TestNestedObservable : IObservable<IAsyncObservable<int>>
         {
             public IDisposable Subscribe(
