@@ -50,12 +50,9 @@ namespace Enterprise.Core.Reactive.Linq.Implementations
             IAsyncYield<TSource> yield,
             CancellationToken cancellationToken)
         {
-            return this.sources.ForEachAsync((source, cancellationToken2) => 
+            return this.sources.ForEachAsync((source, cancellationToken2) =>
             {
-                return source.ForEachAsync((item, cancellationToken3) => 
-                {
-                    return yield.ReturnAsync(item, cancellationToken3);
-                }, cancellationToken2);
+                return yield.ReturnAllAsync(source, cancellationToken2);
             }, cancellationToken);
         }
 
@@ -65,10 +62,7 @@ namespace Enterprise.Core.Reactive.Linq.Implementations
         {
             return this.sourcesE.ForEachAsync((source, cancellationToken2) =>
             {
-                return source.ForEachAsync((item, cancellationToken3) =>
-                {
-                    return yield.ReturnAsync(item, cancellationToken3);
-                }, cancellationToken2);
+                return yield.ReturnAllAsync(source, cancellationToken2);
             }, cancellationToken);
         }
     }

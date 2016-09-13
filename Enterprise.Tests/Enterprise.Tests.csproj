@@ -123,6 +123,7 @@
     <Compile Include="Reactive\Create\CancellationTest.cs" />
     <Compile Include="Reactive\Create\CompatibilityTest.cs" />
     <Compile Include="Reactive\Create\CreateTest.cs" />
+    <Compile Include="Reactive\Delay\DelayTest.cs" />
     <Compile Include="Reactive\DoWhile\DoWhileTest.cs" />
     <Compile Include="Reactive\Do\DoTest.cs" />
     <Compile Include="Reactive\Helpers\SpyAsyncObserver.cs" />

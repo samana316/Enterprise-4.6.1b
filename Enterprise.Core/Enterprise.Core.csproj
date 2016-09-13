@@ -152,6 +152,7 @@
     <Compile Include="Reactive\AsyncObservable.cs" />
     <Compile Include="Reactive\AsyncObserver.cs" />
     <Compile Include="Reactive\AsyncSubject.cs" />
+    <Compile Include="Reactive\AsyncYield.cs" />
     <Compile Include="Reactive\Implementations\AnonymousAsyncObserver.cs" />
     <Compile Include="Reactive\Implementations\AnonymousAsyncSubject.cs" />
     <Compile Include="Reactive\Implementations\AsAsyncObserver.cs" />
@@ -168,6 +169,7 @@
     <Compile Include="Reactive\Linq\AsAsyncEnumerable.cs" />
     <Compile Include="Reactive\Linq\AsAsyncObservable.cs" />
     <Compile Include="Reactive\Linq\Concat.cs" />
+    <Compile Include="Reactive\Linq\Delay.cs" />
     <Compile Include="Reactive\Linq\Do.cs" />
     <Compile Include="Reactive\Linq\DoWhile.cs" />
     <Compile Include="Reactive\Linq\Empty.cs" />
@@ -177,6 +179,7 @@
     <Compile Include="Reactive\Linq\Implementations\AsAsyncEnumerable.cs" />
     <Compile Include="Reactive\Linq\Implementations\AsAsyncObservable.cs" />
     <Compile Include="Reactive\Linq\Implementations\Concat.cs" />
+    <Compile Include="Reactive\Linq\Implementations\Delay.cs" />
     <Compile Include="Reactive\Linq\Implementations\Do.cs" />
     <Compile Include="Reactive\Linq\Implementations\DoWhile.cs" />
     <Compile Include="Reactive\Linq\Implementations\Empty.cs" />

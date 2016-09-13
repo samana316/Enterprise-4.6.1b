@@ -17,6 +17,12 @@ namespace Enterprise.Core.Reactive.Linq
         {
             Check.NotNull(source, nameof(source));
 
+            var asyncObservable = source as IAsyncObservable<TSource>;
+            if (asyncObservable != null)
+            {
+                return asyncObservable;
+            }
+
             return new AsAsyncObservable<TSource>(source);
         }
 
