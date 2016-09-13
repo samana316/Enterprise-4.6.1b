@@ -61,7 +61,25 @@ namespace Enterprise.Core.Reactive.Linq.Implementations
             IAsyncYield<TSource> yield, 
             CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var terminate = false;
+
+            return this.sources.ForEachAsync(async (source, cancellationToken2) => 
+            {
+                if (terminate)
+                {
+                    yield.Break();
+                }
+
+                try
+                {
+                    await yield.ReturnAllAsync(source, cancellationToken2);
+                    terminate = true;
+                }
+                catch
+                {
+                    terminate = false;
+                }
+            }, cancellationToken);
         }
     }
 }

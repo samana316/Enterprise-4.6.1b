@@ -169,6 +169,7 @@
     <Compile Include="Reactive\Linq\Amb.cs" />
     <Compile Include="Reactive\Linq\AsAsyncEnumerable.cs" />
     <Compile Include="Reactive\Linq\AsAsyncObservable.cs" />
+    <Compile Include="Reactive\Linq\Catch.cs" />
     <Compile Include="Reactive\Linq\Concat.cs" />
     <Compile Include="Reactive\Linq\Delay.cs" />
     <Compile Include="Reactive\Linq\Do.cs" />
