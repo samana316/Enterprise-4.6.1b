@@ -104,7 +104,7 @@ namespace Enterprise.Tests.Reactive.Subject
             await Task.Delay(50);
 
             subscription1.Dispose();
-            await Task.Delay(100);
+            await Task.Delay(150);
             subscription2.Dispose();
 
             var count1 = await observer1.Items.CountAsync();

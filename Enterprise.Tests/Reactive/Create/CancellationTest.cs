@@ -36,7 +36,8 @@ namespace Enterprise.Tests.Reactive.Cancellation
 
             using (var cancellationTokenSource = new CancellationTokenSource())
             {
-                using (var subscription = source.SubscribeAsync(observer, cancellationTokenSource.Token))
+                using (var subscription = source.SubscribeAsync(
+                    observer, cancellationTokenSource.Token))
                 {
                     await Task.Delay(50);
 
@@ -74,7 +75,7 @@ namespace Enterprise.Tests.Reactive.Cancellation
             subscription.Dispose();
 
             Assert.IsTrue(await observer.Items.CountAsync() > 0);
-            Assert.IsFalse(observer.Error.InnerExceptions.Any());
+            Assert.IsTrue(observer.Error.InnerExceptions.Any());
         }
 
         [TestMethod]
@@ -110,6 +111,7 @@ namespace Enterprise.Tests.Reactive.Cancellation
             subscription1.Dispose();
             await Task.Delay(100);
             subscription2.Dispose();
+            await Task.Delay(50);
 
             var count1 = await observer1.Items.CountAsync();
             Trace.WriteLine(count1, "Count1");
@@ -118,10 +120,10 @@ namespace Enterprise.Tests.Reactive.Cancellation
             Trace.WriteLine(count2, "Count2");
 
             Assert.IsTrue(count1 > 0);
-            Assert.IsFalse(observer1.Error.InnerExceptions.Any());
+            Assert.IsTrue(observer1.Error.InnerExceptions.Any());
 
             Assert.IsTrue(count2 > count1);
-            Assert.IsFalse(observer2.Error.InnerExceptions.Any());
+            Assert.IsTrue(observer2.Error.InnerExceptions.Any());
         }
     }
 }

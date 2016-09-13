@@ -189,10 +189,15 @@
     <Compile Include="Reactive\Linq\Implementations\Return.cs" />
     <Compile Include="Reactive\Linq\Implementations\Select.cs" />
     <Compile Include="Reactive\Linq\Implementations\SequenceEqual.cs" />
+    <Compile Include="Reactive\Linq\Implementations\Skip.cs" />
+    <Compile Include="Reactive\Linq\Implementations\SkipWhile.cs" />
+    <Compile Include="Reactive\Linq\Implementations\Take.cs" />
+    <Compile Include="Reactive\Linq\Implementations\TakeWhile.cs" />
     <Compile Include="Reactive\Linq\Implementations\Throw.cs" />
     <Compile Include="Reactive\Linq\Implementations\ToAsyncObservable.cs" />
     <Compile Include="Reactive\Linq\Implementations\Where.cs" />
     <Compile Include="Reactive\Linq\Implementations\While.cs" />
+    <Compile Include="Reactive\Linq\PagingOperations.cs" />
     <Compile Include="Reactive\Linq\Range.cs" />
     <Compile Include="Reactive\Linq\Repeat.cs" />
     <Compile Include="Reactive\Linq\Return.cs" />

@@ -127,6 +127,7 @@
     <Compile Include="Reactive\DoWhile\DoWhileTest.cs" />
     <Compile Include="Reactive\Do\DoTest.cs" />
     <Compile Include="Reactive\Helpers\SpyAsyncObserver.cs" />
+    <Compile Include="Reactive\PagingOperations\PagingTest.cs" />
     <Compile Include="Reactive\Range\RangeTest.cs" />
     <Compile Include="Reactive\Repeat\RepeatTest.cs" />
     <Compile Include="Reactive\Select\SelectTest.cs" />
