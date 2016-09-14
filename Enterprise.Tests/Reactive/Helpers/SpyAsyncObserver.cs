@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
+using Enterprise.Core.Common.Runtime.ExceptionServices;
 using Enterprise.Core.Linq;
 using Enterprise.Core.Reactive;
 
@@ -50,12 +51,21 @@ namespace Enterprise.Tests.Reactive.Helpers
             T value,
             CancellationToken cancellationToken)
         {
-            cancellationToken.ThrowIfCancellationRequested();
+            try
+            {
+                cancellationToken.ThrowIfCancellationRequested();
 
-            await Task.Delay(5, cancellationToken);
+                await Task.Delay(1, cancellationToken);
 
-            this.items.Add(value);
-            await Console.Out.WriteLineAsync("OnNextAsync: " + value);
+                this.items.Add(value);
+                await Console.Out.WriteLineAsync("OnNextAsync: " + value);
+            }
+            catch (Exception exception)
+            {
+                Trace.WriteLine(exception, "OnError");
+
+                exception.Rethrow();
+            }
         }
 
         public void Reset()

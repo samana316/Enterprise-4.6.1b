@@ -70,7 +70,7 @@ namespace Enterprise.Tests.Reactive.Range
             var count = 100000;
             var source = AsyncObservable.Range(1, count);
             var list = new List<int>(count);
-            list.AddRange(source.AsEnumerable());
+            list.AddRange(source.ToEnumerable());
             Assert.AreEqual(count, list.Count);
 
             var expected = Enumerable.Range(1, count).ToList();

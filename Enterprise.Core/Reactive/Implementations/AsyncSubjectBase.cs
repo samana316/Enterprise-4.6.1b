@@ -117,7 +117,7 @@ namespace Enterprise.Core.Reactive
 
             public IAwaiter GetAwaiter()
             {
-                return new CompleteAwaiter();
+                return Awaitable.FromCompletedTask().GetAwaiter();
             }
 
             protected override sealed void Dispose(
@@ -136,30 +136,6 @@ namespace Enterprise.Core.Reactive
 
                     base.Dispose(disposing);
                 }
-            }
-        }
-
-        private sealed class CompleteAwaiter : IAwaiter
-        {
-            public bool IsCompleted
-            { 
-                get { return true; }
-            }
-
-            public void GetResult()
-            {
-            }
-
-            public void OnCompleted(
-                Action continuation)
-            {
-                continuation();
-            }
-
-            public void UnsafeOnCompleted(
-                Action continuation)
-            {
-                continuation();
             }
         }
     }

@@ -27,6 +27,15 @@ namespace Enterprise.Tests.Reactive.Delay
 
         [TestMethod]
         [TestCategory(CategoryReactiveDelay)]
+        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        public void InvalidDueTime()
+        {
+            var source = AsyncObservable.Never<int>();
+            source.Delay(TimeSpan.MinValue);
+        }
+
+        [TestMethod]
+        [TestCategory(CategoryReactiveDelay)]
         public async Task WithTimeSpan()
         {
             var source = AsyncObservable.Range(1, 3);

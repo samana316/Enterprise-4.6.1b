@@ -49,7 +49,7 @@ namespace Enterprise.Tests.Reactive.Repeat
         public async Task Infinite()
         {
             var source = AsyncObservable.Repeat(1);
-            var query = source.AsAsyncEnumerable().Take(3);
+            var query = source.ToAsyncEnumerable().Take(3);
 
             Assert.IsTrue(await query.SequenceEqualAsync(new[] { 1, 1, 1 }));
         }

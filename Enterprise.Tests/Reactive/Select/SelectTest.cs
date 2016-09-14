@@ -87,7 +87,7 @@ namespace Enterprise.Tests.Reactive.Select
                 from item in source
                 where item.Length > 0
                 select selectorAsync(item))
-                .AsAsyncEnumerable().ToArrayAsync();
+                .ToAsyncEnumerable().ToArrayAsync();
 
             await Task.WhenAll(query);
 

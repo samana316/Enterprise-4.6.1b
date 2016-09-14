@@ -6,11 +6,11 @@ using Enterprise.Core.Linq;
 
 namespace Enterprise.Core.Reactive.Linq.Implementations
 {
-    internal sealed class AsAsyncEnumerable<TSource> : AsyncEnumerableBase<TSource>
+    internal sealed class ToAsyncEnumerable<TSource> : AsyncEnumerableBase<TSource>
     {
         private readonly IAsyncObservable<TSource> source;
 
-        public AsAsyncEnumerable(
+        public ToAsyncEnumerable(
             IAsyncObservable<TSource> source)
         {
             this.source = source;
@@ -18,7 +18,7 @@ namespace Enterprise.Core.Reactive.Linq.Implementations
 
         public override AsyncIterator<TSource> Clone()
         {
-            return new AsAsyncEnumerable<TSource>(this.source);
+            return new ToAsyncEnumerable<TSource>(this.source);
         }
 
         protected override async Task EnumerateAsync(

@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\DisposableBase.cs" />
+    <Compile Include="Common\Runtime\CompilerServices\Awaitable.cs" />
     <Compile Include="Common\Runtime\CompilerServices\IAwaitable.cs" />
     <Compile Include="Common\Runtime\CompilerServices\IAwaiter.cs" />
     <Compile Include="Common\Runtime\ExceptionServices\ExceptionExtensions.cs" />
@@ -167,7 +168,15 @@
     <Compile Include="Reactive\Interfaces\IAsyncSubject.cs" />
     <Compile Include="Reactive\Interfaces\IAsyncSubscription.cs" />
     <Compile Include="Reactive\Linq\Amb.cs" />
-    <Compile Include="Reactive\Linq\AsAsyncEnumerable.cs" />
+    <Compile Include="Reactive\Linq\Generate.cs" />
+    <Compile Include="Reactive\Linq\Implementations\Generate.cs" />
+    <Compile Include="Reactive\Linq\Implementations\Interval.cs" />
+    <Compile Include="Reactive\Linq\Implementations\Never.cs" />
+    <Compile Include="Reactive\Linq\Implementations\Timer.cs" />
+    <Compile Include="Reactive\Linq\Interval.cs" />
+    <Compile Include="Reactive\Linq\Never.cs" />
+    <Compile Include="Reactive\Linq\Timer.cs" />
+    <Compile Include="Reactive\Linq\ToAsyncEnumerable.cs" />
     <Compile Include="Reactive\Linq\AsAsyncObservable.cs" />
     <Compile Include="Reactive\Linq\Catch.cs" />
     <Compile Include="Reactive\Linq\Concat.cs" />
@@ -179,7 +188,7 @@
     <Compile Include="Reactive\Linq\GetAwaiter.cs" />
     <Compile Include="Reactive\Linq\Implementations\Amb.cs" />
     <Compile Include="Reactive\Linq\Implementations\Anonymous.cs" />
-    <Compile Include="Reactive\Linq\Implementations\AsAsyncEnumerable.cs" />
+    <Compile Include="Reactive\Linq\Implementations\ToAsyncEnumerable.cs" />
     <Compile Include="Reactive\Linq\Implementations\AsAsyncObservable.cs" />
     <Compile Include="Reactive\Linq\Implementations\Catch.cs" />
     <Compile Include="Reactive\Linq\Implementations\Concat.cs" />

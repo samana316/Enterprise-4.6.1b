@@ -9,7 +9,7 @@ namespace Enterprise.Core.Reactive.Linq
 
     partial class AsyncObservable
     {
-        public static IAsyncEnumerable<TSource> AsAsyncEnumerable<TSource>(
+        public static IAsyncEnumerable<TSource> ToAsyncEnumerable<TSource>(
             this IAsyncObservable<TSource> source)
         {
             if (source == null)
@@ -27,13 +27,13 @@ namespace Enterprise.Core.Reactive.Linq
                 }
             }
 
-            return new AsAsyncEnumerable<TSource>(source);
+            return new ToAsyncEnumerable<TSource>(source);
         }
 
-        public static IEnumerable<TSource> AsEnumerable<TSource>(
+        public static IEnumerable<TSource> ToEnumerable<TSource>(
             this IAsyncObservable<TSource> source)
         {
-            return source.AsAsyncEnumerable();
+            return source.ToAsyncEnumerable();
         }
 
         public static IAsyncEnumerator<TSource> GetAsyncEnumerator<TSource>(
@@ -41,7 +41,7 @@ namespace Enterprise.Core.Reactive.Linq
         {
             Check.NotNull(source, nameof(source));
 
-            return source.AsAsyncEnumerable().GetAsyncEnumerator();
+            return source.ToAsyncEnumerable().GetAsyncEnumerator();
         }
 
         public static IEnumerator<TSource> GetEnumerator<TSource>(
@@ -49,7 +49,7 @@ namespace Enterprise.Core.Reactive.Linq
         {
             Check.NotNull(source, nameof(source));
 
-            return source.AsEnumerable().GetEnumerator();
+            return source.ToEnumerable().GetEnumerator();
         }
     }
 }

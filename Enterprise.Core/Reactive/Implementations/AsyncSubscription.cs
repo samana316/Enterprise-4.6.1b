@@ -1,6 +1,4 @@
-﻿using System;
-using System.Runtime.CompilerServices;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Enterprise.Core.Common;
@@ -42,59 +40,26 @@ namespace Enterprise.Core.Reactive
 
         public IAwaiter GetAwaiter()
         {
-            return new TaskAwaiterAdapter(this.task);
+            return this.task.FromTask().GetAwaiter();
         }
 
         protected override void Dispose(
             bool disposing)
         {
-            if (this.cancellationTokenSource != null)
+            if (disposing)
             {
-                if (!this.cancellationTokenSource.IsCancellationRequested)
+                if (this.cancellationTokenSource != null)
                 {
-                    this.cancellationTokenSource.Cancel();
-                }
+                    if (!this.cancellationTokenSource.IsCancellationRequested)
+                    {
+                        this.cancellationTokenSource.Cancel();
+                    }
 
-                this.cancellationTokenSource.Dispose();
+                    this.cancellationTokenSource.Dispose();
+                }
             }
 
             base.Dispose(disposing);
-        }
-
-        private sealed class TaskAwaiterAdapter : IAwaiter
-        {
-            private readonly TaskAwaiter awaiter;
-
-            public TaskAwaiterAdapter(
-                Task task)
-            {
-                this.awaiter = task.GetAwaiter();
-            }
-
-            public bool IsCompleted
-            {
-                get
-                {
-                    return this.awaiter.IsCompleted;
-                }
-            }
-
-            public void GetResult()
-            {
-                this.awaiter.GetResult();
-            }
-
-            public void OnCompleted(
-                Action continuation)
-            {
-                this.awaiter.OnCompleted(continuation);
-            }
-
-            public void UnsafeOnCompleted(
-                Action continuation)
-            {
-                this.awaiter.UnsafeOnCompleted(continuation);
-            }
         }
     }
 }

@@ -18,12 +18,6 @@ namespace Enterprise.Core.Reactive
             T value, 
             CancellationToken cancellationToken)
         {
-            var asyncEnumerator = this.observer as IAsyncObserver<T>;
-            if (asyncEnumerator != null)
-            {
-                return asyncEnumerator.OnNextAsync(value, cancellationToken);
-            }
-
             var builder = new OnNextBuilder(this.observer, value);
             var task = Task.Run(new Action(builder.OnNext), cancellationToken);
 

@@ -43,6 +43,19 @@ namespace Enterprise.Tests.Reactive.Amb
 
         [TestMethod]
         [TestCategory(CategoryReactiveAmb)]
+        [Timeout(DefaultTimeout)]
+        public async Task Never()
+        {
+            var expected = AsyncEnumerable.Range(1, 3);
+            var first = expected.ToAsyncObservable().Delay(TimeSpan.FromMilliseconds(10));
+            var second = Never<int>();
+
+            var query = first.Amb(second);
+            Assert.IsTrue(await query.SequenceEqual(expected));
+        }
+
+        [TestMethod]
+        [TestCategory(CategoryReactiveAmb)]
         public async Task Enumerables()
         {
             var expected = AsyncEnumerable.Range(1, 3);

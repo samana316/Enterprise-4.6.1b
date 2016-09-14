@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Enterprise.Core.Common.Runtime.CompilerServices;
 using Enterprise.Core.Reactive.Linq.Implementations;
 using Enterprise.Core.Utilities;
 
@@ -18,15 +19,7 @@ namespace Enterprise.Core.Reactive.Linq
             Check.NotNull(source, nameof(source));
             Check.NotNull(onNextAsync, nameof(onNextAsync));
 
-            return source.ForEachImplAsync(onNextAsync, cancellationToken);
-        }
-
-        private static async Task ForEachImplAsync<TSource>(
-            this IAsyncObservable<TSource> source,
-            Func<TSource, CancellationToken, Task> onNextAsync,
-            CancellationToken cancellationToken)
-        {
-            await new ForEachAsync<TSource>(source, onNextAsync, cancellationToken);
+            return new ForEachAsync<TSource>(source, onNextAsync, cancellationToken).ToTask();
         }
     }
 }

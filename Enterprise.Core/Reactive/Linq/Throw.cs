@@ -13,5 +13,12 @@ namespace Enterprise.Core.Reactive.Linq
 
             return new Throw<TResult>(exception);
         }
+
+        public static IAsyncObservable<TResult> Throw<TResult>(
+            Exception exception,
+            TResult witness)
+        {
+            return Throw<TResult>(exception);
+        }
     }
 }

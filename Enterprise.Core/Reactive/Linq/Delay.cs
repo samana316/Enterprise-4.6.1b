@@ -12,11 +12,7 @@ namespace Enterprise.Core.Reactive.Linq
             TimeSpan dueTime)
         {
             Check.NotNull(source, nameof(source));
-
-            if (dueTime < TimeSpan.Zero)
-            {
-                throw Error.ArgumentOutOfRange(nameof(dueTime));
-            }
+            Check.NotLessThanDefault(dueTime, nameof(dueTime));
 
             return new Delay<TSource>(source, dueTime);
         }

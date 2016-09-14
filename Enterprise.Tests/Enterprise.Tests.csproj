@@ -115,6 +115,7 @@
     <Compile Include="Poc\ArrayTest.cs" />
     <Compile Include="Poc\AsyncObservableTest.cs" />
     <Compile Include="Poc\AsyncTest.cs" />
+    <Compile Include="Poc\CustomAsyncTest.cs" />
     <Compile Include="Poc\DebuggerTest.cs" />
     <Compile Include="Poc\IteratorObserverDualityTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -122,13 +123,17 @@
     <Compile Include="Reactive\AsyncSubject\AsyncSubjectTest.cs" />
     <Compile Include="Reactive\Catch\CatchTest.cs" />
     <Compile Include="Reactive\Concat\ConcatTest.cs" />
+    <Compile Include="Reactive\Corecursion\IntervalTest.cs" />
+    <Compile Include="Reactive\Corecursion\TimerTest.cs" />
     <Compile Include="Reactive\Create\CancellationTest.cs" />
     <Compile Include="Reactive\Create\CompatibilityTest.cs" />
     <Compile Include="Reactive\Create\CreateTest.cs" />
     <Compile Include="Reactive\Delay\DelayTest.cs" />
     <Compile Include="Reactive\DoWhile\DoWhileTest.cs" />
     <Compile Include="Reactive\Do\DoTest.cs" />
+    <Compile Include="Reactive\Corecursion\GenerateTest.cs" />
     <Compile Include="Reactive\Helpers\SpyAsyncObserver.cs" />
+    <Compile Include="Reactive\Helpers\TestNotifyPropertyChanged.cs" />
     <Compile Include="Reactive\PagingOperations\PagingTest.cs" />
     <Compile Include="Reactive\Range\RangeTest.cs" />
     <Compile Include="Reactive\Repeat\RepeatTest.cs" />

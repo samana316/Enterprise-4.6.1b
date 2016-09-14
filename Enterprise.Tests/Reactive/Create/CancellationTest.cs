@@ -125,5 +125,37 @@ namespace Enterprise.Tests.Reactive.Cancellation
             Assert.IsTrue(count2 > count1);
             Assert.IsTrue(observer2.Error.InnerExceptions.Any());
         }
+
+        [TestMethod]
+        [TestCategory(CategoryReactiveCancellation)]
+        [Timeout(DefaultTimeout)]
+        public async Task QueryCancelWithUnsubscriber()
+        {
+            var source = Create<int>(async (yield, cancellationToken) =>
+            {
+                var i = 0;
+                while (true)
+                {
+                    i++;
+                    await yield.ReturnAsync(i, cancellationToken);
+                    await Task.Delay(10);
+                }
+            });
+
+            var query =
+                from item in source
+                where item > 0
+                select item * 2;
+
+            var observer = new SpyAsyncObserver<int>();
+
+            var subscription = query.SubscribeAsync(observer);
+            await Task.Delay(50);
+
+            subscription.Dispose();
+
+            Assert.IsTrue(await observer.Items.CountAsync() > 0);
+            Assert.IsTrue(observer.Error.InnerExceptions.Any());
+        }
     }
 }

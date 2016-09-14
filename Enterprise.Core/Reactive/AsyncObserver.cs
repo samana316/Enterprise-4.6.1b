@@ -18,6 +18,12 @@ namespace Enterprise.Core.Reactive.Linq
         {
             Check.NotNull(observer, nameof(observer));
 
+            var asyncObserver = observer as IAsyncObserver<T>;
+            if (asyncObserver != null)
+            {
+                return asyncObserver;
+            }
+
             return new AsAsyncObserver<T>(observer);
         }
 
