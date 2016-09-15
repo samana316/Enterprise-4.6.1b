@@ -2,6 +2,8 @@
 using System.Threading.Tasks;
 using Enterprise.Core.Linq;
 using Enterprise.Core.Reactive.Linq;
+using Enterprise.Core.Reactive.Subjects;
+using Enterprise.Tests.Reactive.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using static Enterprise.Core.Reactive.Linq.AsyncObservable;
 
@@ -65,6 +67,31 @@ namespace Enterprise.Tests.Reactive.Amb
 
             var query = Amb<int>(first, second, third);
             Assert.IsTrue(await query.SequenceEqual(expected));
+        }
+
+        [TestMethod]
+        [TestCategory(CategoryReactiveAmb)]
+        public async Task Subjects()
+        {
+            var observer = new SpyAsyncObserver<int>();
+            var s1 = new ReplayAsyncSubject<int>();
+            var s2 = new ReplayAsyncSubject<int>();
+            var s3 = new ReplayAsyncSubject<int>();
+            var result = AsyncObservable.Amb(s1, s2, s3);
+
+            await s1.OnNextAsync(1);
+            await s2.OnNextAsync(2);
+            await s3.OnNextAsync(3);
+            await s1.OnNextAsync(1);
+            await s2.OnNextAsync(2);
+            await s3.OnNextAsync(3);
+            s1.OnCompleted();
+            s2.OnCompleted();
+            s3.OnCompleted();
+
+            await result.SubscribeAsync(observer);
+
+            Assert.IsTrue(await observer.Items.SequenceEqualAsync(new[] { 1, 1 }));
         }
     }
 }

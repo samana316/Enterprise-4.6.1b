@@ -28,7 +28,7 @@ namespace Enterprise.Core.Reactive.Linq.Implementations
             CancellationToken cancellationToken)
         {
             var i = 0;
-            return source.ForEachAsync(async (item, cancellationToken2) => 
+            return this.source.ForEachAsync(async (item, cancellationToken2) => 
             {
                 if (i >= this.count)
                 {

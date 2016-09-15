@@ -165,7 +165,10 @@
     <Compile Include="Reactive\Implementations\CompositeAsyncObserver.cs" />
     <Compile Include="Reactive\Interfaces\IAsyncObservable.cs" />
     <Compile Include="Reactive\Interfaces\IAsyncObserver.cs" />
-    <Compile Include="Reactive\Interfaces\IAsyncSubject.cs" />
+    <Compile Include="Reactive\Subjects\AsyncSubject.cs" />
+    <Compile Include="Reactive\Subjects\AsyncSubjectBase.cs" />
+    <Compile Include="Reactive\Subjects\IAsyncSubject.cs" />
+    <Compile Include="Reactive\Interfaces\IConnectableAsyncObservable.cs" />
     <Compile Include="Reactive\Interfaces\IAsyncSubscription.cs" />
     <Compile Include="Reactive\Linq\Amb.cs" />
     <Compile Include="Reactive\Linq\Generate.cs" />
@@ -223,6 +226,7 @@
     <Compile Include="Reactive\Linq\ToTask.cs" />
     <Compile Include="Reactive\Linq\Where.cs" />
     <Compile Include="Reactive\Linq\While.cs" />
+    <Compile Include="Reactive\Subjects\ReplayAsyncSubject.cs" />
     <Compile Include="Resources\Error.cs" />
     <Compile Include="Utilities\Check.cs" />
     <Compile Include="Utilities\DebugCheck.cs" />

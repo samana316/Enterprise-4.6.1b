@@ -38,7 +38,7 @@ namespace Enterprise.Tests.Reactive.Subject
             var observer2 = new SpyAsyncObserver<int>();
 
             var subscription1 = source.Subscribe(observer1);
-            var task = source.RunAsync(cancellationTokenSource.Token);
+            var task = source.ConnectAsync(cancellationTokenSource.Token);
             await Task.Delay(25);
 
             var subscription2 = source.Subscribe(observer2);
@@ -97,7 +97,7 @@ namespace Enterprise.Tests.Reactive.Subject
             var observer2 = new SpyAsyncObserver<int>();
 
             var subscription1 = subject.SubscribeAsync(observer1);
-            var task = subject.RunAsync(cancellationTokenSource.Token);
+            var task = subject.ConnectAsync(cancellationTokenSource.Token);
             await Task.Delay(25);
 
             var subscription2 = subject.SubscribeAsync(observer2);

@@ -43,8 +43,9 @@ namespace Enterprise.Tests.Reactive.Helpers
         public void OnNext(
             T value)
         {
-            this.items.Add(value);
-            Console.WriteLine("OnNext: " + value);
+            throw new NotSupportedException();
+            //this.items.Add(value);
+            //Console.WriteLine("OnNext: " + value);
         }
 
         public async Task OnNextAsync(

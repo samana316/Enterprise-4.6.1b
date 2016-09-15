@@ -19,10 +19,10 @@ namespace Enterprise.Core.Reactive.Linq
             var observableBase = source as AsyncObservableBase<TSource>;
             if (observableBase != null)
             {
-                var subject = source as IAsyncSubject<TSource>;
-                if (subject != null)
+                var publisher = source as IConnectableAsyncObservable<TSource>;
+                if (publisher != null)
                 {
-                    return observableBase.SubscribeRawAsync(observer, cancellationToken);
+                    return publisher.SubscribeAsync(observer, cancellationToken);
                 }
 
                 var task = observableBase.SubscribeSafeAsync(observer, cancellationToken);

@@ -8,13 +8,13 @@ namespace Enterprise.Core.Reactive
 {
     public static class AsyncSubject
     {
-        public static IAsyncSubject<TSource> AsAsyncSubject<TSource>(
-            this IAsyncSubject<TSource> source)
+        public static IConnectableAsyncObservable<TSource> AsAsyncSubject<TSource>(
+            this IConnectableAsyncObservable<TSource> source)
         {
             return source;
         }
 
-        public static IAsyncSubject<TSource> AsAsyncSubject<TSource>(
+        public static IConnectableAsyncObservable<TSource> AsAsyncSubject<TSource>(
             this IAsyncObservable<TSource> source)
         {
             Check.NotNull(source, nameof(source));
@@ -22,7 +22,7 @@ namespace Enterprise.Core.Reactive
             return new AsAsyncSubject<TSource>(source);
         }
 
-        public static IAsyncSubject<T> Create<T>(
+        public static IConnectableAsyncObservable<T> Create<T>(
             Func<IAsyncYield<T>, CancellationToken, Task> producer)
         {
             Check.NotNull(producer, nameof(producer));

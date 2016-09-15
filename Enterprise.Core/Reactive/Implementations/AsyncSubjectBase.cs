@@ -8,7 +8,7 @@ using Enterprise.Core.Reactive.Linq;
 
 namespace Enterprise.Core.Reactive
 {
-    internal abstract class AsyncSubjectBase<T> : AsyncObservableBase<T>, IAsyncSubject<T>
+    internal abstract class AsyncSubjectBase<T> : AsyncObservableBase<T>, IConnectableAsyncObservable<T>
     {
         private readonly object sink = new object();
 
@@ -73,10 +73,12 @@ namespace Enterprise.Core.Reactive
             return task;
         }
 
-        public Task RunAsync(
+        public IAsyncSubscription ConnectAsync(
             CancellationToken cancellationToken)
         {
-            return this.SubscribeCoreAsync(this.observers, cancellationToken);
+            var task = this.SubscribeCoreAsync(this.observers, cancellationToken);
+
+            return new AsyncSubscription(task, cancellationToken);
         }
 
         private sealed class Subscriber

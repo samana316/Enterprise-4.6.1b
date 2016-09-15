@@ -66,5 +66,14 @@ namespace Enterprise.Core.Reactive.Linq
 
             return new AnonymousAsyncObserver<T>(onNextAsync, onError, onCompleted);
         }
+
+        public static Task OnNextAsync<T>(
+            this IAsyncObserver<T> observer,
+            T value)
+        {
+            Check.NotNull(observer, nameof(observer));
+
+            return observer.OnNextAsync(value, CancellationToken.None);
+        }
     }
 }

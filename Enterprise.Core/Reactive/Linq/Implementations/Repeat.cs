@@ -8,6 +8,8 @@ namespace Enterprise.Core.Reactive.Linq.Implementations
     {
         private readonly TResult element;
 
+        private readonly IAsyncObservable<TResult> source;
+
         private readonly int? count;
 
         public Repeat(
@@ -15,6 +17,14 @@ namespace Enterprise.Core.Reactive.Linq.Implementations
             int? count)
         {
             this.element = element;
+            this.count = count;
+        }
+
+        public Repeat(
+            IAsyncObservable<TResult> source, 
+            int? count)
+        {
+            this.source = source;
             this.count = count;
         }
 
@@ -27,20 +37,32 @@ namespace Enterprise.Core.Reactive.Linq.Implementations
             IAsyncYield<TResult> yield,
             CancellationToken cancellationToken)
         {
-            if (!this.count.HasValue)
+            if (this.count.HasValue)
             {
-                while (true)
+                for (int i = 0; i < this.count.Value; i++)
                 {
-                    await yield.ReturnAsync(this.element, cancellationToken);
+                    await this.OnNextAsync(yield, cancellationToken);
                 }
             }
             else
             {
-                for (int i = 0; i < this.count.Value; i++)
+                while (true)
                 {
-                    await yield.ReturnAsync(this.element, cancellationToken);
+                    await this.OnNextAsync(yield, cancellationToken);
                 }
             }
+        }
+
+        private Task OnNextAsync(
+            IAsyncYield<TResult> yield, 
+            CancellationToken cancellationToken)
+        {
+            if (this.source != null)
+            {
+                return yield.ReturnAllAsync(this.source, cancellationToken);
+            }
+
+            return yield.ReturnAsync(this.element, cancellationToken);
         }
     }
 }

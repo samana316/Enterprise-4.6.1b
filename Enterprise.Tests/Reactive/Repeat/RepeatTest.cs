@@ -32,7 +32,7 @@ namespace Enterprise.Tests.Reactive.Repeat
         [TestCategory(CategoryReactiveRepeat)]
         public async Task Null()
         {
-            var source = AsyncObservable.Repeat<object>(null, 3);
+            var source = AsyncObservable.Repeat(default(string), 3);
             Assert.IsTrue(await source.SequenceEqual(new object[] { null, null, null }));
         }
 
@@ -52,6 +52,15 @@ namespace Enterprise.Tests.Reactive.Repeat
             var query = source.ToAsyncEnumerable().Take(3);
 
             Assert.IsTrue(await query.SequenceEqualAsync(new[] { 1, 1, 1 }));
+        }
+
+        [TestMethod]
+        [TestCategory(CategoryReactiveRepeat)]
+        public async Task Chained()
+        {
+            var source = AsyncObservable.Repeat(1, 2).Repeat(2).Repeat(2);
+
+            Assert.IsTrue(await source.SequenceEqual(Enumerable.Repeat(1, 8)));
         }
     }
 }
