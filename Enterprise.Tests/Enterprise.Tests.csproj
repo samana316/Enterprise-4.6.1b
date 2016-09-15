@@ -120,7 +120,7 @@
     <Compile Include="Poc\IteratorObserverDualityTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reactive\Amb\AmbTest.cs" />
-    <Compile Include="Reactive\AsyncSubject\AsyncSubjectTest.cs" />
+    <Compile Include="Reactive\Publish\PublishTest.cs" />
     <Compile Include="Reactive\Catch\CatchTest.cs" />
     <Compile Include="Reactive\Concat\ConcatTest.cs" />
     <Compile Include="Reactive\Corecursion\IntervalTest.cs" />

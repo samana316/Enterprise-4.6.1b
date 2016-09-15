@@ -11,19 +11,19 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Enterprise.Tests.Reactive.Subject
 {
     [TestClass]
-    public sealed class AsyncSubjectTest
+    public sealed class PublishTest
     {
         private const int DefaultTimeout = 1000;
 
-        private const string CategoryReactiveAsyncSubject = "Reactive.AsyncSubject";
+        private const string CategoryReactivePublish = "Reactive.Publish";
 
         [TestMethod]
-        [TestCategory(CategoryReactiveAsyncSubject)]
+        [TestCategory(CategoryReactivePublish)]
         [Timeout(DefaultTimeout)]
         public async Task Subscribe()
         {
             var cancellationTokenSource = new CancellationTokenSource();
-            var source =  AsyncSubject.Create<int>(async (yield, cancellationToken) =>
+            var source =  AsyncObservable.Create<int>(async (yield, cancellationToken) =>
             {
                 var i = 0;
                 while (true)
@@ -32,7 +32,7 @@ namespace Enterprise.Tests.Reactive.Subject
                     await yield.ReturnAsync(i, cancellationToken);
                     await Task.Delay(10);
                 }
-            });
+            }).Publish();
 
             var observer1 = new SpyAsyncObserver<int>();
             var observer2 = new SpyAsyncObserver<int>();
@@ -71,13 +71,13 @@ namespace Enterprise.Tests.Reactive.Subject
         }
 
         [TestMethod]
-        [TestCategory(CategoryReactiveAsyncSubject)]
+        [TestCategory(CategoryReactivePublish)]
         [Timeout(DefaultTimeout)]
         public async Task SubscribeAsync()
         {
             var cancellationTokenSource = new CancellationTokenSource();
 
-            var source = AsyncSubject.Create<int>(async (yield, cancellationToken) =>
+            var source = AsyncObservable.Create<int>(async (yield, cancellationToken) =>
             {
                 var i = 0;
                 while (true)
@@ -86,21 +86,21 @@ namespace Enterprise.Tests.Reactive.Subject
                     await yield.ReturnAsync(i, cancellationToken);
                     await Task.Delay(10);
                 }
-            });
+            }).Publish();
 
-            var subject =
+            var result =
                 (from item in source
                  where item % 2 != 0
-                 select item).AsAsyncSubject();
+                 select item).Publish();
 
             var observer1 = new SpyAsyncObserver<int>();
             var observer2 = new SpyAsyncObserver<int>();
 
-            var subscription1 = subject.SubscribeAsync(observer1);
-            var task = subject.ConnectAsync(cancellationTokenSource.Token);
+            var subscription1 = result.SubscribeAsync(observer1);
+            var task = result.ConnectAsync(cancellationTokenSource.Token);
             await Task.Delay(25);
 
-            var subscription2 = subject.SubscribeAsync(observer2);
+            var subscription2 = result.SubscribeAsync(observer2);
             await Task.Delay(50);
 
             subscription1.Dispose();

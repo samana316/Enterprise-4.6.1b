@@ -4,17 +4,43 @@ using System.Threading;
 using System.Threading.Tasks;
 using Enterprise.Core.Common;
 using Enterprise.Core.Common.Runtime.CompilerServices;
+using Enterprise.Core.Linq;
 using Enterprise.Core.Reactive.Linq;
 
 namespace Enterprise.Core.Reactive
 {
-    internal abstract class AsyncSubjectBase<T> : AsyncObservableBase<T>, IConnectableAsyncObservable<T>
+    internal sealed class ConnectableAsyncObservable<T> : 
+        AsyncObservableBase<T>, 
+        IConnectableAsyncObservable<T>
     {
         private readonly object sink = new object();
 
         private readonly CompositeAsyncObserver<T> observers = new CompositeAsyncObserver<T>();
 
         private readonly ICollection<IDisposable> subscriptions = new List<IDisposable>();
+
+        private readonly IAsyncObservable<T> source;
+
+        public ConnectableAsyncObservable(
+            IAsyncObservable<T> source)
+        {
+            this.source = source;
+        }
+
+        public override AsyncIterator<T> Clone()
+        {
+            return new ConnectableAsyncObservable<T>(this.source);
+        }
+
+        protected override Task ProduceAsync(
+            IAsyncYield<T> yield,
+            CancellationToken cancellationToken)
+        {
+            return this.source.ForEachAsync((item, cancellationToken2) =>
+            {
+                return yield.ReturnAsync(item, cancellationToken2);
+            }, cancellationToken);
+        }
 
         IDisposable IObservable<T>.Subscribe(
             IObserver<T> observer)
@@ -25,7 +51,7 @@ namespace Enterprise.Core.Reactive
         }
 
         IAsyncSubscription IAsyncObservable<T>.SubscribeAsync(
-            IAsyncObserver<T> observer, 
+            IAsyncObserver<T> observer,
             CancellationToken cancellationToken)
         {
             var task = this.InternalSubscribeAsync(observer, cancellationToken);
@@ -83,12 +109,12 @@ namespace Enterprise.Core.Reactive
 
         private sealed class Subscriber
         {
-            private readonly AsyncSubjectBase<T> parent;
+            private readonly ConnectableAsyncObservable<T> parent;
 
             private readonly IAsyncObserver<T> observer;
 
             public Subscriber(
-                AsyncSubjectBase<T> parent, 
+                ConnectableAsyncObservable<T> parent,
                 IAsyncObserver<T> observer)
             {
                 this.parent = parent;
@@ -105,12 +131,12 @@ namespace Enterprise.Core.Reactive
         {
             private readonly object sink = new object();
 
-            private readonly AsyncSubjectBase<T> parent;
+            private readonly ConnectableAsyncObservable<T> parent;
 
             private readonly IAsyncObserver<T> observer;
 
             public Unsubscriber(
-                AsyncSubjectBase<T> observable,
+                ConnectableAsyncObservable<T> observable,
                 IAsyncObserver<T> observer)
             {
                 this.parent = observable;

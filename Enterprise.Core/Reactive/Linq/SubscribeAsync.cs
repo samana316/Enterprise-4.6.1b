@@ -22,7 +22,7 @@ namespace Enterprise.Core.Reactive.Linq
                 var publisher = source as IConnectableAsyncObservable<TSource>;
                 if (publisher != null)
                 {
-                    return publisher.SubscribeAsync(observer, cancellationToken);
+                    return publisher.SubscribeRawAsync(observer, cancellationToken);
                 }
 
                 var task = observableBase.SubscribeSafeAsync(observer, cancellationToken);
