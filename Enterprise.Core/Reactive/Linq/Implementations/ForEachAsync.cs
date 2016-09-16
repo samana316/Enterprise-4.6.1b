@@ -45,6 +45,8 @@ namespace Enterprise.Core.Reactive.Linq.Implementations
                 TSource value, 
                 CancellationToken cancellationToken)
             {
+                cancellationToken.ThrowIfCancellationRequested();
+
                 return parent.onNextAsync(value, parent.cancellationToken);
             }
         }

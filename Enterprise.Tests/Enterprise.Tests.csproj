@@ -138,6 +138,7 @@
     <Compile Include="Reactive\PagingOperations\PagingTest.cs" />
     <Compile Include="Reactive\Range\RangeTest.cs" />
     <Compile Include="Reactive\Repeat\RepeatTest.cs" />
+    <Compile Include="Reactive\Sample\SampleTest.cs" />
     <Compile Include="Reactive\Select\SelectTest.cs" />
     <Compile Include="Reactive\Subjects\SubjectTest.cs" />
     <Compile Include="Reactive\Temp\TempTest.cs" />

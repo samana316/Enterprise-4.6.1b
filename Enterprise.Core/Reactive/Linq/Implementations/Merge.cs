@@ -66,7 +66,7 @@ namespace Enterprise.Core.Reactive.Linq.Implementations
             if (this.maxConcurrent > 0)
             {
                 var size = this.maxConcurrent;
-                var functions = new List<Func<Task>>();
+                var functions = new AsyncList<Func<Task>>(new List<Func<Task>>());
 
                 await this.sources.ForEachAsync((source, cancellationToken2) =>
                 {
@@ -78,9 +78,10 @@ namespace Enterprise.Core.Reactive.Linq.Implementations
 
                 for (var i = 0; i < Math.Ceiling(functions.Count / (double)size); i++)
                 {
-                    var partition = functions.Skip(this.maxConcurrent * i).Take(this.maxConcurrent).ToList();
+                    var partition = functions.Skip(size * i).Take(size);
+                    var tasks = await partition.Select(function => function()).ToArrayAsync(cancellationToken);
 
-                    await Task.WhenAll(partition.Select(function => function()).ToArray());
+                    await Task.WhenAll(tasks);
                 }
             }
             else
