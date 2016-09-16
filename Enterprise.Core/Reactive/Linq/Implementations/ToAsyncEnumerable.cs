@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Enterprise.Core.Common.Runtime.CompilerServices;
 using Enterprise.Core.Common.Runtime.ExceptionServices;
 using Enterprise.Core.Linq;
 
@@ -21,13 +22,13 @@ namespace Enterprise.Core.Reactive.Linq.Implementations
             return new ToAsyncEnumerable<TSource>(this.source);
         }
 
-        protected override async Task EnumerateAsync(
+        protected override Task EnumerateAsync(
             IAsyncYield<TSource> yield, 
             CancellationToken cancellationToken)
         {
             var impl = new Impl(yield);
 
-            await this.source.SubscribeAsync(impl, cancellationToken);
+            return this.source.SubscribeAsync(impl, cancellationToken).ToTask();
         }
 
         private sealed class Impl : IAsyncObserver<TSource>

@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Enterprise.Core.Linq;
-using Enterprise.Core.Reactive;
 using Enterprise.Core.Reactive.Linq;
 using Enterprise.Tests.Reactive.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

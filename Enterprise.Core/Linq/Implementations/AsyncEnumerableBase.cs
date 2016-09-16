@@ -149,7 +149,6 @@ namespace Enterprise.Core.Linq
                 if (!IsComplete)
                 {
                     SetCanceled();
-                    //throw new AsyncEnumerationCanceledException();
                 }
             }
 

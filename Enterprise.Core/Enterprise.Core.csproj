@@ -163,6 +163,8 @@
     <Compile Include="Reactive\Implementations\ConnectableAsyncObservable.cs" />
     <Compile Include="Reactive\Interfaces\IAsyncObservable.cs" />
     <Compile Include="Reactive\Interfaces\IAsyncObserver.cs" />
+    <Compile Include="Reactive\Linq\Implementations\Merge.cs" />
+    <Compile Include="Reactive\Linq\Merge.cs" />
     <Compile Include="Reactive\Linq\Publish.cs" />
     <Compile Include="Reactive\Subjects\AsyncSubject.cs" />
     <Compile Include="Reactive\Subjects\AsyncSubjectBase.cs" />

@@ -120,6 +120,7 @@
     <Compile Include="Poc\IteratorObserverDualityTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reactive\Amb\AmbTest.cs" />
+    <Compile Include="Reactive\Merge\MergeTest.cs" />
     <Compile Include="Reactive\Publish\PublishTest.cs" />
     <Compile Include="Reactive\Catch\CatchTest.cs" />
     <Compile Include="Reactive\Concat\ConcatTest.cs" />
@@ -139,6 +140,7 @@
     <Compile Include="Reactive\Repeat\RepeatTest.cs" />
     <Compile Include="Reactive\Select\SelectTest.cs" />
     <Compile Include="Reactive\Subjects\SubjectTest.cs" />
+    <Compile Include="Reactive\Temp\TempTest.cs" />
     <Compile Include="Reactive\Where\WhereTest.cs" />
     <Compile Include="Reactive\While\WhileTest.cs" />
   </ItemGroup>

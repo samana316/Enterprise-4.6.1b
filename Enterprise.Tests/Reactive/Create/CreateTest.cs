@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
+using Enterprise.Core.Common.Runtime.CompilerServices;
 using Enterprise.Core.Linq;
 using Enterprise.Core.Reactive;
 using Enterprise.Tests.Reactive.Helpers;
@@ -275,6 +276,36 @@ namespace Enterprise.Tests.Reactive.Create
             }, CancellationToken.None);
 
             Assert.IsTrue(await AsyncEnumerable.Range(1, 9).SequenceEqualAsync(results));
+        }
+
+        [TestMethod]
+        [TestCategory(CategoryReactiveCreate)]
+        [Timeout(DefaultTimeout)]
+        public async Task ParallelSubscriptions()
+        {
+            var source1 = Create<int>(async (yield, cancellationToken) =>
+            {
+                await yield.ReturnAsync(1, cancellationToken);
+                await yield.ReturnAsync(2, cancellationToken);
+                await yield.ReturnAsync(3, cancellationToken);
+                yield.Break();
+            }).Take(3);
+
+            var source2 = Create<int>(async (yield, cancellationToken) =>
+            {
+                await yield.ReturnAsync(1, cancellationToken);
+                await yield.ReturnAsync(2, cancellationToken);
+                await yield.ReturnAsync(3, cancellationToken);
+                await yield.ReturnAsync(4, cancellationToken);
+                await yield.ReturnAsync(5, cancellationToken);
+                yield.Break();
+            }).Take(5).Select(x => x);
+
+            var observer = new SpyAsyncObserver<int>();
+
+            await Task.WhenAll(
+                source1.ForEachAsync(observer.OnNextAsync, CancellationToken.None),
+                source2.ForEachAsync(observer.OnNextAsync, CancellationToken.None));
         }
     }
 }
