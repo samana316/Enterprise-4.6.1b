@@ -29,6 +29,11 @@ namespace Enterprise.Tests.Reactive.Helpers
 
         public void OnCompleted()
         {
+            if (this.IsCompleted)
+            {
+                return;
+            }
+
             this.IsCompleted = true;
             Trace.WriteLine("OnCompleted");
         }
@@ -36,6 +41,11 @@ namespace Enterprise.Tests.Reactive.Helpers
         public void OnError(
             Exception error)
         {
+            if (this.IsCompleted)
+            {
+                return;
+            }
+
             this.errors.Add(error);
             Trace.WriteLine(error, "OnError");
         }
@@ -44,14 +54,17 @@ namespace Enterprise.Tests.Reactive.Helpers
             T value)
         {
             throw new NotSupportedException();
-            //this.items.Add(value);
-            //Console.WriteLine("OnNext: " + value);
         }
 
         public async Task OnNextAsync(
             T value,
             CancellationToken cancellationToken)
         {
+            if (this.IsCompleted)
+            {
+                return;
+            }
+
             try
             {
                 cancellationToken.ThrowIfCancellationRequested();

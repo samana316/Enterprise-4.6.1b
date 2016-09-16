@@ -6,5 +6,11 @@
         {
             return Implementations.Empty<TResult>.Instance;
         }
+
+        public static IAsyncObservable<TResult> Empty<TResult>(
+            TResult witness)
+        {
+            return Empty<TResult>();
+        }
     }
 }

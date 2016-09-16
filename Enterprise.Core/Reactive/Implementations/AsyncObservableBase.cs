@@ -85,6 +85,8 @@ namespace Enterprise.Core.Reactive
 
             public void Break()
             {
+                this.observer.OnCompleted();
+
                 throw new AsyncObservableCanceledException();
             }
 
