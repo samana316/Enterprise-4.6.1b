@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Enterprise.Core.Common.Runtime.ExceptionServices;
 using Enterprise.Core.Linq;
 
 namespace Enterprise.Core.Reactive.Linq.Implementations
@@ -24,7 +25,9 @@ namespace Enterprise.Core.Reactive.Linq.Implementations
             IAsyncYield<TResult> yield, 
             CancellationToken cancellationToken)
         {
-            throw this.exception;
+            this.exception.Rethrow();
+
+            return Task.CompletedTask;
         }
     }
 }

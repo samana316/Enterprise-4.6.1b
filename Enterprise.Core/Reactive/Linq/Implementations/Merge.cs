@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Enterprise.Core.Linq;
@@ -10,18 +11,24 @@ namespace Enterprise.Core.Reactive.Linq.Implementations
     {
         private readonly IAsyncObservable<IAsyncObservable<TSource>> sources;
 
+        private readonly int maxConcurrent;
+
         private readonly IAsyncObservable<Task<TSource>> sourcesT;
 
         public Merge(
-            IObservable<IAsyncObservable<TSource>> sources)
+            IObservable<IAsyncObservable<TSource>> sources,
+            int maxConcurrent = 0)
         {
             this.sources = sources.AsAsyncObservable();
+            this.maxConcurrent = maxConcurrent;
         }
 
         public Merge(
-            IEnumerable<IAsyncObservable<TSource>> sources)
+            IEnumerable<IAsyncObservable<TSource>> sources,
+            int maxConcurrent = 0)
         {
             this.sources = sources.ToAsyncObservable();
+            this.maxConcurrent = maxConcurrent;
         }
 
         public Merge(
@@ -56,16 +63,39 @@ namespace Enterprise.Core.Reactive.Linq.Implementations
             IAsyncYield<TSource> yield,
             CancellationToken cancellationToken)
         {
-            var tasks = new List<Task>();
-
-            await this.sources.ForEachAsync((source, cancellationToken2) =>
+            if (this.maxConcurrent > 0)
             {
-                tasks.Add(yield.ReturnAllAsync(source, cancellationToken2));
+                var size = this.maxConcurrent;
+                var functions = new List<Func<Task>>();
 
-                return Task.CompletedTask;
-            }, cancellationToken);
+                await this.sources.ForEachAsync((source, cancellationToken2) =>
+                {
+                    Func<Task> function = () => yield.ReturnAllAsync(source, cancellationToken2);
+                    functions.Add(function);
 
-            await Task.WhenAll(tasks);
+                    return Task.CompletedTask;
+                }, cancellationToken);
+
+                for (var i = 0; i < Math.Ceiling(functions.Count / (double)size); i++)
+                {
+                    var partition = functions.Skip(this.maxConcurrent * i).Take(this.maxConcurrent).ToList();
+
+                    await Task.WhenAll(partition.Select(function => function()).ToArray());
+                }
+            }
+            else
+            {
+                var tasks = new List<Task>();
+
+                await this.sources.ForEachAsync((source, cancellationToken2) =>
+                {
+                    tasks.Add(yield.ReturnAllAsync(source, cancellationToken2));
+
+                    return Task.CompletedTask;
+                }, cancellationToken);
+
+                await Task.WhenAll(tasks);
+            }
         }
 
         private async Task MergeImplTAsync(

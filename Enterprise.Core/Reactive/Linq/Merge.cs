@@ -86,11 +86,29 @@ namespace Enterprise.Core.Reactive.Linq
         }
 
         public static IAsyncObservable<TSource> Merge<TSource>(
+            this IEnumerable<IAsyncObservable<TSource>> sources,
+            int maxConcurrent)
+        {
+            Check.NotNull(sources, nameof(sources));
+
+            return new Merge<TSource>(sources, maxConcurrent);
+        }
+
+        public static IAsyncObservable<TSource> Merge<TSource>(
             this IObservable<IAsyncObservable<TSource>> sources)
         {
             Check.NotNull(sources, nameof(sources));
 
             return new Merge<TSource>(sources);
+        }
+
+        public static IAsyncObservable<TSource> Merge<TSource>(
+            this IObservable<IAsyncObservable<TSource>> sources,
+            int maxConcurrent)
+        {
+            Check.NotNull(sources, nameof(sources));
+
+            return new Merge<TSource>(sources, maxConcurrent);
         }
 
         public static IAsyncObservable<TSource> Merge<TSource>(

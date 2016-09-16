@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Enterprise.Core.Linq;
@@ -21,23 +22,15 @@ namespace Enterprise.Tests.Reactive.Merge
         [TestCategory(CategoryReactiveMerge)]
         public async Task Simple()
         {
-            var s1 = AsyncObservable.Interval(TimeSpan.FromMilliseconds(250))
-                .Take(3);
-            
-            var s2 = AsyncObservable.Interval(TimeSpan.FromMilliseconds(150))
-                .Take(5)
-                .Select(i => i + 100);
-
-            var observer1 = new SpyAsyncObserver<long>();
-            var observer2 = new SpyAsyncObserver<long>();
+            var s1 = AsyncObservable.Range(1, 5);
+            var s2 = AsyncObservable.Range(101, 5);
 
             var query = s1.Merge(s2);
-            var observer = new SpyAsyncObserver<long>();
+            var observer = new SpyAsyncObserver<int>();
             await query.SubscribeAsync(observer);
 
             // Can't compare the entire sequence due to race condition.
-            var expected = new long[] { 100, 0, 101 };
-            Assert.IsTrue(await observer.Items.Take(3).SequenceEqualAsync(expected));
+            Assert.AreEqual(10, await observer.Items.CountAsync());
         }
 
         [TestMethod]
@@ -87,6 +80,72 @@ namespace Enterprise.Tests.Reactive.Merge
 
             var expected = new[] { 100, 200, 300 };
             Assert.IsTrue(await observer.Items.SequenceEqualAsync(expected));
+        }
+
+        [TestMethod]
+        [TestCategory(CategoryReactiveMerge)]
+        public async Task WithMaxConcurrent()
+        {
+            var dueTimes = new long[] { 10, 100, 200, 10, 100 };
+            var sources = Create<IAsyncObservable<long>>(async (yield, cancellationToken) =>
+            {
+                foreach (var dueTime in dueTimes)
+                {
+                    var timer = AsyncObservable
+                        .Timer(TimeSpan.FromMilliseconds(dueTime))
+                        .Select(i => i + dueTime);
+
+                    await yield.ReturnAsync(timer, cancellationToken);
+                }
+            });
+            
+            var query = sources.Merge(3);
+            var observer = new SpyAsyncObserver<long>();
+
+            var stopwatch = Stopwatch.StartNew();
+            await query.SubscribeAsync(observer);
+            stopwatch.Stop();
+
+            Assert.IsTrue(await observer.Items.SequenceEqualAsync(dueTimes));
+            Assert.IsTrue(stopwatch.ElapsedMilliseconds < dueTimes.Sum());
+        }
+
+        [TestMethod]
+        [TestCategory(CategoryReactiveMerge)]
+        public async Task WithException()
+        {
+            Exception exception = new NotImplementedException();
+
+            var x = 0;
+            try
+            {
+                var y = 1 / x;
+            }
+            catch (DivideByZeroException dbze)
+            {
+                exception = dbze;
+            }
+
+            var dueTimes = new long[] { 10, 100, 200, 10, 100 };
+            var sources = Create<IAsyncObservable<long>>(async (yield, cancellationToken) =>
+            {
+                var @throw = Throw<long>(exception);
+                await yield.ReturnAsync(@throw, cancellationToken);
+
+                foreach (var dueTime in dueTimes)
+                {
+                    var timer = AsyncObservable
+                        .Timer(TimeSpan.FromMilliseconds(dueTime))
+                        .Select(i => i + dueTime);
+
+                    await yield.ReturnAsync(timer, cancellationToken);
+                }
+            });
+
+            var query = sources.Merge(3);
+            var observer = new SpyAsyncObserver<long>();
+            
+            await query.SubscribeAsync(observer);
         }
     }
 }

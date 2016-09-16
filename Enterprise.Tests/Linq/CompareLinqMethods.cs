@@ -74,7 +74,7 @@ namespace Enterprise.Tests.Linq
                 var linqMethods = this.GetLinqMethods(typeof(Observable));
                 var asyncLinqMethods = this.GetLinqMethods(typeof(AsyncObservable));
 
-                var query = linqMethods.Except(asyncLinqMethods);
+                var query = linqMethods.Except(asyncLinqMethods).Except(this.GetLinqMethods(typeof(Enumerable)));
 
                 foreach (var item in query)
                 {
