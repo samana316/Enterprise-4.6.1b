@@ -70,31 +70,17 @@ namespace Enterprise.Tests.Reactive.Compatibility
         public async Task SubscribeAsync()
         {
             var source = new TestObservable();
+            var observer = new SpyAsyncObserver<int>();
+            var subscription = source.SubscribeAsync(observer);
+            await Task.Delay(500);
 
-            var observer1 = new SpyAsyncObserver<int>();
-            var observer2 = new SpyAsyncObserver<int>();
+            subscription.Dispose();
 
-            var subscription1 = source.SubscribeAsync(observer1);
-            await Task.Delay(25);
+            var count = await observer.Items.CountAsync();
+            Trace.WriteLine(count, "Count1");
 
-            var subscription2 = source.SubscribeAsync(observer2);
-            await Task.Delay(50);
-
-            subscription1.Dispose();
-            await Task.Delay(100);
-            subscription2.Dispose();
-
-            var count1 = await observer1.Items.CountAsync();
-            Trace.WriteLine(count1, "Count1");
-
-            var count2 = await observer2.Items.CountAsync();
-            Trace.WriteLine(count2, "Count2");
-
-            Assert.IsTrue(count1 > 0);
-            //Assert.IsFalse(observer1.Error.InnerExceptions.Any());
-
-            Assert.IsTrue(count2 > count1);
-            //Assert.IsFalse(observer2.Error.InnerExceptions.Any());
+            Assert.IsTrue(count > 0);
+            Assert.IsFalse(observer.Error.InnerExceptions.Any());
         }
 
         private sealed class TestObservable : IObservable<int>

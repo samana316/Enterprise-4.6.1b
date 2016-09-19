@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Enterprise.Core.Common.Runtime.ExceptionServices;
@@ -48,6 +49,7 @@ namespace Enterprise.Tests.Reactive.Helpers
 
             this.errors.Add(error);
             Trace.WriteLine(error, "OnError");
+            Trace.WriteLine(this.items.LastOrDefault(), "Current");
         }
 
         public void OnNext(

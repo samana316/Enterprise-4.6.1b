@@ -167,11 +167,15 @@
     <Compile Include="Reactive\Linq\Finally.cs" />
     <Compile Include="Reactive\Linq\Implementations\Finally.cs" />
     <Compile Include="Reactive\Linq\Implementations\Merge.cs" />
+    <Compile Include="Reactive\Linq\Implementations\OnErrorResumeNext.cs" />
     <Compile Include="Reactive\Linq\Implementations\Sample.cs" />
+    <Compile Include="Reactive\Linq\Implementations\ToList.cs" />
     <Compile Include="Reactive\Linq\Implementations\Using.cs" />
     <Compile Include="Reactive\Linq\Merge.cs" />
+    <Compile Include="Reactive\Linq\OnErrorResumeNext.cs" />
     <Compile Include="Reactive\Linq\Publish.cs" />
     <Compile Include="Reactive\Linq\Sample.cs" />
+    <Compile Include="Reactive\Linq\ToList.cs" />
     <Compile Include="Reactive\Linq\Using.cs" />
     <Compile Include="Reactive\Subjects\AsyncSubject.cs" />
     <Compile Include="Reactive\Subjects\AsyncSubjectBase.cs" />

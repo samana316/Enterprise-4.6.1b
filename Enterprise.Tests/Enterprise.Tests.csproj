@@ -122,6 +122,7 @@
     <Compile Include="Reactive\Amb\AmbTest.cs" />
     <Compile Include="Reactive\Finally\FinallyTest.cs" />
     <Compile Include="Reactive\Merge\MergeTest.cs" />
+    <Compile Include="Reactive\OnErrorResumeNext\OnErrorResumeNextTest.cs" />
     <Compile Include="Reactive\Publish\PublishTest.cs" />
     <Compile Include="Reactive\Catch\CatchTest.cs" />
     <Compile Include="Reactive\Concat\ConcatTest.cs" />

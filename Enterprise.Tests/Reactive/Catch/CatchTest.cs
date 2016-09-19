@@ -33,10 +33,26 @@ namespace Enterprise.Tests.Reactive.Catch
             var first = Throw<int>(new InvalidOperationException());
             var second = Throw<int>(new InvalidOperationException());
             var third = Return(1);
+            var fourth = Return(2);
 
-            var query = Catch<int>(first, second, third);
+            var query = Catch<int>(first, second, third, fourth);
 
-            Assert.AreEqual(1, await query);
+            Assert.IsTrue(await query.SequenceEqual(new[] { 1 }));
+        }
+
+        [TestMethod]
+        [TestCategory(CategoryReactiveCatch)]
+        [Timeout(DefaultTimeout)]
+        public async Task Infinite()
+        {
+            var first = Throw<int>(new InvalidOperationException());
+            var second = Repeat<int>(1).Take(2);
+            var third = Throw<int>(new InvalidOperationException());
+            var fourth = Return(2);
+
+            var query = Catch<int>(first, second, third, fourth);
+
+            Assert.IsTrue(await query.SequenceEqual(new[] { 1, 1 }));
         }
 
         [TestMethod]

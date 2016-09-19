@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reactive.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Enterprise.Core.Reactive.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -26,7 +27,7 @@ namespace Enterprise.Tests.Reactive.Temp
             var source = AsyncObservable.Create<KeyValuePair<string, string>>(async (yield, cancellationToken) => 
             {
                 var directories = Directory.GetDirectories(@"C:\Git\Fanatics\Wms");
-                //var files = Directory.GetFiles(@"C:\Git\Fanatics\Wms", "*.cs", SearchOption.AllDirectories);
+
                 var files =
                     from directory in directories
                     where !directory.Contains("Wms2")
@@ -45,14 +46,13 @@ namespace Enterprise.Tests.Reactive.Temp
                             var result = new KeyValuePair<string, string>(file, text);
 
                             await yield.ReturnAsync(result, cancellationToken);
-                        } 
+                        }
                     }
                 }
             });
 
-            var query = from item in source where item.Value.Contains("UsePyramidForOutbound") select item.Key;
-
-            await query.ForEachAsync(x => Console.Out.WriteLineAsync(x));
+            var query = from item in source where item.Value.Contains("Descrepant") select item.Key;
+            await query.ForEachAsync((x, ct) => Console.Out.WriteLineAsync(x), CancellationToken.None);
         }
     }
 }
