@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 using Enterprise.Core.Linq;
 using Enterprise.Core.Reactive.Linq;
@@ -32,6 +33,26 @@ namespace Enterprise.Tests.Reactive.Finally
             await query.SubscribeAsync(observer);
 
             Assert.IsTrue(await observer.Items.SequenceEqualAsync(new[] { 1, 2, 3 }));
+            Assert.IsTrue(isFinallyCalled);
+        }
+
+        [TestMethod]
+        [TestCategory(CategoryReactiveFinally)]
+        public async Task Error()
+        {
+            var isFinallyCalled = false;
+            var source = AsyncObservable.Range(1, 3).Concat(Throw<int>(new NotImplementedException()));
+            var query = source.Finally(() =>
+            {
+                Trace.WriteLine("Finally");
+                isFinallyCalled = true;
+            });
+
+            var observer = new SpyAsyncObserver<int>();
+            await query.SubscribeAsync(observer);
+
+            Assert.IsTrue(await observer.Items.SequenceEqualAsync(new[] { 1, 2, 3 }));
+            Assert.IsTrue(observer.Error.InnerExceptions.Any());
             Assert.IsTrue(isFinallyCalled);
         }
     }

@@ -149,6 +149,7 @@
     <Compile Include="Linq\Interfaces\IAsyncEnumerator.cs" />
     <Compile Include="Linq\Implementations\LookUp.cs" />
     <Compile Include="Linq\Implementations\Map.cs" />
+    <Compile Include="Linq\Interfaces\IAsyncYieldBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reactive\AsyncObservable.cs" />
     <Compile Include="Reactive\AsyncObserver.cs" />
@@ -167,9 +168,11 @@
     <Compile Include="Reactive\Linq\Implementations\Finally.cs" />
     <Compile Include="Reactive\Linq\Implementations\Merge.cs" />
     <Compile Include="Reactive\Linq\Implementations\Sample.cs" />
+    <Compile Include="Reactive\Linq\Implementations\Using.cs" />
     <Compile Include="Reactive\Linq\Merge.cs" />
     <Compile Include="Reactive\Linq\Publish.cs" />
     <Compile Include="Reactive\Linq\Sample.cs" />
+    <Compile Include="Reactive\Linq\Using.cs" />
     <Compile Include="Reactive\Subjects\AsyncSubject.cs" />
     <Compile Include="Reactive\Subjects\AsyncSubjectBase.cs" />
     <Compile Include="Reactive\Subjects\IAsyncSubject.cs" />

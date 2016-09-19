@@ -143,6 +143,7 @@
     <Compile Include="Reactive\Select\SelectTest.cs" />
     <Compile Include="Reactive\Subjects\SubjectTest.cs" />
     <Compile Include="Reactive\Temp\TempTest.cs" />
+    <Compile Include="Reactive\Using\UsingTest.cs" />
     <Compile Include="Reactive\Where\WhereTest.cs" />
     <Compile Include="Reactive\While\WhileTest.cs" />
   </ItemGroup>
