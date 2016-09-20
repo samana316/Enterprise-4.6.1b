@@ -2,7 +2,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Enterprise.Core.Common.Runtime.CompilerServices;
-using Enterprise.Core.Linq;
 using Enterprise.Core.Reactive.Linq.Implementations;
 using Enterprise.Core.Utilities;
 

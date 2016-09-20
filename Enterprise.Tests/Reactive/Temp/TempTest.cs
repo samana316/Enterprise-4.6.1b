@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Enterprise.Core.Reactive.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Enterprise.Tests.Reactive.Helpers;
 
 namespace Enterprise.Tests.Reactive.Temp
 {
@@ -16,7 +17,17 @@ namespace Enterprise.Tests.Reactive.Temp
         [TestMethod]
         public void TestMethod1()
         {
-            var x = Observable.Merge<int>(Observable.Return(1));
+            var x = Observable.Merge(Observable.Return(1));
+
+            var example = new { Value = 1 };
+            var source = AsyncObservable.Repeat(example, 3);
+            var query =
+                from item in source
+                where item.Value > 0
+                select item;
+
+            var observer = query.CreateSpyAsyncObserver();
+            query.SubscribeAsync(observer);
         }
 
         [TestMethod]

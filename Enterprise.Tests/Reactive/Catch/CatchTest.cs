@@ -63,7 +63,8 @@ namespace Enterprise.Tests.Reactive.Catch
                 from item in AsyncObservable.Range(1, 5)
                 select item == 5 ? 1 / (5 - item) : item;
 
-            var query = source.Catch<int, DivideByZeroException>(ex => Return(5));
+            var query = source.Catch<int, DivideByZeroException>(exception => Return(5).Do(
+                (value, cancellationToken) => Console.Out.WriteLineAsync("OnError: " + exception)));
 
             Assert.IsTrue(await query.SequenceEqual(AsyncEnumerable.Range(1, 5)));
         }

@@ -17,7 +17,7 @@ namespace Enterprise.Core.Reactive.Linq.Implementations
 
         public override AsyncIterator<TSource> Clone()
         {
-            return new Catch<TSource>(this.sources);
+            return new OnErrorResumeNext<TSource>(this.sources);
         }
 
         protected override Task ProduceAsync(

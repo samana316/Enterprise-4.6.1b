@@ -118,6 +118,7 @@
     <Compile Include="Poc\CustomAsyncTest.cs" />
     <Compile Include="Poc\DebuggerTest.cs" />
     <Compile Include="Poc\IteratorObserverDualityTest.cs" />
+    <Compile Include="Poc\StructTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reactive\Amb\AmbTest.cs" />
     <Compile Include="Reactive\Finally\FinallyTest.cs" />
@@ -141,6 +142,7 @@
     <Compile Include="Reactive\Range\RangeTest.cs" />
     <Compile Include="Reactive\Repeat\RepeatTest.cs" />
     <Compile Include="Reactive\Sample\SampleTest.cs" />
+    <Compile Include="Reactive\SelectMany\SelectManyTest.cs" />
     <Compile Include="Reactive\Select\SelectTest.cs" />
     <Compile Include="Reactive\Subjects\SubjectTest.cs" />
     <Compile Include="Reactive\Temp\TempTest.cs" />

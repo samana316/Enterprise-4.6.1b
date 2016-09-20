@@ -10,11 +10,28 @@ using Enterprise.Core.Reactive;
 
 namespace Enterprise.Tests.Reactive.Helpers
 {
+    internal static class SpyAsyncObserver
+    {
+        public static SpyAsyncObserver<TSource> CreateSpyAsyncObserver<TSource>(
+            this IAsyncObservable<TSource> source,
+            int delay = 1)
+        {
+            return new SpyAsyncObserver<TSource> { MillisecondsDelay = delay };
+        }
+    }
+
     internal sealed class SpyAsyncObserver<T> : IAsyncObserver<T>
     {
         private readonly IList<T> items = new List<T>();
 
         private readonly IList<Exception> errors = new List<Exception>();
+
+        public SpyAsyncObserver()
+        {
+            this.MillisecondsDelay = 1;
+        }
+
+        public int MillisecondsDelay { get; set; }
 
         public IAsyncEnumerable<T> Items
         {
@@ -71,7 +88,10 @@ namespace Enterprise.Tests.Reactive.Helpers
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                await Task.Delay(1, cancellationToken);
+                if (this.MillisecondsDelay > 0)
+                {
+                    await Task.Delay(this.MillisecondsDelay, cancellationToken);
+                }
 
                 this.items.Add(value);
                 await Console.Out.WriteLineAsync("OnNextAsync: " + value);
