@@ -169,7 +169,7 @@
     <Compile Include="Reactive\Linq\Implementations\Merge.cs" />
     <Compile Include="Reactive\Linq\Implementations\OnErrorResumeNext.cs" />
     <Compile Include="Reactive\Linq\Implementations\Sample.cs" />
-    <Compile Include="Reactive\Linq\Implementations\SelectMany.cs" />
+    <Compile Include="Reactive\Linq\Implementations\SelectMany2.cs" />
     <Compile Include="Reactive\Linq\Implementations\ToList.cs" />
     <Compile Include="Reactive\Linq\Implementations\Using.cs" />
     <Compile Include="Reactive\Linq\Merge.cs" />

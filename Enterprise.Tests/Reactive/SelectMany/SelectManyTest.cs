@@ -107,6 +107,18 @@ namespace Enterprise.Tests.Reactive.SelectMany
         [TestMethod]
         [TestCategory(CategoryReactiveSelectMany)]
         [Timeout(DefaultTimeout)]
+        public async Task SelfAsParallel()
+        {
+            var source = AsyncObservable.Timer(TimeSpan.FromMilliseconds(300)).Repeat(5);
+            var query = source.SelectMany(x => Return(x));
+
+            var observer = new SpyAsyncObserver<long> { MillisecondsDelay = 0 };
+            await query.SubscribeAsync(observer);
+        }
+
+        [TestMethod]
+        [TestCategory(CategoryReactiveSelectMany)]
+        [Timeout(DefaultTimeout)]
         public async Task QueryExpression()
         {
             var source = AsyncObservable.Range(1, 5);
@@ -125,8 +137,41 @@ namespace Enterprise.Tests.Reactive.SelectMany
         [TestMethod]
         [TestCategory(CategoryReactiveSelectMany)]
         [Timeout(DefaultTimeout)]
+        public async Task Delegates()
+        {
+            var observer = new SpyAsyncObserver<int> { MillisecondsDelay = 0 };
+            var source = AsyncObservable.Range(1, 5);
+            var query = source.SelectMany(
+               (x, i) => Return(x == 5 ? 1 / (5 - x) : x + i),
+                ex => { observer.OnError(ex); return Return(-1); },
+                () => Return(0));
+
+            await query.SubscribeAsync(observer);
+
+            Assert.IsTrue(await observer.Items.SequenceEqualAsync(
+                new [] { 1, 3, 5, 7, -1, 0 }));
+        }
+
+        [TestMethod]
+        [TestCategory(CategoryReactiveSelectMany)]
+        public async Task Other()
+        {
+            var source = AsyncObservable.Range(1, 5);
+            var query = source.SelectMany(Return(0));
+            var observer = new SpyAsyncObserver<int> { MillisecondsDelay = 0 };
+
+            await query.SubscribeAsync(observer);
+            Assert.IsTrue(await observer.Items.SequenceEqualAsync(Enumerable.Repeat(0, 5)));
+            Assert.IsTrue(observer.IsCompleted);
+            Assert.IsFalse(observer.Error.InnerExceptions.Any());
+        }
+
+        [TestMethod]
+        [TestCategory(CategoryReactiveSelectMany)]
+        [Timeout(DefaultTimeout)]
         public async Task Tasks()
         {
+            var observer = new SpyAsyncObserver<int> { MillisecondsDelay = 0 };
             var source = AsyncObservable.Range(1, 5);
             var query = source.SelectMany(async (value, cancellationToken) =>
             {
@@ -134,10 +179,18 @@ namespace Enterprise.Tests.Reactive.SelectMany
                 return value;
             });
 
-            var observer = new SpyAsyncObserver<int> { MillisecondsDelay = 0 };
             await query.SubscribeAsync(observer);
-
             Assert.IsTrue(await observer.Items.SequenceEqualAsync(Enumerable.Range(1, 5)));
+            observer.Reset();
+
+            query = source.SelectMany(async (value, index, cancellationToken) =>
+            {
+                await Task.Delay(value * 100, cancellationToken);
+                return value + index;
+            });
+
+            await query.SubscribeAsync(observer);
+            Assert.IsTrue(await observer.Items.SequenceEqualAsync(new[] { 1, 3, 5, 7, 9 }));
         }
 
         private IEnumerable<int> PullSubValues(

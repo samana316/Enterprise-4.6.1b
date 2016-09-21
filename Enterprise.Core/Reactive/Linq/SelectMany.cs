@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using Enterprise.Core.Linq;
+using Enterprise.Core.Reactive.Linq.Implementations;
 using Enterprise.Core.Utilities;
 
 namespace Enterprise.Core.Reactive.Linq
@@ -15,34 +15,40 @@ namespace Enterprise.Core.Reactive.Linq
         {
             Check.NotNull(source, nameof(source));
             Check.NotNull(selector, nameof(selector));
-            
-            return Create<TResult>(async (yield, cancellationToken) =>
-            {
-                var tasks = new List<Task>();
 
-                await source.ForEachAsync(async (item, cancellationToken2) =>
-                {
-                    await Task.Yield();
-
-                    tasks.Add(yield.ReturnAllAsync(selector(item), cancellationToken2));
-                }, cancellationToken);
-
-                await Task.WhenAll(tasks);
-            });
+            return new SelectMany<TSource, TResult>(source, selector);
         }
 
         public static IAsyncObservable<TResult> SelectMany<TSource, TResult>(
             this IAsyncObservable<TSource> source, 
             Func<TSource, Task<TResult>> selector)
         {
-            throw new NotImplementedException();
+            Check.NotNull(source, nameof(source));
+            Check.NotNull(selector, nameof(selector));
+
+            Func<TSource, CancellationToken, Task<TResult>> overload = (value, cancellationToken) =>
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                return selector(value);
+            };
+
+            return new SelectMany<TSource, TResult>(source, overload);
         }
 
         public static IAsyncObservable<TResult> SelectMany<TSource, TResult>(
             this IAsyncObservable<TSource> source, 
             Func<TSource, int, Task<TResult>> selector)
         {
-            throw new NotImplementedException();
+            Check.NotNull(source, nameof(source));
+            Check.NotNull(selector, nameof(selector));
+
+            Func<TSource, int, CancellationToken, Task<TResult>> overload = (value, index, cancellationToken) =>
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                return selector(value, index);
+            };
+
+            return new SelectMany<TSource, TResult>(source, overload);
         }
 
         public static IAsyncObservable<TResult> SelectMany<TSource, TResult>(
@@ -52,44 +58,37 @@ namespace Enterprise.Core.Reactive.Linq
             Check.NotNull(source, nameof(source));
             Check.NotNull(selector, nameof(selector));
 
-            return Create<TResult>(async (yield, cancellationToken) =>
-            {
-                var tasks = new List<Task>();
-
-                await source.ForEachAsync(async (item, cancellationToken2) =>
-                {
-                    await Task.Yield();
-
-                    Func<Task> function = async () => await yield.ReturnAsync(
-                        await selector(item, cancellationToken2), cancellationToken2);
-
-                    tasks.Add(function());
-
-                }, cancellationToken);
-
-                await Task.WhenAll(tasks);
-            });
+            return new SelectMany<TSource, TResult>(source, selector);
         }
 
         public static IAsyncObservable<TResult> SelectMany<TSource, TResult>(
             this IAsyncObservable<TSource> source, 
             Func<TSource, int, CancellationToken, Task<TResult>> selector)
         {
-            throw new NotImplementedException();
+            Check.NotNull(source, nameof(source));
+            Check.NotNull(selector, nameof(selector));
+
+            return new SelectMany<TSource, TResult>(source, selector);
         }
 
         public static IAsyncObservable<TResult> SelectMany<TSource, TResult>(
             this IAsyncObservable<TSource> source, 
             Func<TSource, int, IObservable<TResult>> selector)
         {
-            throw new NotImplementedException();
+            Check.NotNull(source, nameof(source));
+            Check.NotNull(selector, nameof(selector));
+
+            return new SelectMany<TSource, TResult>(source, selector);
         }
 
         public static IAsyncObservable<TOther> SelectMany<TSource, TOther>(
             this IAsyncObservable<TSource> source, 
             IObservable<TOther> other)
         {
-            throw new NotImplementedException();
+            Check.NotNull(source, nameof(source));
+            Check.NotNull(other, nameof(other));
+
+            return new SelectMany<TSource, TOther>(source, value => other);
         }
 
         public static IAsyncObservable<TResult> SelectMany<TSource, TResult>(
@@ -99,20 +98,17 @@ namespace Enterprise.Core.Reactive.Linq
             Check.NotNull(source, nameof(source));
             Check.NotNull(selector, nameof(selector));
 
-            return Create<TResult>((yield, cancellationToken) =>
-            {
-                return source.ForEachAsync((item, cancellationToken2) =>
-                {
-                    return yield.ReturnAllAsync(selector(item), cancellationToken2);
-                }, cancellationToken);
-            });
+            return new SelectMany<TSource, TResult>(source, selector);
         }
 
         public static IAsyncObservable<TResult> SelectMany<TSource, TResult>(
             this IAsyncObservable<TSource> source, 
             Func<TSource, int, IEnumerable<TResult>> selector)
         {
-            throw new NotImplementedException();
+            Check.NotNull(source, nameof(source));
+            Check.NotNull(selector, nameof(selector));
+
+            return new SelectMany<TSource, TResult>(source, selector);
         }
 
         public static IAsyncObservable<TResult> SelectMany<TSource, TResult>(
@@ -121,7 +117,12 @@ namespace Enterprise.Core.Reactive.Linq
             Func<Exception, IObservable<TResult>> onError, 
             Func<IObservable<TResult>> onCompleted)
         {
-            throw new NotImplementedException();
+            Check.NotNull(source, nameof(source));
+            Check.NotNull(onNext, nameof(onNext));
+            Check.NotNull(onError, nameof(onError));
+            Check.NotNull(onCompleted, nameof(onCompleted));
+
+            return new SelectMany<TSource, TResult>(source, onNext, onError, onCompleted);
         }
 
         public static IAsyncObservable<TResult> SelectMany<TSource, TResult>(
@@ -130,7 +131,12 @@ namespace Enterprise.Core.Reactive.Linq
             Func<Exception, IObservable<TResult>> onError, 
             Func<IObservable<TResult>> onCompleted)
         {
-            throw new NotImplementedException();
+            Check.NotNull(source, nameof(source));
+            Check.NotNull(onNext, nameof(onNext));
+            Check.NotNull(onError, nameof(onError));
+            Check.NotNull(onCompleted, nameof(onCompleted));
+
+            return new SelectMany<TSource, TResult>(source, onNext, onError, onCompleted);
         }
 
         public static IAsyncObservable<TResult> SelectMany<TSource, TTaskResult, TResult>(
