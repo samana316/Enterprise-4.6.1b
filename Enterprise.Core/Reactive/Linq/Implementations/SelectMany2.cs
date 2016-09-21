@@ -213,7 +213,7 @@ namespace Enterprise.Core.Reactive.Linq.Implementations
                 await this.parent.source.ForEachAsync((item, cancellationToken2) =>
                 {
                     var results = this.parent.selectorI == null ?
-                        this.parent.selector(item) : this.parent.selectorI(item, index++);
+                        this.parent.selectorE(item) : this.parent.selectorEI(item, index++);
 
                     tasks.Add(yield.ReturnAllAsync(results, cancellationToken2));
 
