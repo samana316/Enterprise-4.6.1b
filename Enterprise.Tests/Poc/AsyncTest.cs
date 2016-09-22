@@ -126,6 +126,17 @@ namespace Enterprise.Tests.Poc
 
         [TestMethod]
         [TestCategory(CategoryPocAsync)]
+        [Timeout(1000)]
+        public async Task WhenAnyInfinite()
+        {
+            var task1 = Task.Delay(500);
+            var task2 = Task.Delay(int.MaxValue);
+
+            await Task.WhenAny(task1, task2);
+        }
+
+        [TestMethod]
+        [TestCategory(CategoryPocAsync)]
         [ExpectedException(typeof(NotImplementedException))]
         public async Task CustomAwaitable()
         {

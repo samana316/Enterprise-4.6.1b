@@ -175,6 +175,7 @@
     <Compile Include="Reactive\Linq\Implementations\SelectMany3.cs" />
     <Compile Include="Reactive\Linq\Implementations\ToList.cs" />
     <Compile Include="Reactive\Linq\Implementations\Using.cs" />
+    <Compile Include="Reactive\Linq\Implementations\Zip3.cs" />
     <Compile Include="Reactive\Linq\Merge.cs" />
     <Compile Include="Reactive\Linq\OnErrorResumeNext.cs" />
     <Compile Include="Reactive\Linq\Publish.cs" />
@@ -182,6 +183,7 @@
     <Compile Include="Reactive\Linq\SelectMany.cs" />
     <Compile Include="Reactive\Linq\ToList.cs" />
     <Compile Include="Reactive\Linq\Using.cs" />
+    <Compile Include="Reactive\Linq\Zip.cs" />
     <Compile Include="Reactive\Subjects\AsyncSubject.cs" />
     <Compile Include="Reactive\Subjects\AsyncSubjectBase.cs" />
     <Compile Include="Reactive\Subjects\IAsyncSubject.cs" />

@@ -109,7 +109,7 @@ namespace Enterprise.Tests.Reactive.SelectMany
         [Timeout(DefaultTimeout)]
         public async Task SelfAsParallel()
         {
-            var source = AsyncObservable.Timer(TimeSpan.FromMilliseconds(300)).Repeat(5);
+            var source = AsyncObservable.Timer(TimeSpan.FromMilliseconds(300)).Repeat(10);
             var query = source.SelectMany(x => Return(x));
 
             var observer = new SpyAsyncObserver<long> { MillisecondsDelay = 0 };

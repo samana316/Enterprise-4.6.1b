@@ -150,6 +150,7 @@
     <Compile Include="Reactive\Using\UsingTest.cs" />
     <Compile Include="Reactive\Where\WhereTest.cs" />
     <Compile Include="Reactive\While\WhileTest.cs" />
+    <Compile Include="Reactive\Zip\ZipTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Enterprise.Core\Enterprise.Core.csproj">
