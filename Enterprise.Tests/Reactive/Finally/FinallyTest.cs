@@ -11,7 +11,7 @@ using static Enterprise.Core.Reactive.Linq.AsyncObservable;
 namespace Enterprise.Tests.Reactive.Finally
 {
     [TestClass]
-    public class FinallyTest
+    public sealed class FinallyTest
     {
         private const int DefaultTimeout = 1000;
 

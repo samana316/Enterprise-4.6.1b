@@ -65,5 +65,27 @@ namespace Enterprise.Core.Utilities
 
             return value;
         }
+
+        public static IComparable<T> NotLessThanOrEqualDefault<T>(
+            IComparable<T> value)
+            where T : struct
+        {
+            return NotLessThanOrEqualDefault(value, nameof(value));
+        }
+
+        public static IComparable<T> NotLessThanOrEqualDefault<T>(
+            IComparable<T> value,
+            string parameterName)
+            where T : struct
+        {
+            var defaultValue = default(T);
+
+            if (value.CompareTo(defaultValue) <= 0)
+            {
+                throw new ArgumentOutOfRangeException(parameterName);
+            }
+
+            return value;
+        }
     }
 }

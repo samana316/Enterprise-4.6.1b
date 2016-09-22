@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -94,6 +95,23 @@ namespace Enterprise.Tests.Reactive.Helpers
                 }
 
                 this.items.Add(value);
+
+                var sequence = value as IEnumerable;
+                if (sequence != null)
+                {
+                    await Console.Out.WriteLineAsync("--Parent: " + this.items.Count);
+
+                    foreach (var item in sequence)
+                    {
+                        await Console.Out.WriteLineAsync(string.Format(
+                            @"Item: {0} @ {1}",
+                            item,
+                            DateTime.Now));
+                    }
+
+                    return;
+                }
+
                 await Console.Out.WriteLineAsync("OnNextAsync: " + value);
             }
             catch (Exception exception)
