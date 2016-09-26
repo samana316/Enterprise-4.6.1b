@@ -55,14 +55,14 @@ namespace Enterprise.Core.Reactive.Linq.Implementations
             IAsyncYield<TSource> yield,
             CancellationToken cancellationToken)
         {
-            return this.source.ForEachAsync(async (item, cancellationToken2) =>
+            return this.source.ForEachAsync((item, cancellationToken2) =>
             {
                 if (!this.predicate(item))
                 {
                     yield.Break();
                 }
 
-                await yield.ReturnAsync(item, cancellationToken2);
+                return yield.ReturnAsync(item, cancellationToken2);
             }, cancellationToken);
         }
 
@@ -72,7 +72,7 @@ namespace Enterprise.Core.Reactive.Linq.Implementations
         {
             var index = 0;
 
-            return this.source.ForEachAsync(async (item, cancellationToken2) =>
+            return this.source.ForEachAsync((item, cancellationToken2) =>
             {
                 if (!this.predicateI(item, index))
                 {
@@ -80,7 +80,7 @@ namespace Enterprise.Core.Reactive.Linq.Implementations
                 }
 
                 index++;
-                await yield.ReturnAsync(item, cancellationToken2);
+                return yield.ReturnAsync(item, cancellationToken2);
             }, cancellationToken);
         }
     }

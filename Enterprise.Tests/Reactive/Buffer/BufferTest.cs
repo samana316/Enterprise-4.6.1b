@@ -181,5 +181,28 @@ namespace Enterprise.Tests.Reactive.Buffer
             Assert.IsTrue(buffers[0].SequenceEqual(new long[] { 0, 1, 2 }));
             Assert.IsTrue(buffers[1].SequenceEqual(new long[] { 5, 6, 7 }));
         }
+
+        [TestMethod]
+        [TestCategory(CategoryReactiveBuffer)]
+        [Timeout(DefaultTimeout)]
+        public async Task ByCountStandardInfinite()
+        {
+            var source = AsyncObservable.Range(1, 20).Repeat();
+            var query = source.Buffer(4).Take(5);
+
+            var observer = query.CreateSpyAsyncObserver();
+            await query.SubscribeAsync(observer);
+
+            Assert.IsTrue(observer.IsCompleted);
+            Assert.IsFalse(observer.Error.InnerExceptions.Any());
+            Assert.AreEqual(5, await observer.Items.CountAsync());
+
+            var buffers = await observer.Items.ToListAsync();
+            Assert.IsTrue(buffers[0].SequenceEqual(Enumerable.Range(1, 4)));
+            Assert.IsTrue(buffers[1].SequenceEqual(Enumerable.Range(5, 4)));
+            Assert.IsTrue(buffers[2].SequenceEqual(Enumerable.Range(9, 4)));
+            Assert.IsTrue(buffers[3].SequenceEqual(Enumerable.Range(13, 4)));
+            Assert.IsTrue(buffers[4].SequenceEqual(Enumerable.Range(17, 4)));
+        }
     }
 }

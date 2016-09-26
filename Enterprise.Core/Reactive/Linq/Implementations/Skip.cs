@@ -28,14 +28,14 @@ namespace Enterprise.Core.Reactive.Linq.Implementations
             CancellationToken cancellationToken)
         {
             var i = 0;
-            return this.source.ForEachAsync(async (item, ct2) => 
+            return this.source.ForEachAsync((item, cancellationToken2) => 
             {
                 if (i < this.count)
                 {
                     i++;
                 }
 
-                await yield.ReturnAsync(item, cancellationToken);
+                return yield.ReturnAsync(item, cancellationToken2);
             }, cancellationToken);
         }
     }

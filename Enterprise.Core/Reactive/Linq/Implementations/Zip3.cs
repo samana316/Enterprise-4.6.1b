@@ -61,13 +61,15 @@ namespace Enterprise.Core.Reactive.Linq.Implementations
         {
             if (this.secondE == null)
             {
-                return this.SelectManyImplAsync(yield, cancellationToken);
+                var producer = new ZipImpl(this);
+
+                return producer.RunAsync(yield, cancellationToken);
             }
 
-            return this.SelectManyImplEAsync(yield, cancellationToken);
+            return this.ZipImplEAsync(yield, cancellationToken);
         }
 
-        private async Task SelectManyImplEAsync(
+        private async Task ZipImplEAsync(
             IAsyncYield<TResult> yield,
             CancellationToken cancellationToken)
         {
@@ -88,32 +90,74 @@ namespace Enterprise.Core.Reactive.Linq.Implementations
             }
         }
 
-        private Task SelectManyImplAsync(
-            IAsyncYield<TResult> yield,
-            CancellationToken cancellationToken)
+        private sealed class ZipImpl : IAsyncYieldBuilder<TResult>
         {
-            var results = new ParallelResultCollection(this, yield);
-            var index1 = -1;
-            var index2 = -1;
+            private readonly Zip<TFirst, TSecond, TResult> parent;
 
-            var task1 = this.first.ForEachAsync(async (item, cancellationToken2) =>
+            private ParallelResultCollection results;
+
+            private int index1;
+
+            private int index2;
+
+            public ZipImpl(
+                Zip<TFirst, TSecond, TResult> parent)
             {
-                index1++;
-                await results.SetFirstAsync(item, index1, cancellationToken2);
-            }, cancellationToken).ContinueWith(t => results.SetComplete());
+                this.parent = parent;
+            }
 
-            var task2 = this.second.ForEachAsync(async (item, cancellationToken2) =>
+            public Task RunAsync(
+                IAsyncYield<TResult> yield,
+                CancellationToken cancellationToken)
             {
-                index2++;
-                await results.SetSecondAsync(item, index2, cancellationToken2);
-            }, cancellationToken).ContinueWith(t => results.SetComplete());
+                this.results = new ParallelResultCollection(this.parent, yield);
 
-            return Task.WhenAll(task1, task2);
+                var task1 = this.RunFirstAsync(cancellationToken);
+                var task2 = this.RunSecondAsync(cancellationToken);
+
+                return Task.WhenAll(task1, task2);
+            }
+
+            private async Task RunFirstAsync(
+                CancellationToken cancellationToken)
+            {
+                try
+                {
+                    await this.parent.first.ForEachAsync((item, cancellationToken2) =>
+                    {
+                        var cachedIndex = this.index1++;
+                        return this.results.SetFirstAsync(item, cachedIndex, cancellationToken2);
+                    }, cancellationToken);
+                }
+                finally
+                {
+                    this.results.SetComplete();
+                }
+            }
+
+            private async Task RunSecondAsync(
+               CancellationToken cancellationToken)
+            {
+                try
+                {
+                    await this.parent.second.ForEachAsync((item, cancellationToken2) =>
+                    {
+                        var cachedIndex = this.index2++;
+                        return this.results.SetSecondAsync(item, cachedIndex, cancellationToken2);
+                    }, cancellationToken);
+                }
+                finally
+                {
+                    this.results.SetComplete();
+                }
+            }
         }
 
         private sealed class ParallelResultCollection
         {
-            private readonly IDictionary<int, ParallelResult> map = new Dictionary<int, ParallelResult>();
+            private readonly object sink = new object();
+
+            private readonly IDictionary<int, ParallelResult> map = new SortedDictionary<int, ParallelResult>();
 
             private readonly IAsyncYield<TResult> yield;
 
@@ -135,10 +179,13 @@ namespace Enterprise.Core.Reactive.Linq.Implementations
                 CancellationToken cancellationToken)
             {
                 ParallelResult item;
-                if (!this.map.TryGetValue(index, out item))
+                lock (sink)
                 {
-                    item = new ParallelResult(this.OnNextAsync);
-                    this.map.Add(index, item);
+                    if (!this.map.TryGetValue(index, out item))
+                    {
+                        item = new ParallelResult(index, this.OnNextAsync);
+                        this.map.Add(index, item);
+                    }
                 }
 
                 await item.SetFirstAsync(first, cancellationToken);
@@ -155,10 +202,13 @@ namespace Enterprise.Core.Reactive.Linq.Implementations
                 CancellationToken cancellationToken)
             {
                 ParallelResult item;
-                if (!this.map.TryGetValue(index, out item))
+                lock (sink)
                 {
-                    item = new ParallelResult(this.OnNextAsync);
-                    this.map.Add(index, item);
+                    if (!this.map.TryGetValue(index, out item))
+                    {
+                        item = new ParallelResult(index, this.OnNextAsync);
+                        this.map.Add(index, item);
+                    }
                 }
 
                 await item.SetSecondAsync(second, cancellationToken);
@@ -183,26 +233,28 @@ namespace Enterprise.Core.Reactive.Linq.Implementations
             }
 
             private Task OnNextAsync(
-                TFirst first,
-                TSecond second,
+                ParallelResult value,
                 CancellationToken cancellationToken)
             {
-                var result = this.parent.resultSelector(first, second);
+                var result = this.parent.resultSelector(value.First, value.Second);
+                this.map.Remove(value.Index);
 
                 return this.yield.ReturnAsync(result, cancellationToken);
             }
 
             private sealed class ParallelResult
             {
-                private readonly Func<TFirst, TSecond, CancellationToken, Task> onNextAsync;
+                private readonly Func<ParallelResult, CancellationToken, Task> onNextAsync;
 
                 private bool hasFirst;
 
                 private bool hasSecond;
 
-                private TFirst first;
+                public TFirst First { get; private set; }
 
-                private TSecond second;
+                public TSecond Second { get; private set; }
+
+                public int Index { get; private set; }
 
                 public bool IsCompleted
                 {
@@ -210,8 +262,10 @@ namespace Enterprise.Core.Reactive.Linq.Implementations
                 }
 
                 public ParallelResult(
-                    Func<TFirst, TSecond, CancellationToken, Task> onNextAsync)
+                    int index,
+                    Func<ParallelResult, CancellationToken, Task> onNextAsync)
                 {
+                    this.Index = index;
                     this.onNextAsync = onNextAsync;
                 }
 
@@ -219,7 +273,7 @@ namespace Enterprise.Core.Reactive.Linq.Implementations
                     TFirst first,
                     CancellationToken cancellationToken)
                 {
-                    this.first = first;
+                    this.First = first;
                     this.hasFirst = true;
 
                     if (this.hasSecond)
@@ -232,7 +286,7 @@ namespace Enterprise.Core.Reactive.Linq.Implementations
                     TSecond second,
                     CancellationToken cancellationToken)
                 {
-                    this.second = second;
+                    this.Second = second;
                     this.hasSecond = true;
 
                     if (this.hasFirst)
@@ -244,7 +298,7 @@ namespace Enterprise.Core.Reactive.Linq.Implementations
                 private Task OnNextAsync(
                     CancellationToken cancellationToken)
                 {
-                    return this.onNextAsync(this.first, this.second, cancellationToken);
+                    return this.onNextAsync(this, cancellationToken);
                 }
             }
         }

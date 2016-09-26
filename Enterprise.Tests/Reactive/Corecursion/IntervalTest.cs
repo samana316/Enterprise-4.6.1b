@@ -54,5 +54,16 @@ namespace Enterprise.Tests.Reactive.Interval
 
             Assert.IsTrue(await observer.Items.SequenceEqualAsync(new long[] { 1, 3, 5, 7, 9 }));
         }
+
+        [TestMethod]
+        [TestCategory(CategoryReactiveInterval)]
+        [Timeout(DefaultTimeout)]
+        public async Task ToAsyncEnumerable()
+        {
+            var source = AsyncObservable.Interval(TimeSpan.FromMilliseconds(5)).ToAsyncEnumerable();
+            var query = source.Where(x => x % 2 != 0).Take(5);
+
+            Assert.IsTrue(await query.SequenceEqualAsync(new long[] { 1, 3, 5, 7, 9 }));
+        }
     }
 }

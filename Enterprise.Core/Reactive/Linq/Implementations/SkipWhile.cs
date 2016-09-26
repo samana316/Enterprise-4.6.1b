@@ -74,11 +74,11 @@ namespace Enterprise.Core.Reactive.Linq.Implementations
             IAsyncYield<TSource> yield,
             CancellationToken cancellationToken)
         {
-            int num = -1;
-            bool flag = false;
+            var num = -1;
+            var flag = false;
             return source.ForEachAsync(async (current, cancellationToken2) =>
             {
-                int num2 = num;
+                var num2 = num;
                 num = checked(num2 + 1);
                 if (!flag && !this.predicateI(current, num))
                 {

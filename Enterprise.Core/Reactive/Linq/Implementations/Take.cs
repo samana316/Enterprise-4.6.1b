@@ -28,7 +28,7 @@ namespace Enterprise.Core.Reactive.Linq.Implementations
             CancellationToken cancellationToken)
         {
             var i = 0;
-            return this.source.ForEachAsync(async (item, cancellationToken2) => 
+            return this.source.ForEachAsync((item, cancellationToken2) => 
             {
                 if (i >= this.count)
                 {
@@ -36,7 +36,7 @@ namespace Enterprise.Core.Reactive.Linq.Implementations
                 }
 
                 i++;
-                await yield.ReturnAsync(item, cancellationToken2);
+                return yield.ReturnAsync(item, cancellationToken2);
             }, cancellationToken);
         }
     }

@@ -20,7 +20,7 @@ namespace Enterprise.Tests.Reactive.Temp
             var x = Observable.Merge(Observable.Return(1));
 
             var example = new { Value = 1 };
-            var source = AsyncObservable.Repeat(example, 3);
+            var source = AsyncObservable.Throw(new InvalidOperationException(), example);
             var query =
                 from item in source
                 where item.Value > 0
