@@ -86,13 +86,11 @@ namespace Enterprise.Tests.Reactive.Zip
         [Timeout(DefaultTimeout)]
         public async Task Infinite1()
         {
-            var doer = new SpyAsyncObserver<int> { MillisecondsDelay = 0 };
-
             var sources = new[]
             {
-                AsyncObservable.Repeat(1).Do(doer),
-                AsyncObservable.Repeat(2).Do(doer),
-                AsyncObservable.Repeat(3).Do(doer),
+                AsyncObservable.Repeat(1),
+                AsyncObservable.Repeat(2),
+                AsyncObservable.Repeat(3),
             };
 
             var query = sources.Zip().Take(3);
@@ -314,6 +312,49 @@ namespace Enterprise.Tests.Reactive.Zip
             Assert.IsFalse(observer.Error.InnerExceptions.Any());
             Assert.AreEqual(9, await observer.Items.CountAsync());
             Assert.AreEqual(expected, await observer.Items.SumAsync());
+        }
+
+        [TestMethod]
+        [TestCategory(CategoryReactiveZip)]
+        [Timeout(DefaultTimeout)]
+        public async Task Combinations16()
+        {
+            var sources = await Repeat<IAsyncObservable<int>>(Return(1), 16).ToList();
+
+            var query = sources[0].Zip(
+                sources[1],
+                sources[2],
+                sources[3],
+                sources[4],
+                sources[5],
+                sources[6],
+                sources[7],
+                sources[8],
+                sources[9],
+                sources[10],
+                sources[11],
+                sources[12],
+                sources[13],
+                sources[14],
+                sources[15],
+                this.DummySelector);
+
+            var observer = query.CreateSpyAsyncObserver();
+            await query.SubscribeAsync(observer);
+
+            Assert.IsTrue(observer.IsCompleted);
+            Assert.IsFalse(observer.Error.InnerExceptions.Any());
+            Assert.AreEqual(1, await observer.Items.CountAsync());
+            Assert.AreEqual(42, await observer.Items.SingleOrDefaultAsync());
+        }
+
+        private int DummySelector(
+            int arg1, int arg2, int arg3, int arg4, 
+            int arg5, int arg6, int arg7, int arg8, 
+            int arg9, int arg10, int arg11, int arg12, 
+            int arg13, int arg14, int arg15, int arg16)
+        {
+            return 42;
         }
     }
 }

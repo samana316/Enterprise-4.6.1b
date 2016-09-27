@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Enterprise.Core.Reactive.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Enterprise.Tests.Reactive.Helpers;
+using System.Diagnostics;
 
 namespace Enterprise.Tests.Reactive.Temp
 {
@@ -15,19 +16,12 @@ namespace Enterprise.Tests.Reactive.Temp
     public class TempTest
     {
         [TestMethod]
-        public void TestMethod1()
+        [Timeout(60000)]
+        public async Task TestMethod1()
         {
-            var x = Observable.Merge(Observable.Return(1));
+            var source = Observable.Repeat(1).Take(3);
 
-            var example = new { Value = 1 };
-            var source = AsyncObservable.Throw(new InvalidOperationException(), example);
-            var query =
-                from item in source
-                where item.Value > 0
-                select item;
-
-            var observer = query.CreateSpyAsyncObserver();
-            query.SubscribeAsync(observer);
+            await source.ForEachAsync(x => Trace.WriteLine(x));
         }
 
         [TestMethod]

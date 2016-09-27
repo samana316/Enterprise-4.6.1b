@@ -146,6 +146,7 @@
     <Compile Include="Reactive\SelectMany\SelectManyTest.cs" />
     <Compile Include="Reactive\Select\SelectTest.cs" />
     <Compile Include="Reactive\Subjects\SubjectTest.cs" />
+    <Compile Include="Reactive\Temp\CodeGenerationTest.cs" />
     <Compile Include="Reactive\Temp\TempTest.cs" />
     <Compile Include="Reactive\Using\UsingTest.cs" />
     <Compile Include="Reactive\Where\WhereTest.cs" />

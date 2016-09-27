@@ -57,6 +57,8 @@ namespace Enterprise.Core.Reactive.Linq.Implementations
 
             private readonly IReadOnlyCollection<IAsyncObservable<TSource>> sources;
 
+            private IAsyncYield<IList<TSource>> yield;
+
             private ParallelResultCollection results;
 
             private int index;
@@ -76,12 +78,13 @@ namespace Enterprise.Core.Reactive.Linq.Implementations
                 CancellationToken cancellationToken)
             {
                 var tasks = new List<Task>();
+                this.yield = yield;
                 this.results = new ParallelResultCollection(yield, this.sources.Count);
                 this.collectionIndexes = new int[this.sources.Count];
 
-                foreach (var source in sources)
+                foreach (var source in this.sources)
                 {
-                    var cachedIndex = index++;
+                    var cachedIndex = this.index++;
                     var task = this.RunCollectionAsync(source, cachedIndex, cancellationToken);
 
                     tasks.Add(task);
@@ -99,6 +102,11 @@ namespace Enterprise.Core.Reactive.Linq.Implementations
                 {
                     await source.ForEachAsync((item, cancellationToken2) =>
                     {
+                        if (this.results.ShouldComplete(this.collectionIndexes[cachedIndex]))
+                        {
+                            this.yield.Break();
+                        }
+
                         var cachedCollectionIndex = this.collectionIndexes[cachedIndex]++;
 
                         return results.SetElementAsync(
@@ -108,7 +116,7 @@ namespace Enterprise.Core.Reactive.Linq.Implementations
                 }
                 finally
                 {
-                    results.SetComplete();
+                    results.SetComplete(this.collectionIndexes[cachedIndex]);
                 }
             }
         }
@@ -124,7 +132,9 @@ namespace Enterprise.Core.Reactive.Linq.Implementations
             private readonly int count;
 
             private bool complete;
-            
+
+            private int terminatingIndex;
+
             public ParallelResultCollection(
                 IAsyncYield<IList<TSource>> yield,
                 int count)
@@ -144,12 +154,17 @@ namespace Enterprise.Core.Reactive.Linq.Implementations
                 {
                     if (!this.map.TryGetValue(collectionIndex, out item))
                     {
-                        item = new ParallelResult(this);
+                        item = new ParallelResult(collectionIndex, this);
                         this.map.Add(collectionIndex, item);
                     }
                 }
 
                 await item.SetElementAsync(element, index, cancellationToken);
+
+                if (this.map.Count >= 10)
+                {
+                    await Task.Delay(1, cancellationToken);
+                }
 
                 if (this.complete)
                 {
@@ -157,9 +172,27 @@ namespace Enterprise.Core.Reactive.Linq.Implementations
                 }
             }
 
-            public void SetComplete()
+            public void SetComplete(
+                int terminatingIndex)
             {
-                this.complete = true;
+                lock (sink)
+                {
+                    if (this.complete)
+                    {
+                        return;
+                    }
+
+                    this.complete = true;
+                    this.terminatingIndex = terminatingIndex;
+                }
+            }
+            public bool ShouldComplete(
+                int index)
+            {
+                lock (sink)
+                {
+                    return this.complete && index >= this.terminatingIndex;
+                }
             }
 
             private void OnComplete()
@@ -170,17 +203,33 @@ namespace Enterprise.Core.Reactive.Linq.Implementations
                 }
             }
 
+            private Task OnNextAsync(
+                ParallelResult value,
+                CancellationToken cancellationToken)
+            {
+                var result = value.ToList();
+                this.map.Remove(value.CollectionIndex);
+
+                return this.yield.ReturnAsync(result, cancellationToken);
+            }
+
             private sealed class ParallelResult
             {
                 private readonly IDictionary<int, TSource> elements = new SortedDictionary<int, TSource>();
 
                 private readonly ParallelResultCollection parent;
 
+                private readonly int collectionIndex;
+
                 public ParallelResult(
+                    int collectionIndex, 
                     ParallelResultCollection parent)
                 {
+                    this.collectionIndex = collectionIndex;
                     this.parent = parent;
                 }
+
+                public int CollectionIndex { get { return this.collectionIndex; } }
 
                 public bool IsCompleted { get; private set; }
 
@@ -197,6 +246,11 @@ namespace Enterprise.Core.Reactive.Linq.Implementations
 
                         await this.parent.yield.ReturnAsync(result, cancellationToken);
                     }
+                }
+
+                public IList<TSource> ToList()
+                {
+                    return this.elements.Values.ToList();
                 }
             }
         }
