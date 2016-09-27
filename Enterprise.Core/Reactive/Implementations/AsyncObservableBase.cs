@@ -46,13 +46,20 @@ namespace Enterprise.Core.Reactive
         {
             try
             {
-                var producer = new Producer(observer);
-
-                await this.ProduceAsync(producer, cancellationToken);
+                await this.UnsafeSubscribeCoreAsync(observer, cancellationToken);
             }
             catch (AsyncObservableCanceledException)
             {
             }
+        }
+
+        internal async Task UnsafeSubscribeCoreAsync(
+            IAsyncObserver<T> observer,
+            CancellationToken cancellationToken)
+        {
+            var producer = new Producer(observer);
+
+            await this.ProduceAsync(producer, cancellationToken);
         }
 
         internal async Task SubscribeSafeAsync(

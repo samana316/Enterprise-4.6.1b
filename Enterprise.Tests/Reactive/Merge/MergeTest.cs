@@ -35,6 +35,22 @@ namespace Enterprise.Tests.Reactive.Merge
 
         [TestMethod]
         [TestCategory(CategoryReactiveMerge)]
+        [Timeout(DefaultTimeout)]
+        public async Task Infinite()
+        {
+            var s1 = AsyncObservable.Repeat(1);
+            var s2 = AsyncObservable.Repeat(100);
+
+            var query = s1.Merge(s2).Take(5);
+            var observer = new SpyAsyncObserver<int>();
+            await query.SubscribeAsync(observer);
+
+            // Can't compare the entire sequence due to race condition.
+            Assert.AreEqual(5, await observer.Items.CountAsync());
+        }
+
+        [TestMethod]
+        [TestCategory(CategoryReactiveMerge)]
         public async Task Observables()
         {
             var sources = Create<IAsyncObservable<long>>((yield, cancellationToken) => 

@@ -30,6 +30,11 @@ namespace Enterprise.Core.Reactive.Linq.Implementations
 
         public override AsyncIterator<TResult> Clone()
         {
+            if (this.source != null)
+            {
+                return new Repeat<TResult>(this.source, this.count);
+            }
+
             return new Repeat<TResult>(this.element, this.count);
         }
 

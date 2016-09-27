@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Enterprise.Core.Linq;
 using Enterprise.Core.Utilities;
+using Enterprise.Core.Reactive.Linq.Implementations;
 
 namespace Enterprise.Core.Reactive.Linq
 {
@@ -38,7 +39,7 @@ namespace Enterprise.Core.Reactive.Linq
             Check.NotNull(yield, nameof(yield));
             Check.NotNull(source, nameof(source));
 
-            return source.ForEachAsync((item, cancellationToken2) =>
+            return AsyncObservableImpl.ForEachAsync(source, (item, cancellationToken2) =>
             {
                 return yield.ReturnAsync(item, cancellationToken2);
             }, cancellationToken);

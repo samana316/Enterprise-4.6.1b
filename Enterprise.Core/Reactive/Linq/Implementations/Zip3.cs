@@ -94,6 +94,8 @@ namespace Enterprise.Core.Reactive.Linq.Implementations
         {
             private readonly Zip<TFirst, TSecond, TResult> parent;
 
+            private IAsyncYield<TResult> yield;
+
             private ParallelResultCollection results;
 
             private int index1;
@@ -110,6 +112,7 @@ namespace Enterprise.Core.Reactive.Linq.Implementations
                 IAsyncYield<TResult> yield,
                 CancellationToken cancellationToken)
             {
+                this.yield = yield;
                 this.results = new ParallelResultCollection(this.parent, yield);
 
                 var task1 = this.RunFirstAsync(cancellationToken);
@@ -125,13 +128,18 @@ namespace Enterprise.Core.Reactive.Linq.Implementations
                 {
                     await this.parent.first.ForEachAsync((item, cancellationToken2) =>
                     {
+                        if (this.results.ShouldComplete(this.index1))
+                        {
+                            this.yield.Break();
+                        }
+
                         var cachedIndex = this.index1++;
                         return this.results.SetFirstAsync(item, cachedIndex, cancellationToken2);
                     }, cancellationToken);
                 }
                 finally
                 {
-                    this.results.SetComplete();
+                    this.results.SetComplete(this.index1);
                 }
             }
 
@@ -142,13 +150,18 @@ namespace Enterprise.Core.Reactive.Linq.Implementations
                 {
                     await this.parent.second.ForEachAsync((item, cancellationToken2) =>
                     {
+                        if (this.results.ShouldComplete(this.index2))
+                        {
+                            this.yield.Break();
+                        }
+
                         var cachedIndex = this.index2++;
                         return this.results.SetSecondAsync(item, cachedIndex, cancellationToken2);
                     }, cancellationToken);
                 }
                 finally
                 {
-                    this.results.SetComplete();
+                    this.results.SetComplete(this.index2);
                 }
             }
         }
@@ -165,6 +178,8 @@ namespace Enterprise.Core.Reactive.Linq.Implementations
 
             private bool complete;
 
+            private int terminatingIndex;
+
             public ParallelResultCollection(
                 Zip<TFirst, TSecond, TResult> parent, 
                 IAsyncYield<TResult> yield)
@@ -178,22 +193,10 @@ namespace Enterprise.Core.Reactive.Linq.Implementations
                 int index, 
                 CancellationToken cancellationToken)
             {
-                ParallelResult item;
-                lock (sink)
-                {
-                    if (!this.map.TryGetValue(index, out item))
-                    {
-                        item = new ParallelResult(index, this.OnNextAsync);
-                        this.map.Add(index, item);
-                    }
-                }
-
+                var item = this.GetOrCreateResultContainer(index);
                 await item.SetFirstAsync(first, cancellationToken);
 
-                if (this.complete)
-                {
-                    this.OnComplete();
-                }
+                await this.CheckCompleteAsync(cancellationToken);
             }
 
             public async Task SetSecondAsync(
@@ -201,6 +204,53 @@ namespace Enterprise.Core.Reactive.Linq.Implementations
                 int index,
                 CancellationToken cancellationToken)
             {
+                var item = this.GetOrCreateResultContainer(index);
+                await item.SetSecondAsync(second, cancellationToken);
+
+                await this.CheckCompleteAsync(cancellationToken);
+            }
+
+            public void SetComplete(
+                int terminatingIndex)
+            {
+                lock (sink)
+                {
+                    if (this.complete)
+                    {
+                        return;
+                    }
+
+                    this.complete = true;
+                    this.terminatingIndex = terminatingIndex;
+                }
+            }
+
+            public bool ShouldComplete(
+                int index)
+            {
+                lock (sink)
+                {
+                    return this.complete && index >= this.terminatingIndex;
+                }
+            }
+
+            private async Task CheckCompleteAsync(
+                CancellationToken cancellationToken)
+            {
+                if (this.map.Count >= 10)
+                {
+                    await Task.Delay(1, cancellationToken);
+                }
+
+                if (this.complete)
+                {
+                    this.OnComplete();
+                }
+            }
+
+            private ParallelResult GetOrCreateResultContainer(
+                int index)
+            {
                 ParallelResult item;
                 lock (sink)
                 {
@@ -211,17 +261,7 @@ namespace Enterprise.Core.Reactive.Linq.Implementations
                     }
                 }
 
-                await item.SetSecondAsync(second, cancellationToken);
-
-                if (this.complete)
-                {
-                    this.OnComplete();
-                }
-            }
-
-            public void SetComplete()
-            {
-                this.complete = true;
+                return item;
             }
 
             private void OnComplete()
@@ -244,6 +284,8 @@ namespace Enterprise.Core.Reactive.Linq.Implementations
 
             private sealed class ParallelResult
             {
+                private readonly object sink = new object();
+
                 private readonly Func<ParallelResult, CancellationToken, Task> onNextAsync;
 
                 private bool hasFirst;
@@ -269,29 +311,39 @@ namespace Enterprise.Core.Reactive.Linq.Implementations
                     this.onNextAsync = onNextAsync;
                 }
 
-                public async Task SetFirstAsync(
+                public Task SetFirstAsync(
                     TFirst first,
                     CancellationToken cancellationToken)
                 {
-                    this.First = first;
-                    this.hasFirst = true;
-
-                    if (this.hasSecond)
+                    lock (sink)
                     {
-                        await this.OnNextAsync(cancellationToken);
+                        this.First = first;
+                        this.hasFirst = true;
+
+                        if (this.hasSecond)
+                        {
+                            return this.OnNextAsync(cancellationToken);
+                        }
+
+                        return Task.CompletedTask;
                     }
                 }
 
-                public async Task SetSecondAsync(
+                public Task SetSecondAsync(
                     TSecond second,
                     CancellationToken cancellationToken)
                 {
-                    this.Second = second;
-                    this.hasSecond = true;
-
-                    if (this.hasFirst)
+                    lock (sink)
                     {
-                        await this.OnNextAsync(cancellationToken);
+                        this.Second = second;
+                        this.hasSecond = true;
+
+                        if (this.hasFirst)
+                        {
+                            return this.OnNextAsync(cancellationToken);
+                        }
+
+                        return Task.CompletedTask;
                     }
                 }
 

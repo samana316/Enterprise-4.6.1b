@@ -149,7 +149,7 @@ namespace Enterprise.Tests.Reactive.Create
 
         [TestMethod]
         [TestCategory(CategoryReactiveCreate)]
-        [Timeout(DefaultTimeout)]
+        //[Timeout(DefaultTimeout)]
         public async Task InfiniteLoopWithBreak()
         {
             var source = Create<int>(async (yield, cancellationToken) =>
@@ -166,7 +166,15 @@ namespace Enterprise.Tests.Reactive.Create
                 }
             });
 
-            Assert.IsTrue(await source.SequenceEqual(new[] { 1, 2, 3 }));
+            var observer = source.CreateSpyAsyncObserver();
+            await source.SubscribeAsync(observer);
+
+            Assert.IsTrue(await observer.Items.SequenceEqualAsync(new[] { 1, 2, 3 }));
+            //await source.ForEachAsync(
+            //    (x, ct) => Console.Out.WriteLineAsync("ForEachAsync: " + x), 
+            //    CancellationToken.None);
+
+            //Assert.IsTrue(await source.SequenceEqual(new[] { 1, 2, 3 }));
         }
 
         [TestMethod]

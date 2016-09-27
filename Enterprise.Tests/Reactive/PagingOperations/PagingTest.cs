@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Enterprise.Core.Linq;
 using Enterprise.Core.Reactive.Linq;
+using Enterprise.Tests.Reactive.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Enterprise.Tests.Reactive.Paging
@@ -53,6 +55,38 @@ namespace Enterprise.Tests.Reactive.Paging
             var query = source.SkipWhile(x => x < 0);
 
             Assert.IsTrue(await query.SequenceEqual(Enumerable.Range(0, 4)));
+        }
+
+        [TestMethod]
+        [TestCategory(CategoryReactivePaging)]
+        [Timeout(DefaultTimeout)]
+        public async Task TakeInfinite()
+        {
+            var source = AsyncObservable.Repeat(1);
+            var query = source.Take(3);
+
+            var observer = query.CreateSpyAsyncObserver();
+            await query.SubscribeAsync(observer);
+
+            Assert.IsTrue(observer.IsCompleted);
+            Assert.IsFalse(observer.Error.InnerExceptions.Any());
+            Assert.IsTrue(await observer.Items.SequenceEqualAsync(Enumerable.Repeat(1, 3)));
+        }
+
+        [TestMethod]
+        [TestCategory(CategoryReactivePaging)]
+        [Timeout(DefaultTimeout)]
+        public async Task TakeInfiniteNested()
+        {
+            var source = AsyncObservable.Range(1, 3).Repeat();
+            var query = source.Take(3);
+
+            var observer = query.CreateSpyAsyncObserver();
+            await query.SubscribeAsync(observer);
+
+            Assert.IsTrue(observer.IsCompleted);
+            Assert.IsFalse(observer.Error.InnerExceptions.Any());
+            Assert.IsTrue(await observer.Items.SequenceEqualAsync(Enumerable.Range(1, 3)));
         }
     }
 }

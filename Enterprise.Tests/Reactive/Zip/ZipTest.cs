@@ -13,7 +13,7 @@ namespace Enterprise.Tests.Reactive.Zip
     [TestClass]
     public sealed class ZipTest
     {
-        private const int DefaultTimeout = 1000;
+        private const int DefaultTimeout = 2000;
 
         private const string CategoryReactiveZip = "Reactive.Zip";
 
@@ -213,9 +213,27 @@ namespace Enterprise.Tests.Reactive.Zip
         [Timeout(DefaultTimeout)]
         public async Task Infinite3()
         {
-            var doer = new SpyAsyncObserver<int> { MillisecondsDelay = 0 };
-            var first = AsyncObservable.Range(1, 5).Repeat().Do(doer);
-            var second = AsyncObservable.Repeat(1).Do(doer);
+            var doer = new SpyAsyncObserver<int> { MillisecondsDelay = 100 };
+            var first = AsyncObservable.Range(1, 5).Repeat();//.Do(doer);
+            var second = AsyncObservable.Repeat(1);//.Do(doer);
+
+            var query = first.Zip(second, (x, y) => x - y).Take(5);
+            var observer = query.CreateSpyAsyncObserver();
+            observer.MillisecondsDelay = 0;
+
+            await query.SubscribeAsync(observer);
+            Assert.IsTrue(observer.IsCompleted);
+            Assert.IsFalse(observer.Error.InnerExceptions.Any());
+            Assert.IsTrue(await observer.Items.SequenceEqualAsync(Enumerable.Range(0, 5)));
+        }
+
+        [TestMethod]
+        [TestCategory(CategoryReactiveZip)]
+        [Timeout(DefaultTimeout)]
+        public async Task TimeShiftInfinite3()
+        {
+            var first = AsyncObservable.Interval(TimeSpan.FromMilliseconds(100)).Select(x => (int)x + 1);
+            var second = AsyncObservable.Timer(TimeSpan.FromMilliseconds(100)).Select(x => 1).Repeat();
 
             var query = first.Zip(second, (x, y) => x - y).Take(5);
             var observer = query.CreateSpyAsyncObserver();
