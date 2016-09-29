@@ -105,19 +105,25 @@ namespace Enterprise.Core.Reactive.Linq.Implementations
         {
             var tasks = new List<Task>();
 
-            await this.sourcesT.ForEachAsync(async (t, cancellationToken2) => 
+            await this.sourcesT.ForEachAsync((t, cancellationToken2) => 
             {
-                await Task.Yield();
+                var task = this.OnNextAsync(t, yield, cancellationToken2);
+                tasks.Add(task);
 
-                var task = t.ContinueWith(async t2 => 
-                {
-                    await yield.ReturnAsync(t2.Result, cancellationToken2);
-                });
-
-                tasks.Add(task.Unwrap());
+                return Task.CompletedTask;
             }, cancellationToken);
 
             await Task.WhenAll(tasks);
+        }
+
+        private async Task OnNextAsync(
+            Task<TSource> source,
+            IAsyncYield<TSource> yield,
+            CancellationToken cancellationToken)
+        {
+            var result = await source;
+
+            await yield.ReturnAsync(result, cancellationToken);
         }
     }
 }

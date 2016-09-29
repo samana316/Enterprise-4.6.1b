@@ -123,6 +123,8 @@
     <Compile Include="Reactive\Amb\AmbTest.cs" />
     <Compile Include="Reactive\Buffer\BufferTest.cs" />
     <Compile Include="Reactive\Finally\FinallyTest.cs" />
+    <Compile Include="Reactive\Helpers\FromMarbleDiagram.cs" />
+    <Compile Include="Reactive\Helpers\LiveSearch.cs" />
     <Compile Include="Reactive\Merge\MergeTest.cs" />
     <Compile Include="Reactive\OnErrorResumeNext\OnErrorResumeNextTest.cs" />
     <Compile Include="Reactive\Publish\PublishTest.cs" />
@@ -146,6 +148,7 @@
     <Compile Include="Reactive\SelectMany\SelectManyTest.cs" />
     <Compile Include="Reactive\Select\SelectTest.cs" />
     <Compile Include="Reactive\Subjects\SubjectTest.cs" />
+    <Compile Include="Reactive\Switch\SwitchTest.cs" />
     <Compile Include="Reactive\Temp\CodeGenerationTest.cs" />
     <Compile Include="Reactive\Temp\TempTest.cs" />
     <Compile Include="Reactive\Using\UsingTest.cs" />

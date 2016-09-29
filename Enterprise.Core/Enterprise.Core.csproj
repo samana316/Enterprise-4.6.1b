@@ -158,6 +158,7 @@
     <Compile Include="Reactive\Implementations\AnonymousAsyncObserver.cs" />
     <Compile Include="Reactive\Implementations\AsAsyncObserver.cs" />
     <Compile Include="Reactive\Implementations\AsyncObservableBase.cs" />
+    <Compile Include="Reactive\Implementations\AsyncObservableCanceledException.cs" />
     <Compile Include="Reactive\Implementations\AsyncObserverBase.cs" />
     <Compile Include="Reactive\Implementations\AsyncSubscription.cs" />
     <Compile Include="Reactive\Implementations\CompositeAsyncObserver.cs" />
@@ -174,6 +175,7 @@
     <Compile Include="Reactive\Linq\Implementations\SelectMany2.cs" />
     <Compile Include="Reactive\Linq\Implementations\SelectMany3.cs" />
     <Compile Include="Reactive\Linq\Implementations\StartWith.cs" />
+    <Compile Include="Reactive\Linq\Implementations\Switch.cs" />
     <Compile Include="Reactive\Linq\Implementations\ToList.cs" />
     <Compile Include="Reactive\Linq\Implementations\Using.cs" />
     <Compile Include="Reactive\Linq\Implementations\Zip1.cs" />
@@ -184,6 +186,7 @@
     <Compile Include="Reactive\Linq\Sample.cs" />
     <Compile Include="Reactive\Linq\SelectMany.cs" />
     <Compile Include="Reactive\Linq\StartWith.cs" />
+    <Compile Include="Reactive\Linq\Switch.cs" />
     <Compile Include="Reactive\Linq\ToList.cs" />
     <Compile Include="Reactive\Linq\Using.cs" />
     <Compile Include="Reactive\Linq\Zip.cs" />

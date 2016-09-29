@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Enterprise.Core.Linq;
 using Enterprise.Core.Reactive;
@@ -14,7 +15,7 @@ namespace Enterprise.Tests.Reactive.Merge
     [TestClass]
     public class MergeTest
     {
-        private const int DefaultTimeout = 1000;
+        private const int DefaultTimeout = 3000;
 
         private const string CategoryReactiveMerge = "Reactive.Merge";
 
@@ -162,6 +163,57 @@ namespace Enterprise.Tests.Reactive.Merge
             var observer = new SpyAsyncObserver<long>();
             
             await query.SubscribeAsync(observer);
+        }
+
+        [TestMethod]
+        [TestCategory(CategoryReactiveMerge)]
+        [Timeout(DefaultTimeout)]
+        public async Task MarbleDiagram()
+        {
+            var sources = LiveSearch.CreateMock<string>(TimeSpan.FromMilliseconds(100));
+            var query = sources.Merge().Select(x => Convert.ToInt32(x));
+
+            var observer = query.CreateSpyAsyncObserver();
+            await query.SubscribeAsync(observer, CancellationToken.None);
+
+            Assert.IsTrue(observer.IsCompleted);
+            Assert.IsFalse(observer.Error.InnerExceptions.Any());
+            Assert.AreEqual(10, await observer.Items.CountAsync());
+            Assert.IsTrue(await observer.Items.SequenceEqualAsync(new[] { 1,1,2,1,2,3,1,2,3,2 }));
+        }
+
+        [TestMethod]
+        [TestCategory(CategoryReactiveMerge)]
+        [Timeout(DefaultTimeout)]
+        public async Task TasksWithException()
+        {
+            var sources = Create<Task<int>>((yield, cancellationToken) =>
+            {
+                var tasks =
+                    from dueTime in new int[] { 300, 200, 100 }
+                    select Task.Delay(dueTime, cancellationToken).ContinueWith(async t =>
+                    {
+                        if (dueTime == 300)
+                        {
+                            var x = 1 / (300 - dueTime);
+                        }
+
+                        await t;
+
+                        return dueTime;
+                    }).Unwrap();
+
+                return yield.ReturnAllAsync(tasks, cancellationToken);
+            });
+
+            var query = sources.Merge();
+            var observer = new SpyAsyncObserver<int>();
+            await query.SubscribeAsync(observer);
+
+            var expected = new[] { 100, 200 };
+            Assert.IsTrue(observer.IsCompleted);
+            Assert.IsTrue(observer.Error.InnerExceptions.Any());
+            Assert.IsTrue(await observer.Items.SequenceEqualAsync(expected));
         }
     }
 }

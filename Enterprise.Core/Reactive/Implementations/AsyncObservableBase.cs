@@ -104,9 +104,5 @@ namespace Enterprise.Core.Reactive
                 return this.observer.OnNextAsync(value, cancellationToken);
             }
         }
-
-        private sealed class AsyncObservableCanceledException : OperationCanceledException
-        {
-        }
     }
 }
