@@ -19,25 +19,12 @@ namespace Enterprise.Tests.Reactive.Temp
         [Timeout(60000)]
         public async Task TestMethod1()
         {
-            //var source = new[]
-            //{
-            //    Observable.Range(1, 2),
-            //    Observable.Range(11, 2),
-            //    Observable.Range(21, 2),
-            //    Observable.Range(31, 2),
-            //}.ToObservable();
+            var delay = TimeSpan.FromMilliseconds(100);
+            var s1 = FromMarbleDiagram.Create<string>("---1---2---3---", delay);
+            var s2 = FromMarbleDiagram.Create<string>("--a------bc----", delay);
 
-            var source = new[]
-            {
-                Task.FromResult(1),
-                Task.Run(async () => { await Task.Delay(100); return 2; }),
-                Task.Run(async () => { await Task.Delay(500); return 3; }),
-                Task.Run(async () => { await Task.Delay(100); return 4; }),
-                Task.FromResult(5),
-            }.ToObservable();
-
-            var query = source.Switch();
-            var list = await query.ToList();
+            var query = Observable.CombineLatest(s1, s2, (x, y) => new { x, y });
+            var list = await Observable.ToList(query);
 
             foreach (var item in list)
             {

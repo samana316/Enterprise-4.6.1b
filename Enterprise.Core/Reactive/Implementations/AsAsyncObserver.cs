@@ -14,6 +14,19 @@ namespace Enterprise.Core.Reactive
             this.observer = observer;
         }
 
+        public override void OnCompleted()
+        {
+            this.observer.OnCompleted();
+            base.OnCompleted();
+        }
+
+        public override void OnError(
+            Exception error)
+        {
+            this.observer.OnError(error);
+            base.OnError(error);
+        }
+
         public override Task OnNextAsync(
             T value, 
             CancellationToken cancellationToken)

@@ -217,10 +217,6 @@ namespace Enterprise.Core.Reactive.Subjects
             private Task ReplayAsync()
             {
                 return this.parent.SubscribeCoreAsync(this.observer, this.cancellationToken);
-                //foreach (var item in this.parent.buffer)
-                //{
-                //    await this.observer.OnNextAsync(item, this.cancellationToken);
-                //}
             }
         }
     }

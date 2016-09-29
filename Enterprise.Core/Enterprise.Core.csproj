@@ -166,11 +166,13 @@
     <Compile Include="Reactive\Interfaces\IAsyncObservable.cs" />
     <Compile Include="Reactive\Interfaces\IAsyncObserver.cs" />
     <Compile Include="Reactive\Linq\Buffer.cs" />
+    <Compile Include="Reactive\Linq\CombineLatest.cs" />
     <Compile Include="Reactive\Linq\Finally.cs" />
     <Compile Include="Reactive\Linq\Implementations\Buffer.cs" />
     <Compile Include="Reactive\Linq\Implementations\Finally.cs" />
     <Compile Include="Reactive\Linq\Implementations\Merge.cs" />
     <Compile Include="Reactive\Linq\Implementations\OnErrorResumeNext.cs" />
+    <Compile Include="Reactive\Linq\Implementations\Retry.cs" />
     <Compile Include="Reactive\Linq\Implementations\Sample.cs" />
     <Compile Include="Reactive\Linq\Implementations\SelectMany2.cs" />
     <Compile Include="Reactive\Linq\Implementations\SelectMany3.cs" />
@@ -183,6 +185,7 @@
     <Compile Include="Reactive\Linq\Merge.cs" />
     <Compile Include="Reactive\Linq\OnErrorResumeNext.cs" />
     <Compile Include="Reactive\Linq\Publish.cs" />
+    <Compile Include="Reactive\Linq\Retry.cs" />
     <Compile Include="Reactive\Linq\Sample.cs" />
     <Compile Include="Reactive\Linq\SelectMany.cs" />
     <Compile Include="Reactive\Linq\StartWith.cs" />
