@@ -36,6 +36,36 @@ namespace Enterprise.Tests.Poc
 
         [TestMethod]
         [TestCategory(CategoryAsyncObservable)]
+        [Timeout(30000)]
+        public async Task TempForEachBreak()
+        {
+            var source = AsyncObservable.Create<int>(async (yield, cancellationToken) =>
+            {
+                var i = 0;
+                while (true)
+                {
+                    i++;
+
+                    if (i > 3)
+                    {
+                        yield.Break();
+                    }
+
+                    await yield.ReturnAsync(i, cancellationToken);
+                }
+            });
+
+            var query = source.Take(2);
+
+            var observer = new SpyAsyncObserver<int>();
+            await source.ForEachAsync(observer.OnNextAsync, CancellationToken.None);
+
+            observer.Reset();
+            await query.ForEachAsync(observer.OnNextAsync, CancellationToken.None);
+        }
+
+        [TestMethod]
+        [TestCategory(CategoryAsyncObservable)]
         public async Task AsyncYieldMixTest()
         {
             var source = AsyncObservable.Interval(TimeSpan.FromMilliseconds(10)).Take(3);

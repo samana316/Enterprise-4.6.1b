@@ -16,12 +16,15 @@ namespace Enterprise.Tests.Reactive.Temp
     public class TempTest
     {
         [TestMethod]
-        [Timeout(60000)]
+        [Timeout(3000)]
         public async Task TestMethod1()
         {
-            var delay = TimeSpan.FromMilliseconds(100);
-            var s1 = FromMarbleDiagram.Create<string>("---1---2---3---", delay);
-            var s2 = FromMarbleDiagram.Create<string>("--a------bc----", delay);
+            //var delay = TimeSpan.FromMilliseconds(100);
+            //var s1 = FromMarbleDiagram.Create<string>("---1---2---3---", delay);
+            //var s2 = FromMarbleDiagram.Create<string>("--a------bc----", delay);
+
+            var s1 = Observable.Range(1, 3);
+            var s2 = "abc".ToObservable();
 
             var query = Observable.CombineLatest(s1, s2, (x, y) => new { x, y });
             var list = await Observable.ToList(query);

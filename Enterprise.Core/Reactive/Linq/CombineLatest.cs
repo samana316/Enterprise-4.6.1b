@@ -15,7 +15,7 @@ namespace Enterprise.Core.Reactive.Linq
             Check.NotNull(second, nameof(second));
             Check.NotNull(resultSelector, nameof(resultSelector));
 
-            return new Zip<TFirst, TSecond, TResult>(first, second, resultSelector);
+            return new CombineLatest<TFirst, TSecond, TResult>(first, second, resultSelector);
         }
     }
 }

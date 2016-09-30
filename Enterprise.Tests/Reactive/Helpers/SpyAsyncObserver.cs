@@ -97,7 +97,7 @@ namespace Enterprise.Tests.Reactive.Helpers
                 this.items.Add(value);
 
                 var sequence = value as IEnumerable;
-                if (sequence != null)
+                if (sequence != null && !(sequence is string))
                 {
                     await Console.Out.WriteLineAsync("--Parent: " + this.items.Count);
 
