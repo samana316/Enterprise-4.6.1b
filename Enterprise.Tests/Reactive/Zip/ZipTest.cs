@@ -212,17 +212,17 @@ namespace Enterprise.Tests.Reactive.Zip
         public async Task Infinite3()
         {
             var doer = new SpyAsyncObserver<int> { MillisecondsDelay = 100 };
-            var first = AsyncObservable.Range(1, 5).Repeat();//.Do(doer);
-            var second = AsyncObservable.Repeat(1);//.Do(doer);
+            var first = AsyncObservable.Repeat(1);
+            var second = AsyncObservable.Repeat(2);
 
-            var query = first.Zip(second, (x, y) => x - y).Take(5);
+            var query = first.Zip(second, (x, y) => x + y).Take(5);
             var observer = query.CreateSpyAsyncObserver();
             observer.MillisecondsDelay = 0;
 
             await query.SubscribeAsync(observer);
             Assert.IsTrue(observer.IsCompleted);
             Assert.IsFalse(observer.Error.InnerExceptions.Any());
-            Assert.IsTrue(await observer.Items.SequenceEqualAsync(Enumerable.Range(0, 5)));
+            Assert.IsTrue(await observer.Items.SequenceEqualAsync(Enumerable.Repeat(3, 5)));
         }
 
         [TestMethod]
@@ -230,17 +230,18 @@ namespace Enterprise.Tests.Reactive.Zip
         [Timeout(DefaultTimeout)]
         public async Task TimeShiftInfinite3()
         {
-            var first = AsyncObservable.Interval(TimeSpan.FromMilliseconds(100)).Select(x => (int)x + 1);
-            var second = AsyncObservable.Timer(TimeSpan.FromMilliseconds(100)).Select(x => 1).Repeat();
+            var delay = TimeSpan.FromMilliseconds(100);
+            var first = AsyncObservable.Interval(delay);
+            var second = AsyncObservable.Interval(delay).Select(x => x + 100);
 
-            var query = first.Zip(second, (x, y) => x - y).Take(5);
+            var query = first.Zip(second, (x, y) => y - x).Take(5).Select(Convert.ToInt32);
             var observer = query.CreateSpyAsyncObserver();
             observer.MillisecondsDelay = 0;
 
             await query.SubscribeAsync(observer);
             Assert.IsTrue(observer.IsCompleted);
             Assert.IsFalse(observer.Error.InnerExceptions.Any());
-            Assert.IsTrue(await observer.Items.SequenceEqualAsync(Enumerable.Range(0, 5)));
+            Assert.IsTrue(await observer.Items.SequenceEqualAsync(Enumerable.Repeat(100, 5)));
         }
 
         [TestMethod]

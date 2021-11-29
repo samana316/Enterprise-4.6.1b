@@ -48,8 +48,9 @@ namespace Enterprise.Core.Reactive
             {
                 await this.UnsafeSubscribeCoreAsync(observer, cancellationToken);
             }
-            catch (AsyncObservableCanceledException)
+            catch (AsyncObservableCanceledException exception)
             {
+                System.Diagnostics.Trace.WriteLine(exception, "AsyncObservableCanceledException");
             }
         }
 

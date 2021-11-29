@@ -268,6 +268,17 @@ namespace Enterprise.Tests.Reactive.SelectMany
             Assert.IsTrue(await observer.Items.SequenceEqualAsync(new[] { 1, 3, 5, 7, 9 }));
         }
 
+        [TestMethod]
+        [TestCategory(CategoryReactiveSelectMany)]
+        [Timeout(DefaultTimeout)]
+        public async Task Infinite()
+        {
+            var source = AsyncObservable.Repeat(1);
+            var query = source.SelectMany(Return(0)).Take(1);
+
+            Assert.AreEqual(0, await query);
+        }
+
         private IEnumerable<int> PullSubValues(
             int offset)
         {

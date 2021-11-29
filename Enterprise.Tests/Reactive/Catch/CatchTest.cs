@@ -37,7 +37,7 @@ namespace Enterprise.Tests.Reactive.Catch
 
             var query = Catch<int>(first, second, third, fourth);
 
-            Assert.IsTrue(await query.SequenceEqual(new[] { 1 }));
+            Assert.AreEqual(1, await query);
         }
 
         [TestMethod]

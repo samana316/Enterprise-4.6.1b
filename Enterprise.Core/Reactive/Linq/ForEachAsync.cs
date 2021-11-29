@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Enterprise.Core.Common.Runtime.CompilerServices;
+using Enterprise.Core.Linq;
 using Enterprise.Core.Reactive.Linq.Implementations;
 using Enterprise.Core.Utilities;
 
@@ -53,6 +54,20 @@ namespace Enterprise.Core.Reactive.Linq.Implementations
             }
 
             return new ForEachAsync<TSource>(source, onNextAsync, cancellationToken).ToTask();
+        }
+
+        public static async Task ForEachAsync<TSource>(
+            this IAsyncObservable<TSource> source,
+            IAsyncYield<TSource> yield,
+            CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            source = Check.NotNull(source, nameof(source));
+            Check.NotNull(yield, nameof(yield));
+
+            await source.ForEachAsync(yield.ReturnAsync, cancellationToken);
+            yield.Break();
         }
     }
 }

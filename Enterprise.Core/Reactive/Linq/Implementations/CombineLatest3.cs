@@ -42,6 +42,8 @@ namespace Enterprise.Core.Reactive.Linq.Implementations
         {
             private readonly CombineLatest<TFirst, TSecond, TResult> parent;
 
+            private object gate;
+
             private IAsyncYield<TResult> yield;
 
             public CombineLatestImpl(
@@ -54,6 +56,7 @@ namespace Enterprise.Core.Reactive.Linq.Implementations
                 IAsyncYield<TResult> yield, 
                 CancellationToken cancellationToken)
             {
+                this.gate = new object();
                 this.yield = yield;
 
                 var f = new FirstImpl(this);
@@ -61,8 +64,8 @@ namespace Enterprise.Core.Reactive.Linq.Implementations
                 f.Other = s;
                 s.Other = f;
 
-                var task1 = this.parent.first.ForEachAsync(f.ReturnAsync, cancellationToken);
-                var task2 = this.parent.second.ForEachAsync(s.ReturnAsync, cancellationToken);
+                var task1 = this.parent.first.ForEachAsync(f, cancellationToken);
+                var task2 = this.parent.second.ForEachAsync(s, cancellationToken);
 
                 return Task.WhenAll(task1, task2);
             }
@@ -87,27 +90,43 @@ namespace Enterprise.Core.Reactive.Linq.Implementations
 
                 public void Break()
                 {
-                    this.Done = true;
-                    this.parent.yield.Break();
+                    lock (this.parent.gate)
+                    {
+                        this.Done = true;
+                        if (this.Other.Done)
+                        {
+                            this.parent.yield.Break();
+                        }
+                    }
                 }
 
-                public async Task ReturnAsync(
+                public Task ReturnAsync(
                     TFirst value,
                     CancellationToken cancellationToken)
                 {
                     this.HasValue = true;
                     this.Value = value;
 
-                    if (this.Other.HasValue)
-                    {
-                        var result = this.parent.parent.resultSelector(value, this.Other.Value);
+                    var task = Task.CompletedTask;
 
-                        await this.parent.yield.ReturnAsync(result, cancellationToken);
-                    }
-                    else if (this.Other.Done)
+                    lock (this.parent.gate)
                     {
-                        this.Break();
+                        this.HasValue = true;
+                        this.Value = value;
+
+                        if (this.Other.HasValue)
+                        {
+                            var result = this.parent.parent.resultSelector(value, this.Other.Value);
+
+                            task = this.parent.yield.ReturnAsync(result, cancellationToken);
+                        }
+                        else if (this.Other.Done)
+                        {
+                            this.Break();
+                        }
                     }
+
+                    return task;
                 }
             }
 
@@ -131,27 +150,40 @@ namespace Enterprise.Core.Reactive.Linq.Implementations
 
                 public void Break()
                 {
-                    this.Done = true;
-                    this.parent.yield.Break();
+                    lock (this.parent.gate)
+                    {
+                        this.Done = true;
+                        if (this.Other.Done)
+                        {
+                            this.parent.yield.Break();
+                        }
+                    }
                 }
 
-                public async Task ReturnAsync(
+                public Task ReturnAsync(
                     TSecond value,
                     CancellationToken cancellationToken)
                 {
-                    this.HasValue = true;
-                    this.Value = value;
+                    var task = Task.CompletedTask;
 
-                    if (this.Other.HasValue)
+                    lock (this.parent.gate)
                     {
-                        var result = this.parent.parent.resultSelector(this.Other.Value, value);
+                        this.HasValue = true;
+                        this.Value = value;
 
-                        await this.parent.yield.ReturnAsync(result, cancellationToken);
+                        if (this.Other.HasValue)
+                        {
+                            var result = this.parent.parent.resultSelector(this.Other.Value, value);
+
+                            task = this.parent.yield.ReturnAsync(result, cancellationToken);
+                        }
+                        else if (this.Other.Done)
+                        {
+                            this.Break();
+                        }
                     }
-                    else if (this.Other.Done)
-                    {
-                        this.Break();
-                    }
+
+                    return task;
                 }
             }
         }

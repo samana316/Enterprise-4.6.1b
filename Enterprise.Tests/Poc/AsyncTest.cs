@@ -143,6 +143,16 @@ namespace Enterprise.Tests.Poc
             await new TestAwaitable();
         }
 
+        [TestMethod]
+        [TestCategory(CategoryPocAsync)]
+        [Timeout(1000)]
+        public async Task NotAsyncAllTheWay()
+        {
+            var result = await this.MethodDAsync();
+
+            Trace.WriteLine(result);
+        }
+
         private Task InfiniteMethodWrapperAsync(
             Action action,
             CancellationToken cancellationToken)
@@ -181,6 +191,35 @@ namespace Enterprise.Tests.Poc
 
                 current = i;
             }
+        }
+
+        private async Task<int> MethodAAsync()
+        {
+            await Task.Delay(100);
+
+            return 1;
+        }
+
+        private async Task<int> MethodBAsync()
+        {
+            await Task.Delay(200);
+
+            return 2;
+        }
+
+        private int MethodC()
+        {
+            var x = MethodBAsync().Result;
+
+            return x + 3;
+        }
+
+        private async Task<int> MethodDAsync()
+        {
+            var a = await this.MethodAAsync();
+            var c = this.MethodC();
+
+            return a + c;
         }
 
         private sealed class TestAwaitable : IAwaitable

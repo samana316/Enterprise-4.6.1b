@@ -39,10 +39,7 @@ namespace Enterprise.Core.Reactive.Linq
             Check.NotNull(yield, nameof(yield));
             Check.NotNull(source, nameof(source));
 
-            return AsyncObservableImpl.ForEachAsync(source, (item, cancellationToken2) =>
-            {
-                return yield.ReturnAsync(item, cancellationToken2);
-            }, cancellationToken);
+            return AsyncObservableImpl.ForEachAsync(source, yield.ReturnAsync, cancellationToken);
         }
     }
 }

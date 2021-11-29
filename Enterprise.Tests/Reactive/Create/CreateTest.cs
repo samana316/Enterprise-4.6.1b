@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Enterprise.Core.Common.Runtime.CompilerServices;
 using Enterprise.Core.Linq;
 using Enterprise.Core.Reactive;
+using Enterprise.Core.Reactive.Linq;
 using Enterprise.Tests.Reactive.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using static Enterprise.Core.Reactive.Linq.AsyncObservable;
@@ -170,11 +172,6 @@ namespace Enterprise.Tests.Reactive.Create
             await source.SubscribeAsync(observer);
 
             Assert.IsTrue(await observer.Items.SequenceEqualAsync(new[] { 1, 2, 3 }));
-            //await source.ForEachAsync(
-            //    (x, ct) => Console.Out.WriteLineAsync("ForEachAsync: " + x), 
-            //    CancellationToken.None);
-
-            //Assert.IsTrue(await source.SequenceEqual(new[] { 1, 2, 3 }));
         }
 
         [TestMethod]
@@ -314,6 +311,50 @@ namespace Enterprise.Tests.Reactive.Create
             await Task.WhenAll(
                 source1.ForEachAsync(observer.OnNextAsync, CancellationToken.None),
                 source2.ForEachAsync(observer.OnNextAsync, CancellationToken.None));
+        }
+
+        [TestMethod]
+        [TestCategory(CategoryReactiveCreate)]
+        [Timeout(DefaultTimeout)]
+        public async Task InfiniteLoopWithBreakParallel()
+        {
+            var source1 = Create<int>(async (yield, cancellationToken) =>
+            {
+                var i = 0;
+                while (true)
+                {
+                    i++;
+                    await Task.Delay(10, cancellationToken);
+                    await yield.ReturnAsync(i, cancellationToken);
+                }
+            });
+
+            var source2 = Create<int>(async (yield, cancellationToken) =>
+            {
+                var i = 100;
+                while (true)
+                {
+                    i++;
+                    await Task.Delay(10, cancellationToken);
+                    await yield.ReturnAsync(i, cancellationToken);
+                }
+            });
+
+            var query1 = Create<int>((yield, cancellationToken) =>
+            {
+                var task1 = yield.ReturnAllAsync(source1, cancellationToken);
+                var task2 = yield.ReturnAllAsync(source2, cancellationToken);
+
+                return Task.WhenAll(task1, task2);
+            });
+
+            var query2 = query1.Take(5);
+            var observer = query2.CreateSpyAsyncObserver();
+            await query2.SubscribeAsync(observer);
+
+            Assert.IsTrue(observer.IsCompleted);
+            Assert.IsFalse(observer.Error.InnerExceptions.Any());
+            Assert.AreEqual(5, await observer.Items.CountAsync());
         }
     }
 }
