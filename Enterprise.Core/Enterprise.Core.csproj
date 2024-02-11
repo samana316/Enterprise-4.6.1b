@@ -1,0 +1,274 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{2CA1BE52-D4E5-49A8-B0CE-B85314E16386}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Enterprise.Core</RootNamespace>
+    <AssemblyName>Enterprise.Core</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Common\DisposableBase.cs" />
+    <Compile Include="Common\Runtime\CompilerServices\Awaitable.cs" />
+    <Compile Include="Common\Runtime\CompilerServices\IAwaitable.cs" />
+    <Compile Include="Common\Runtime\CompilerServices\IAwaiter.cs" />
+    <Compile Include="Common\Runtime\ExceptionServices\ExceptionExtensions.cs" />
+    <Compile Include="Linq\AsyncEnumerable.cs" />
+    <Compile Include="Linq\Extensions\AllAsync.cs" />
+    <Compile Include="Linq\Extensions\AnyAsync.cs" />
+    <Compile Include="Linq\Extensions\AverageAsync.cs" />
+    <Compile Include="Linq\Extensions\Cast.cs" />
+    <Compile Include="Linq\Extensions\ContainsAsync.cs" />
+    <Compile Include="Linq\Extensions\CountAsync.cs" />
+    <Compile Include="Linq\Extensions\ElementAtAsync.cs" />
+    <Compile Include="Linq\Extensions\ElementAtOrDefaultAsync.cs" />
+    <Compile Include="Linq\Extensions\FirstAsync.cs" />
+    <Compile Include="Linq\Extensions\ForEachAsync.cs" />
+    <Compile Include="Linq\Extensions\Implementations\AverageAsync.cs" />
+    <Compile Include="Linq\Extensions\Implementations\Cast.cs" />
+    <Compile Include="Linq\Extensions\Implementations\ElementAtAsync.cs" />
+    <Compile Include="Linq\Extensions\Implementations\FirstAsync.cs" />
+    <Compile Include="Linq\Extensions\Implementations\LastAsync.cs" />
+    <Compile Include="Linq\Extensions\Implementations\MaxAsync.cs" />
+    <Compile Include="Linq\Extensions\Implementations\MinAsync.cs" />
+    <Compile Include="Linq\Extensions\Implementations\OfType.cs" />
+    <Compile Include="Linq\Extensions\Implementations\SingleAsync.cs" />
+    <Compile Include="Linq\Extensions\Implementations\Skip.cs" />
+    <Compile Include="Linq\Extensions\Implementations\SkipWhile.cs" />
+    <Compile Include="Linq\Extensions\Implementations\SumAsync.cs" />
+    <Compile Include="Linq\Extensions\Implementations\Take.cs" />
+    <Compile Include="Linq\Extensions\Implementations\TakeWhile.cs" />
+    <Compile Include="Linq\Extensions\Implementations\Zip.cs" />
+    <Compile Include="Linq\Extensions\LastAsync.cs" />
+    <Compile Include="Linq\Extensions\LastOrDefaultAsync.cs" />
+    <Compile Include="Linq\Extensions\LongCountAsync.cs" />
+    <Compile Include="Linq\Extensions\MinAsync.cs" />
+    <Compile Include="Linq\Extensions\MaxAsync.cs" />
+    <Compile Include="Linq\Extensions\OfType.cs" />
+    <Compile Include="Linq\Extensions\PagingOperations.cs" />
+    <Compile Include="Linq\Extensions\SingleAsync.cs" />
+    <Compile Include="Linq\Extensions\SingleOrDefault.cs" />
+    <Compile Include="Linq\Extensions\SumAsync.cs" />
+    <Compile Include="Linq\Extensions\ToArrayAsync.cs" />
+    <Compile Include="Linq\Extensions\ToDictionaryAsync.cs" />
+    <Compile Include="Linq\Extensions\ToListAsync.cs" />
+    <Compile Include="Linq\Extensions\Zip.cs" />
+    <Compile Include="Linq\Extensions\FirstOrDefaultAsync.cs" />
+    <Compile Include="Linq\Implementations\AsyncEnumerableBase.cs" />
+    <Compile Include="Linq\AsyncEnumerator.cs" />
+    <Compile Include="Linq\Implementations\AsyncIterator.cs" />
+    <Compile Include="Linq\Implementations\AsyncOrderedEnumerable.cs" />
+    <Compile Include="Linq\AsyncYield.cs" />
+    <Compile Include="Linq\Implementations\Buffer.cs" />
+    <Compile Include="Linq\Extensions\AggregateAsync.cs" />
+    <Compile Include="Linq\Extensions\AsAsyncEnumerable.cs" />
+    <Compile Include="Linq\Extensions\Concat.cs" />
+    <Compile Include="Linq\Extensions\DefaultIfEmpty.cs" />
+    <Compile Include="Linq\Extensions\Distinct.cs" />
+    <Compile Include="Linq\Extensions\Empty.cs" />
+    <Compile Include="Linq\Extensions\Except.cs" />
+    <Compile Include="Linq\Extensions\GroupBy.cs" />
+    <Compile Include="Linq\Extensions\GroupJoin.cs" />
+    <Compile Include="Linq\Extensions\Implementations\Anonymous.cs" />
+    <Compile Include="Linq\Extensions\Implementations\AsAsyncEnumerable.cs" />
+    <Compile Include="Linq\Extensions\Implementations\Concat.cs" />
+    <Compile Include="Linq\Extensions\Implementations\DefaultIfEmpty.cs" />
+    <Compile Include="Linq\Extensions\Implementations\Distinct.cs" />
+    <Compile Include="Linq\Extensions\Implementations\Empty.cs" />
+    <Compile Include="Linq\Extensions\Implementations\Except.cs" />
+    <Compile Include="Linq\Extensions\Implementations\GroupBy.cs" />
+    <Compile Include="Linq\Extensions\Implementations\GroupJoin.cs" />
+    <Compile Include="Linq\Extensions\Implementations\Intersect.cs" />
+    <Compile Include="Linq\Extensions\Implementations\Join.cs" />
+    <Compile Include="Linq\Extensions\Implementations\Range.cs" />
+    <Compile Include="Linq\Extensions\Implementations\Repeat.cs" />
+    <Compile Include="Linq\Extensions\Implementations\Reverse.cs" />
+    <Compile Include="Linq\Extensions\Implementations\Select.cs" />
+    <Compile Include="Linq\Extensions\Implementations\SelectMany.cs" />
+    <Compile Include="Linq\Extensions\Implementations\Union.cs" />
+    <Compile Include="Linq\Extensions\Implementations\Where.cs" />
+    <Compile Include="Linq\Extensions\Intersect.cs" />
+    <Compile Include="Linq\Extensions\Join.cs" />
+    <Compile Include="Linq\Extensions\Range.cs" />
+    <Compile Include="Linq\Extensions\Repeat.cs" />
+    <Compile Include="Linq\Extensions\Reverse.cs" />
+    <Compile Include="Linq\Extensions\Select.cs" />
+    <Compile Include="Linq\Extensions\SelectMany.cs" />
+    <Compile Include="Linq\Extensions\SequenceEqualAsync.cs" />
+    <Compile Include="Linq\Extensions\SortingOperations.cs" />
+    <Compile Include="Linq\Extensions\ToLookupAsync.cs" />
+    <Compile Include="Linq\Extensions\Union.cs" />
+    <Compile Include="Linq\Extensions\Where.cs" />
+    <Compile Include="Linq\Implementations\Grouping.cs" />
+    <Compile Include="Linq\Implementations\Optimizations\AsyncCastCollection.cs" />
+    <Compile Include="Linq\Implementations\Optimizations\AsyncCastList.cs" />
+    <Compile Include="Linq\Implementations\Optimizations\AsyncCollection.cs" />
+    <Compile Include="Linq\Implementations\Optimizations\AsyncEnumerableAdapterBase.cs" />
+    <Compile Include="Linq\Implementations\Optimizations\AsyncList.cs" />
+    <Compile Include="Linq\Implementations\Optimizations\AsyncReadOnlyCollection.cs" />
+    <Compile Include="Linq\Implementations\Optimizations\AsyncReadOnlyList.cs" />
+    <Compile Include="Linq\Implementations\Optimizations\TryAsAsyncEnumerable.cs" />
+    <Compile Include="Linq\Implementations\Optimizations\TryCast.cs" />
+    <Compile Include="Linq\Implementations\Optimizations\TryFastCount.cs" />
+    <Compile Include="Linq\Implementations\Optimizations\TryFastIndexer.cs" />
+    <Compile Include="Linq\Interfaces\IAsyncOrderedEnumerable.cs" />
+    <Compile Include="Linq\Interfaces\IAsyncYield.cs" />
+    <Compile Include="Linq\Interfaces\IAsyncEnumerable.cs" />
+    <Compile Include="Linq\Interfaces\IAsyncEnumerator.cs" />
+    <Compile Include="Linq\Implementations\LookUp.cs" />
+    <Compile Include="Linq\Implementations\Map.cs" />
+    <Compile Include="Linq\Interfaces\IAsyncYieldBuilder.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reactive\AsyncObservable.cs" />
+    <Compile Include="Reactive\AsyncObserver.cs" />
+    <Compile Include="Reactive\AsyncSubject.cs" />
+    <Compile Include="Reactive\AsyncYield.cs" />
+    <Compile Include="Reactive\Implementations\AnonymousAsyncObserver.cs" />
+    <Compile Include="Reactive\Implementations\AsAsyncObserver.cs" />
+    <Compile Include="Reactive\Implementations\AsyncObservableBase.cs" />
+    <Compile Include="Reactive\Implementations\AsyncObservableCanceledException.cs" />
+    <Compile Include="Reactive\Implementations\AsyncObserverBase.cs" />
+    <Compile Include="Reactive\Implementations\AsyncSubscription.cs" />
+    <Compile Include="Reactive\Implementations\CompositeAsyncObserver.cs" />
+    <Compile Include="Reactive\Implementations\ConnectableAsyncObservable.cs" />
+    <Compile Include="Reactive\Interfaces\IAsyncObservable.cs" />
+    <Compile Include="Reactive\Interfaces\IAsyncObserver.cs" />
+    <Compile Include="Reactive\Linq\Buffer.cs" />
+    <Compile Include="Reactive\Linq\CombineLatest.cs" />
+    <Compile Include="Reactive\Linq\Finally.cs" />
+    <Compile Include="Reactive\Linq\Implementations\Buffer.cs" />
+    <Compile Include="Reactive\Linq\Implementations\CombineLatest3.cs" />
+    <Compile Include="Reactive\Linq\Implementations\Finally.cs" />
+    <Compile Include="Reactive\Linq\Implementations\Merge.cs" />
+    <Compile Include="Reactive\Linq\Implementations\OnErrorResumeNext.cs" />
+    <Compile Include="Reactive\Linq\Implementations\Retry.cs" />
+    <Compile Include="Reactive\Linq\Implementations\Sample.cs" />
+    <Compile Include="Reactive\Linq\Implementations\SelectMany2.cs" />
+    <Compile Include="Reactive\Linq\Implementations\SelectMany3.cs" />
+    <Compile Include="Reactive\Linq\Implementations\StartWith.cs" />
+    <Compile Include="Reactive\Linq\Implementations\Switch.cs" />
+    <Compile Include="Reactive\Linq\Implementations\ToList.cs" />
+    <Compile Include="Reactive\Linq\Implementations\Using.cs" />
+    <Compile Include="Reactive\Linq\Implementations\Zip1.cs" />
+    <Compile Include="Reactive\Linq\Implementations\Zip3.cs" />
+    <Compile Include="Reactive\Linq\Merge.cs" />
+    <Compile Include="Reactive\Linq\OnErrorResumeNext.cs" />
+    <Compile Include="Reactive\Linq\Publish.cs" />
+    <Compile Include="Reactive\Linq\Retry.cs" />
+    <Compile Include="Reactive\Linq\Sample.cs" />
+    <Compile Include="Reactive\Linq\SelectMany.cs" />
+    <Compile Include="Reactive\Linq\StartWith.cs" />
+    <Compile Include="Reactive\Linq\Switch.cs" />
+    <Compile Include="Reactive\Linq\ToList.cs" />
+    <Compile Include="Reactive\Linq\Using.cs" />
+    <Compile Include="Reactive\Linq\Zip.cs" />
+    <Compile Include="Reactive\Linq\Zip6+.cs" />
+    <Compile Include="Reactive\Subjects\AsyncSubject.cs" />
+    <Compile Include="Reactive\Subjects\AsyncSubjectBase.cs" />
+    <Compile Include="Reactive\Subjects\IAsyncSubject.cs" />
+    <Compile Include="Reactive\Interfaces\IConnectableAsyncObservable.cs" />
+    <Compile Include="Reactive\Interfaces\IAsyncSubscription.cs" />
+    <Compile Include="Reactive\Linq\Amb.cs" />
+    <Compile Include="Reactive\Linq\Generate.cs" />
+    <Compile Include="Reactive\Linq\Implementations\Generate.cs" />
+    <Compile Include="Reactive\Linq\Implementations\Interval.cs" />
+    <Compile Include="Reactive\Linq\Implementations\Never.cs" />
+    <Compile Include="Reactive\Linq\Implementations\Timer.cs" />
+    <Compile Include="Reactive\Linq\Interval.cs" />
+    <Compile Include="Reactive\Linq\Never.cs" />
+    <Compile Include="Reactive\Linq\Timer.cs" />
+    <Compile Include="Reactive\Linq\ToAsyncEnumerable.cs" />
+    <Compile Include="Reactive\Linq\AsAsyncObservable.cs" />
+    <Compile Include="Reactive\Linq\Catch.cs" />
+    <Compile Include="Reactive\Linq\Concat.cs" />
+    <Compile Include="Reactive\Linq\Delay.cs" />
+    <Compile Include="Reactive\Linq\Do.cs" />
+    <Compile Include="Reactive\Linq\DoWhile.cs" />
+    <Compile Include="Reactive\Linq\Empty.cs" />
+    <Compile Include="Reactive\Linq\ForEachAsync.cs" />
+    <Compile Include="Reactive\Linq\GetAwaiter.cs" />
+    <Compile Include="Reactive\Linq\Implementations\Amb.cs" />
+    <Compile Include="Reactive\Linq\Implementations\Anonymous.cs" />
+    <Compile Include="Reactive\Linq\Implementations\ToAsyncEnumerable.cs" />
+    <Compile Include="Reactive\Linq\Implementations\AsAsyncObservable.cs" />
+    <Compile Include="Reactive\Linq\Implementations\Catch.cs" />
+    <Compile Include="Reactive\Linq\Implementations\Concat.cs" />
+    <Compile Include="Reactive\Linq\Implementations\Delay.cs" />
+    <Compile Include="Reactive\Linq\Implementations\Do.cs" />
+    <Compile Include="Reactive\Linq\Implementations\DoWhile.cs" />
+    <Compile Include="Reactive\Linq\Implementations\Empty.cs" />
+    <Compile Include="Reactive\Linq\Implementations\ForEachAsync.cs" />
+    <Compile Include="Reactive\Linq\Implementations\Range.cs" />
+    <Compile Include="Reactive\Linq\Implementations\Repeat.cs" />
+    <Compile Include="Reactive\Linq\Implementations\Return.cs" />
+    <Compile Include="Reactive\Linq\Implementations\Select.cs" />
+    <Compile Include="Reactive\Linq\Implementations\SequenceEqual.cs" />
+    <Compile Include="Reactive\Linq\Implementations\Skip.cs" />
+    <Compile Include="Reactive\Linq\Implementations\SkipWhile.cs" />
+    <Compile Include="Reactive\Linq\Implementations\Take.cs" />
+    <Compile Include="Reactive\Linq\Implementations\TakeWhile.cs" />
+    <Compile Include="Reactive\Linq\Implementations\Throw.cs" />
+    <Compile Include="Reactive\Linq\Implementations\ToAsyncObservable.cs" />
+    <Compile Include="Reactive\Linq\Implementations\Where.cs" />
+    <Compile Include="Reactive\Linq\Implementations\While.cs" />
+    <Compile Include="Reactive\Linq\PagingOperations.cs" />
+    <Compile Include="Reactive\Linq\Range.cs" />
+    <Compile Include="Reactive\Linq\Repeat.cs" />
+    <Compile Include="Reactive\Linq\Return.cs" />
+    <Compile Include="Reactive\Linq\Select.cs" />
+    <Compile Include="Reactive\Linq\SequenceEqual.cs" />
+    <Compile Include="Reactive\Linq\SubscribeAsync.cs" />
+    <Compile Include="Reactive\Linq\SubscribeRawAsync.cs" />
+    <Compile Include="Reactive\Linq\Throw.cs" />
+    <Compile Include="Reactive\Linq\ToAsyncObservable.cs" />
+    <Compile Include="Reactive\Linq\ToTask.cs" />
+    <Compile Include="Reactive\Linq\Where.cs" />
+    <Compile Include="Reactive\Linq\While.cs" />
+    <Compile Include="Reactive\Subjects\ReplayAsyncSubject.cs" />
+    <Compile Include="Resources\Error.cs" />
+    <Compile Include="Utilities\Check.cs" />
+    <Compile Include="Utilities\DebugCheck.cs" />
+    <Compile Include="Utilities\TaskExtensions.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,200 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{A09A8DC1-1312-49D4-81E7-0DD09023BCCD}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Enterprise.Tests</RootNamespace>
+    <AssemblyName>Enterprise.Tests</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+    <ReferencePath>$(ProgramFiles)\Common Files\microsoft shared\VSTT\$(VisualStudioVersion)\UITestExtensionPackages</ReferencePath>
+    <IsCodedUITest>False</IsCodedUITest>
+    <TestProjectType>UnitTest</TestProjectType>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Reactive.Core, Version=3.0.0.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Reactive.Core.3.0.0\lib\net46\System.Reactive.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Reactive.Interfaces, Version=3.0.0.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Reactive.Interfaces.3.0.0\lib\net45\System.Reactive.Interfaces.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Reactive.Linq, Version=3.0.0.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Reactive.Linq.3.0.0\lib\net46\System.Reactive.Linq.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <Choose>
+    <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
+      <ItemGroup>
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+      </ItemGroup>
+    </When>
+    <Otherwise>
+      <ItemGroup>
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework">
+          <Private>False</Private>
+        </Reference>
+      </ItemGroup>
+    </Otherwise>
+  </Choose>
+  <ItemGroup>
+    <Compile Include="Linq\AggregateAsync\AggregateAsyncTest.cs" />
+    <Compile Include="Linq\AggregateAsync\AverageAsyncTest.cs" />
+    <Compile Include="Linq\AggregateAsync\MinAndMaxAsyncTest.cs" />
+    <Compile Include="Linq\AggregateAsync\SumAsyncTest.cs" />
+    <Compile Include="Linq\AsAsyncEnumerable\AsAsyncEnumerableTest.cs" />
+    <Compile Include="Linq\Cast\CastTest.cs" />
+    <Compile Include="Linq\CompareLinqMethods.cs" />
+    <Compile Include="Linq\Concat\ConcatTest.cs" />
+    <Compile Include="Linq\Conversions\ToArrayAsyncTest.cs" />
+    <Compile Include="Linq\Conversions\ToDictionaryAsyncTest.cs" />
+    <Compile Include="Linq\Conversions\ToListAsyncTest.cs" />
+    <Compile Include="Linq\Conversions\ToLookupAsyncTest.cs" />
+    <Compile Include="Linq\CountAsync\CountAsyncTest.cs" />
+    <Compile Include="Linq\Create\CancellationTest.cs" />
+    <Compile Include="Linq\Create\CreateTest.cs" />
+    <Compile Include="Linq\DefaultIfEmpty\DefaultIfEmptyTest.cs" />
+    <Compile Include="Linq\Empty\EmptyTest.cs" />
+    <Compile Include="Linq\GroupBy\GroupByTest.cs" />
+    <Compile Include="Linq\GroupJoin\GroupJoinTest.cs" />
+    <Compile Include="Linq\Helpers\Data\DbStreamIterator.cs" />
+    <Compile Include="Linq\Helpers\DummyAsyncEnumerable.cs" />
+    <Compile Include="Linq\Helpers\ListAsyncEnumerable.cs" />
+    <Compile Include="Linq\Helpers\RealAsyncEnumerable.cs" />
+    <Compile Include="Linq\Helpers\SemiGenericAsyncCollection.cs" />
+    <Compile Include="Linq\Helpers\ThrowAsyncEnumerable.cs" />
+    <Compile Include="Linq\Join\JoinTest.cs" />
+    <Compile Include="Linq\PagingOperations\PagingTest.cs" />
+    <Compile Include="Linq\Range\RangeTest.cs" />
+    <Compile Include="Linq\Repeat\RepeatTest.cs" />
+    <Compile Include="Linq\SeekingOperations\AnyAndAllAsyncTest.cs" />
+    <Compile Include="Linq\SeekingOperations\ContainsAsyncTest.cs" />
+    <Compile Include="Linq\SeekingOperations\ElementAtAsyncTest.cs" />
+    <Compile Include="Linq\SeekingOperations\SeekingTest.cs" />
+    <Compile Include="Linq\SelectMany\SelectManyTest.cs" />
+    <Compile Include="Linq\Select\SelectTest.cs" />
+    <Compile Include="Linq\SequenceEqualAsync\SequenceEqualAsyncTest.cs" />
+    <Compile Include="Linq\SetOperations\DistinctTest.cs" />
+    <Compile Include="Linq\SetOperations\ExceptTest.cs" />
+    <Compile Include="Linq\SetOperations\IntersectTest.cs" />
+    <Compile Include="Linq\SetOperations\UnionTest.cs" />
+    <Compile Include="Linq\SortingOperations\ReverseTest.cs" />
+    <Compile Include="Linq\SortingOperations\SortingTest.cs" />
+    <Compile Include="Linq\Where\WhereTest.cs" />
+    <Compile Include="Linq\Zip\ZipTest.cs" />
+    <Compile Include="Poc\ArrayTest.cs" />
+    <Compile Include="Poc\AsyncObservableTest.cs" />
+    <Compile Include="Poc\AsyncTest.cs" />
+    <Compile Include="Poc\CustomAsyncTest.cs" />
+    <Compile Include="Poc\DebuggerTest.cs" />
+    <Compile Include="Poc\IteratorObserverDualityTest.cs" />
+    <Compile Include="Poc\StructTest.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reactive\Amb\AmbTest.cs" />
+    <Compile Include="Reactive\Buffer\BufferTest.cs" />
+    <Compile Include="Reactive\CombineLatest\CombineLatestTest.cs" />
+    <Compile Include="Reactive\Finally\FinallyTest.cs" />
+    <Compile Include="Reactive\Helpers\DivideByZero.cs" />
+    <Compile Include="Reactive\Helpers\FromMarbleDiagram.cs" />
+    <Compile Include="Reactive\Helpers\LiveSearch.cs" />
+    <Compile Include="Reactive\Merge\MergeTest.cs" />
+    <Compile Include="Reactive\OnErrorResumeNext\OnErrorResumeNextTest.cs" />
+    <Compile Include="Reactive\Publish\PublishTest.cs" />
+    <Compile Include="Reactive\Catch\CatchTest.cs" />
+    <Compile Include="Reactive\Concat\ConcatTest.cs" />
+    <Compile Include="Reactive\Corecursion\IntervalTest.cs" />
+    <Compile Include="Reactive\Corecursion\TimerTest.cs" />
+    <Compile Include="Reactive\Create\CancellationTest.cs" />
+    <Compile Include="Reactive\Create\CompatibilityTest.cs" />
+    <Compile Include="Reactive\Create\CreateTest.cs" />
+    <Compile Include="Reactive\Delay\DelayTest.cs" />
+    <Compile Include="Reactive\DoWhile\DoWhileTest.cs" />
+    <Compile Include="Reactive\Do\DoTest.cs" />
+    <Compile Include="Reactive\Corecursion\GenerateTest.cs" />
+    <Compile Include="Reactive\Helpers\SpyAsyncObserver.cs" />
+    <Compile Include="Reactive\Helpers\TestNotifyPropertyChanged.cs" />
+    <Compile Include="Reactive\PagingOperations\PagingTest.cs" />
+    <Compile Include="Reactive\Range\RangeTest.cs" />
+    <Compile Include="Reactive\Repeat\RepeatTest.cs" />
+    <Compile Include="Reactive\Retry\RetryTest.cs" />
+    <Compile Include="Reactive\Sample\SampleTest.cs" />
+    <Compile Include="Reactive\SelectMany\SelectManyTest.cs" />
+    <Compile Include="Reactive\Select\SelectTest.cs" />
+    <Compile Include="Reactive\Subjects\SubjectTest.cs" />
+    <Compile Include="Reactive\Switch\SwitchTest.cs" />
+    <Compile Include="Reactive\Temp\CodeGenerationTest.cs" />
+    <Compile Include="Reactive\Temp\TempTest.cs" />
+    <Compile Include="Reactive\Using\UsingTest.cs" />
+    <Compile Include="Reactive\Where\WhereTest.cs" />
+    <Compile Include="Reactive\While\WhileTest.cs" />
+    <Compile Include="Reactive\Zip\ZipTest.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Enterprise.Core\Enterprise.Core.csproj">
+      <Project>{2ca1be52-d4e5-49a8-b0ce-b85314e16386}</Project>
+      <Name>Enterprise.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Choose>
+    <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
+      <ItemGroup>
+        <Reference Include="Microsoft.VisualStudio.QualityTools.CodedUITestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.TestTools.UITest.Common, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.TestTools.UITest.Extension, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.TestTools.UITesting, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
